@@ -4,7 +4,6 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>Mesin Prompt — Veo3 (Hiburan & Afiliasi)</title>
-  <!-- Tailwind CDN (boleh diganti CSS sendiri) -->
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
@@ -42,6 +41,7 @@
           </select>
         </div>
 
+        <!-- HIBURAN -->
         <div id="hiburanFields" class="space-y-3">
           <div>
             <label class="muted text-sm">Ide Karakter / Tokoh</label>
@@ -74,6 +74,7 @@
           </div>
         </div>
 
+        <!-- AFILIASI -->
         <div id="afiliasiFields" class="hidden space-y-3">
           <div>
             <label class="muted text-sm">Nama Produk / Merek</label>
@@ -116,7 +117,7 @@
             <input id="orKey" class="input" placeholder="sk-or-... (jika diisi, tombol AI aktif)"/>
             <div class="flex gap-2">
               <button id="assistScenes" class="btn btn-ghost">✨ AI Assist: Isi 3 Scene</button>
-              <button id="assistCopy" class="btn btn-ghost">🧪 AI Perbaiki Copy VO</button>
+              <button id="assistCopy" class="btn btn-ghost">🧪 AI Perbaiki VO</button>
             </div>
             <p class="muted text-xs">Jika kosong, mesin tetap bekerja offline. Daftar gratis: <a class="link" href="https://openrouter.ai" target="_blank" rel="noopener">openrouter.ai</a></p>
           </div>
@@ -133,26 +134,41 @@
   </main>
 
   <script>
-    // ---------- UTIL ----------
+    // ===== UTIL =====
     const el = id => document.getElementById(id);
     const sanitize = s => (s||'').toString().trim();
 
+    // JSON cleaners & strict system prompt
+    function cleanToJSON(text){
+      if(!text) return null;
+      let t = String(text).replace(/```json|```/gi,'').trim();
+      const first = Math.min(...['{','['].map(ch => {const i=t.indexOf(ch); return i<0?1e9:i;}));
+      const last  = Math.max(t.lastIndexOf('}'), t.lastIndexOf(']'));
+      if(last < first || first===1e9) return null;
+      const slice = t.slice(first, last+1).trim();
+      try { return JSON.parse(slice); } catch(e){}
+      const safe = slice.replace(/,\s*([}\]])/g,'$1').replace(/[\u0000-\u001F]/g,'');
+      try { return JSON.parse(safe); } catch(e){ return null; }
+    }
+    function forceJSONSystem(schemaHint){
+      return "Kamu adalah formatter. Jawab HANYA dalam JSON valid tanpa teks lain. " + (schemaHint?("Skema: "+schemaHint):"");
+    }
+
+    // ===== MODE TOGGLE =====
     const modeEl = el('mode'), out = el('output');
     const hiburanFields = el('hiburanFields');
     const afiliasiFields = el('afiliasiFields');
-
     modeEl.addEventListener('change', () => {
       const ad = modeEl.value === 'afiliasi';
       hiburanFields.classList.toggle('hidden', ad);
       afiliasiFields.classList.toggle('hidden', !ad);
       out.value = '';
     });
-
     document.addEventListener('keydown', (e)=>{
       if((e.ctrlKey||e.metaKey) && e.key === 'Enter'){ el('genBtn').click(); }
     });
 
-    // ---------- BUILDER: HIBURAN ----------
+    // ===== BUILDERS =====
     function buildHiburan(){
       const charIdea = sanitize(el('charIdea').value);
       const premis   = sanitize(el('premis').value);
@@ -200,7 +216,6 @@
       }, null, 2);
     }
 
-    // ---------- BUILDER: AFILIASI ----------
     function buildAfiliasi(){
       const brand   = sanitize(el('brand').value);
       const premis  = sanitize(el('premisAd').value);
@@ -208,7 +223,7 @@
       const cta     = sanitize(el('cta').value || 'KLIK KERANJANG KUNING / BELI SEKARANG');
       const lang    = sanitize(el('langAd').value || 'id-ID');
 
-      const list = benefit ? benefit.split(/,|;|\\n/).map(s=>s.trim()).filter(Boolean).slice(0,3) : [];
+      const list = benefit ? benefit.split(/,|;|\n/).map(s=>s.trim()).filter(Boolean).slice(0,3) : [];
       const voHook = `Butuh upgrade cepat? ${brand || 'Brand kamu'} jawabannya.`;
       const voBody = list.length >= 2 ? `${list[0]}; ${list[1]}.` : 'Desain rapi, nyaman dipakai.';
 
@@ -237,98 +252,122 @@
       }, null, 2);
     }
 
-    // ---------- MAIN BUTTONS ----------
+    // ===== MAIN BUTTONS =====
     el('genBtn').addEventListener('click', ()=>{
       const isAd = modeEl.value === 'afiliasi';
       out.value = isAd ? buildAfiliasi() : buildHiburan();
     });
-
     el('copyBtn').addEventListener('click', async ()=>{
       out.select();
       try { await navigator.clipboard.writeText(out.value || ''); alert('JSON disalin.'); }
       catch{ document.execCommand('copy'); alert('JSON disalin (fallback).'); }
     });
 
-    // ---------- OPTIONAL: AI ASSIST via OpenRouter (tanpa Google Cloud) ----------
-    async function aiCall(prompt){
-      const key = sanitize(el('orKey').value);
+    // ===== AI ASSIST via OpenRouter (tanpa Google Cloud) =====
+    async function aiJSON(userPrompt, schemaHint){
+      const key = (el('orKey')?.value || '').trim();
       if(!key){ alert('Isi OpenRouter API Key dulu atau abaikan fitur AI.'); return null; }
-      try{
-        const res = await fetch('https://openrouter.ai/api/v1/chat/completions',{
-          method:'POST',
-          headers:{
-            'Content-Type':'application/json',
-            'Authorization':`Bearer ${key}`,
-            'HTTP-Referer': location.origin,
-            'X-Title': 'Mesin Prompt Veo3'
-          },
-          body: JSON.stringify({
-            model: 'google/gemma-2-9b-it:free',  /* model gratisan; bisa ganti */
-            messages: [{role:'user', content: prompt}],
-            temperature: 0.7
-          })
-        });
-        const json = await res.json();
-        return json.choices?.[0]?.message?.content || null;
-      }catch(e){ console.error(e); alert('Gagal panggil AI.'); return null; }
+
+      const body = {
+        model: "google/gemma-2-9b-it:free",   // bisa ganti model lain di OpenRouter
+        messages: [
+          { role: "system", content: forceJSONSystem(schemaHint) },
+          { role: "user",   content: userPrompt }
+        ],
+        temperature: 0.6
+      };
+
+      const res = await fetch("https://openrouter.ai/api/v1/chat/completions",{
+        method:"POST",
+        headers:{
+          "Content-Type":"application/json",
+          "Authorization":`Bearer ${key}`,
+          "HTTP-Referer": location.origin,
+          "X-Title": "Mesin Prompt Veo3"
+        },
+        body: JSON.stringify(body)
+      });
+
+      const data = await res.json();
+      const text = data?.choices?.[0]?.message?.content || "";
+      const parsed = cleanToJSON(text);
+      if(!parsed){
+        console.warn("AI raw output (non-JSON):", text);
+        alert("AI tidak mengembalikan JSON yang valid.");
+        return null;
+      }
+      return parsed;
     }
 
-    function extractJson(text){
-      if(!text) return null;
-      const a = Math.min(...[...'[{'].map(ch=>{const i=text.indexOf(ch);return i<0?1e9:i;}));
-      const b = Math.max(text.lastIndexOf('}'), text.lastIndexOf(']'));
-      if(b<a) return null;
-      try{ return JSON.parse(text.slice(a,b+1)); }catch{ return null; }
-    }
-
+    // AI Assist: Isi 3 Scene
     el('assistScenes').addEventListener('click', async ()=>{
-      const isAd = modeEl.value === 'afiliasi';
+      const isAd = el('mode').value === 'afiliasi';
+
       if(isAd){
-        const brand = sanitize(el('brand').value) || 'produk';
-        const prem  = sanitize(el('premisAd').value) || 'transisi objek jadi versi aesthetic';
-        const prompt = `Buat 3 scene iklan 8 detik dalam Bahasa Indonesia untuk "${brand}". Premis: ${prem}. JSON array: [{"visual":"","voice_over":""}x3]`;
-        const t = await aiCall(prompt); if(!t) return;
-        const arr = extractJson(t);
-        if(Array.isArray(arr) && arr.length){
-          // suntik ke output JSON mode afiliasi
-          const base = JSON.parse(buildAfiliasi());
-          arr.slice(0,3).forEach((s,i)=>{
-            if(base.ad_prompt.scenes[i]){
-              base.ad_prompt.scenes[i].actions = [s.visual||base.ad_prompt.scenes[i].actions?.[0]||''];
-              base.ad_prompt.scenes[i].audio = { voice_over: s.voice_over || '' };
-            }
-          });
-          out.value = JSON.stringify(base,null,2);
-          alert('Scene terisi oleh AI (afiliasi).');
-        } else alert('AI tidak mengembalikan JSON yang valid.');
+        const brand = (el('brand').value || 'produk').trim();
+        const prem  = (el('premisAd').value || 'transisi objek jadi versi aesthetic').trim();
+
+        const schema = `[{"visual":"deskripsi shot sinematik","voice_over":"naskah VO satu kalimat"}]`;
+        const prompt = `Buat TEPAT 3 objek array JSON untuk iklan 8 detik Bahasa Indonesia.
+- Fokus soft-selling untuk brand "${brand}".
+- Premis: "${prem}".
+- Tiap objek WAJIB punya "visual" dan "voice_over".
+- Jangan tambahkan kalimat di luar JSON.`;
+
+        const arr = await aiJSON(prompt, schema);
+        if(!Array.isArray(arr) || arr.length===0) return;
+
+        const base = JSON.parse(buildAfiliasi());
+        arr.slice(0,3).forEach((s,i)=>{
+          if(base.ad_prompt.scenes[i]){
+            base.ad_prompt.scenes[i].actions = [ (s.visual||"").toString() ];
+            base.ad_prompt.scenes[i].audio   = { voice_over: (s.voice_over||"").toString() };
+          }
+        });
+        el('output').value = JSON.stringify(base,null,2);
+        alert('Scene terisi oleh AI (afiliasi).');
       } else {
-        const charIdea = sanitize(el('charIdea').value)||'seseorang yang kesepian';
-        const prem = sanitize(el('premis').value)||'menemukan pintu kecil di laci';
-        const prompt = `Buat 3 scene cerita pendek sinematik (8 detik/scene) Bahasa Indonesia. Karakter: ${charIdea}. Premis: ${prem}. Format JSON array: [{"visual":"","voice_over":""}x3]`;
-        const t = await aiCall(prompt); if(!t) return;
-        const arr = extractJson(t);
-        if(Array.isArray(arr) && arr.length){
-          const base = JSON.parse(buildHiburan());
-          arr.slice(0,3).forEach((s,i)=>{
-            if(base.template.scenes[i]){
-              base.template.scenes[i].actions = [s.visual||base.template.scenes[i].actions?.[0]||''];
-              base.template.scenes[i].voice_over = s.voice_over || base.template.scenes[i].voice_over || '';
-            }
-          });
-          out.value = JSON.stringify(base,null,2);
-          alert('Scene terisi oleh AI (hiburan).');
-        } else alert('AI tidak mengembalikan JSON yang valid.');
+        const charIdea = (el('charIdea').value || 'seseorang yang kesepian').trim();
+        const prem     = (el('premis').value || 'menemukan pintu kecil di laci').trim();
+
+        const schema = `[{"visual":"deskripsi shot sinematik","voice_over":"naskah VO satu kalimat"}]`;
+        const prompt = `Buat TEPAT 3 objek array JSON untuk cerita sinematik (8 detik per scene), Bahasa Indonesia.
+- Karakter: ${charIdea}
+- Premis: ${prem}
+- Tiap objek WAJIB punya "visual" dan "voice_over".
+- Jangan tambahkan kalimat di luar JSON.`;
+
+        const arr = await aiJSON(prompt, schema);
+        if(!Array.isArray(arr) || arr.length===0) return;
+
+        const base = JSON.parse(buildHiburan());
+        arr.slice(0,3).forEach((s,i)=>{
+          if(base.template.scenes[i]){
+            base.template.scenes[i].actions    = [ (s.visual||"").toString() ];
+            base.template.scenes[i].voice_over = (s.voice_over||"").toString();
+          }
+        });
+        el('output').value = JSON.stringify(base,null,2);
+        alert('Scene terisi oleh AI (hiburan).');
       }
     });
 
+    // AI Perbaiki VO
     el('assistCopy').addEventListener('click', async ()=>{
-      const text = out.value || '';
-      const key  = sanitize(el('orKey').value);
-      if(!key){ alert('Isi OpenRouter API Key dulu atau abaikan fitur ini.'); return; }
-      const prompt = `Rapikan copy Bahasa Indonesia di dalam JSON berikut (jangan ubah struktur, hanya ubah kalimat/teks):\n\n${text}`;
-      const t = await aiCall(prompt); if(!t) return;
-      const maybe = extractJson(t);
-      out.value = JSON.stringify(maybe || t, null, 2);
+      const current = el('output').value || '';
+      if(!current.trim()){ alert('Generate dulu atau tempel JSON yang ingin diperhalus.'); return; }
+
+      const schema = "Kembalikan JSON yang sama persis struktur key-nya, hanya perbaiki redaksi teks.";
+      const prompt = `Perhalus copywriting Bahasa Indonesia di dalam JSON berikut.
+- JANGAN ubah struktur kunci atau menambah/menghapus field.
+- Hanya perbaiki kalimat (tone sinematik, natural).
+- Kembalikan HANYA JSON.
+JSON:
+${current}`;
+
+      const fixed = await aiJSON(prompt, schema);
+      if(!fixed) return;
+      el('output').value = JSON.stringify(fixed, null, 2);
       alert('Copy diperhalus AI.');
     });
   </script>
