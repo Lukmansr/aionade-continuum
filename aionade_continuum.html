@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AIonade Continuum</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #111827; --bg-med: #1f2937; --bg-light: #374151;
+            --border-color: #4b5563; --text-primary: #f9fafb; --text-secondary: #d1d5db;
+            --accent-blue: #3b82f6; --accent-indigo: #6366f1; --accent-red: #ef4444;
+            --accent-green: #22c55e;
+        }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg-dark); color: var(--text-secondary); }
+        .hub-section { background-color: var(--bg-med); border: 1px solid var(--bg-light); }
+        .form-input, .form-select, .form-textarea, .form-range {
+            background-color: var(--bg-light); border: 1px solid var(--border-color);
+            color: var(--text-primary); transition: all 0.2s ease-in-out;
+        }
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            outline: none; border-color: var(--accent-blue); box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.4);
+        }
+        .btn { transition: all 0.2s ease-in-out; cursor: pointer; }
+        .btn-primary { background-color: var(--accent-blue); color: white; }
+        .btn-primary:hover:not(:disabled) { background-color: #2563eb; }
+        .btn-secondary { background-color: var(--bg-light); color: white; }
+        .btn-secondary:hover:not(:disabled) { background-color: #4b5563; }
+        .btn-danger { background-color: #dc2626; color: white; }
+        .btn-danger:hover:not(:disabled) { background-color: #b91c1c; }
+        .btn-gemini {
+            background-color: var(--accent-indigo); color: white; padding: 6px 12px;
+            font-size: 14px; font-weight: 500; border-radius: 6px;
+            display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+        }
+        .btn-gemini:hover:not(:disabled) { background-color: #4f46e5; }
+        .btn:disabled { background-color: #6b7280; opacity: 0.7; cursor: not-allowed; }
+        .notification {
+            position: fixed; bottom: -100px; left: 50%; transform: translateX(-50%);
+            color: white; padding: 12px 24px; border-radius: 8px; z-index: 100;
+            opacity: 0; transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        .notification.show { opacity: 1; bottom: 20px; }
+        .notification.success { background-color: var(--accent-green); }
+        .notification.error { background-color: var(--accent-red); }
+        .loader {
+            width: 14px; height: 14px; border: 2px solid #FFF; border-bottom-color: transparent;
+            border-radius: 50%; display: inline-block; box-sizing: border-box;
+            animation: rotation 1s linear infinite;
+        }
+        @keyframes rotation { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .json-output {
+            background-color: #0c111d; border: 1px solid var(--bg-light); color: #a5b4fc;
+            white-space: pre-wrap; word-wrap: break-word; font-size: 12px;
+        }
+        .radio-label {
+            padding: 8px 16px; border: 1px solid var(--border-color);
+            border-radius: 6px; cursor: pointer; transition: all 0.2s;
+        }
+        input[type="radio"]:checked + .radio-label {
+            background-color: var(--accent-indigo); border-color: var(--accent-indigo); color: white;
+        }
+    </style>
+</head>
+<body>
+<p>HTML content truncated for brevity...</p>
+</body>
+</html>
