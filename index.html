@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>Mesin Prompt — Veo3 (Hiburan & Afiliasi)</title>
+  <title>Mesin Prompt — Veo3 (Gratis: HF/SD WebUI)</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
@@ -22,43 +22,86 @@
     .kbd{font-family:ui-monospace,Consolas,monospace;background:#0e1630;border:1px solid var(--line);padding:1px 6px;border-radius:6px}
     .link{color:#9ec1ff;text-decoration:underline}
     .danger{background:#ff6272;color:#1b0b0e}
+    img.preview{max-height:220px;border-radius:10px;border:1px solid var(--line)}
   </style>
 </head>
 <body>
-  <main class="max-w-6xl mx-auto p-4 sm:p-6">
+  <main class="max-w-7xl mx-auto p-4 sm:p-6">
     <header class="mb-5">
-      <h1 class="text-2xl sm:text-3xl font-extrabold">Mesin Prompt JSON — Veo3</h1>
-      <p class="muted">Wajib: pengguna memasukkan <b>API key pribadi</b> untuk memakai mesin (disimpan aman di browser mereka).</p>
+      <h1 class="text-2xl sm:text-3xl font-extrabold">Mesin Prompt JSON — Veo3 (Gratis)</h1>
+      <p class="muted">Teks: <b>Hugging Face Inference API</b> (default) atau OpenRouter. Gambar: <b>Stable Diffusion WebUI lokal</b> (gratis), opsional Replicate.</p>
     </header>
 
     <section class="grid grid-cols-1 lg:grid-cols-3 gap-4">
       <!-- PANEL KIRI -->
-      <div class="card p-4 space-y-4 lg:col-span-1">
+      <div class="card p-4 space-y-5 lg:col-span-1">
 
-        <!-- API KEY (WAJIB) -->
-        <div>
-          <div class="flex items-center justify-between mb-2">
-            <label class="muted text-sm">OpenRouter API Key (wajib)</label>
-            <a class="link text-xs" target="_blank" rel="noopener" href="https://openrouter.ai">Dapatkan key</a>
+        <!-- PROVIDER TEKS -->
+        <div class="space-y-2">
+          <div class="flex items-center gap-2">
+            <span class="pill">Text Provider</span>
+            <select id="textProvider" class="input w-auto">
+              <option value="hf">Hugging Face (disarankan)</option>
+              <option value="openrouter">OpenRouter (opsional)</option>
+            </select>
           </div>
 
-          <div class="grid grid-cols-1 gap-2">
-            <div class="flex gap-2">
-              <input id="orKey" class="input" type="password" placeholder="sk-or-..." autocomplete="off"/>
-              <button id="toggleKey" class="btn btn-ghost" title="Lihat/Sembunyikan">👁️</button>
+          <div id="hfBox" class="space-y-2">
+            <div class="flex justify-between">
+              <label class="muted text-sm">HF API Token (wajib untuk HF)</label>
+              <a class="link text-xs" target="_blank" rel="noopener" href="https://huggingface.co/settings/tokens">Buat token</a>
             </div>
-            <div class="flex flex-wrap gap-2">
-              <button id="saveKey" class="btn btn-ghost">💾 Simpan di Perangkat Ini</button>
-              <button id="clearKey" class="btn danger">🗑️ Hapus Key</button>
+            <input id="hfKey" class="input" type="password" placeholder="hf_..."/>
+            <label class="muted text-xs">Model (disarankan: <span class="kbd">google/gemma-2-9b-it</span>)</label>
+            <input id="hfModel" class="input" value="google/gemma-2-9b-it"/>
+          </div>
+
+          <div id="orBox" class="space-y-2 hidden">
+            <div class="flex justify-between">
+              <label class="muted text-sm">OpenRouter API Key</label>
+              <a class="link text-xs" target="_blank" rel="noopener" href="https://openrouter.ai">Daftar</a>
             </div>
-            <p class="muted text-xs">
-              Disimpan lokal via <span class="kbd">localStorage</span> pada perangkat/Browser ini.
-              Tidak dikirim ke server selain ke OpenRouter saat Anda menekan tombol AI.
-            </p>
+            <input id="orKey" class="input" type="password" placeholder="sk-or-..."/>
+            <label class="muted text-xs">Model (gratisan sering tersedia: <span class="kbd">google/gemma-2-9b-it:free</span>)</label>
+            <input id="orModel" class="input" value="google/gemma-2-9b-it:free"/>
           </div>
         </div>
 
-        <div class="hr my-2"></div>
+        <!-- PROVIDER GAMBAR -->
+        <div class="space-y-2">
+          <div class="flex items-center gap-2">
+            <span class="pill">Image Provider</span>
+            <select id="imgProvider" class="input w-auto">
+              <option value="sd_local">Stable Diffusion WebUI (lokal)</option>
+              <option value="replicate">Replicate (opsional)</option>
+            </select>
+          </div>
+
+          <div id="sdBox" class="space-y-2">
+            <label class="muted text-sm">SD WebUI Base URL (lokal)</label>
+            <input id="sdBase" class="input" value="http://127.0.0.1:7860"/>
+            <p class="muted text-xs">Jalankan A1111 di PC-mu. Endpoint: <span class="kbd">/sdapi/v1/txt2img</span>. Tidak perlu API key.</p>
+          </div>
+
+          <div id="repBox" class="space-y-2 hidden">
+            <div class="flex justify-between">
+              <label class="muted text-sm">Replicate API Token</label>
+              <a class="link text-xs" target="_blank" rel="noopener" href="https://replicate.com/account/api-tokens">Token</a>
+            </div>
+            <input id="repKey" class="input" type="password" placeholder="r8_..."/>
+            <label class="muted text-xs">Model</label>
+            <input id="repModel" class="input" value="black-forest-labs/flux-schnell"/>
+          </div>
+        </div>
+
+        <!-- TOMBOL SIMPAN -->
+        <div class="flex gap-2 flex-wrap">
+          <button id="saveCfg" class="btn btn-ghost">💾 Simpan Konfigurasi</button>
+          <button id="clearCfg" class="btn danger">🗑️ Reset</button>
+        </div>
+        <p class="muted text-xs">Konfigurasi disimpan di <span class="kbd">localStorage</span> browser Anda.</p>
+
+        <div class="hr my-1"></div>
 
         <!-- MODE -->
         <div class="flex items-center gap-2">
@@ -134,17 +177,32 @@
         <div class="hr my-2"></div>
 
         <div class="flex gap-2 flex-wrap">
-          <button id="genBtn" class="btn btn-primary" disabled>⚡ Hasilkan Prompt JSON</button>
-          <button id="assistScenes" class="btn btn-ghost" disabled>✨ AI Assist: Isi 3 Scene</button>
-          <button id="assistCopy" class="btn btn-ghost" disabled>🧪 AI Perbaiki VO</button>
+          <button id="genBtn" class="btn btn-primary">⚡ Hasilkan Prompt JSON</button>
+          <button id="assistScenes" class="btn btn-ghost">✨ AI Assist: Isi 3 Scene</button>
+          <button id="assistCopy" class="btn btn-ghost">🧪 AI Perbaiki VO</button>
         </div>
-        <p class="muted text-xs">Semua tombol aktif setelah API key tersimpan.</p>
+
+        <div class="hr my-2"></div>
+
+        <!-- IMAGE GEN -->
+        <div class="space-y-2">
+          <label class="muted text-sm">Prompt Gambar (konsep karakter/produk)</label>
+          <textarea id="imgPrompt" class="input" placeholder="cinematic portrait, diffused lighting, film grain, 85mm bokeh"></textarea>
+          <div class="grid grid-cols-3 gap-2">
+            <input id="imgW" class="input" type="number" value="768" min="256" step="64" title="Width">
+            <input id="imgH" class="input" type="number" value="1024" min="256" step="64" title="Height">
+            <input id="imgSteps" class="input" type="number" value="28" min="10" max="60" step="1" title="Steps">
+          </div>
+          <button id="genImgBtn" class="btn btn-ghost">🖼️ Generate Gambar</button>
+          <div id="imgOut" class="mt-2"></div>
+          <p class="muted text-xs">Catatan: <b>Midjourney</b> berjalan di Discord & tidak punya API resmi. Gunakan SD WebUI lokal untuk integrasi gratis.</p>
+        </div>
       </div>
 
       <!-- PANEL KANAN -->
       <div class="card p-4 lg:col-span-2">
         <label class="muted text-sm mb-1 block">Output Prompt (JSON)</label>
-        <textarea id="output" class="input mono min-h-[420px]" spellcheck="false" placeholder="Hasil prompt akan muncul di sini..."></textarea>
+        <textarea id="output" class="input mono min-h-[460px]" spellcheck="false" placeholder="Hasil prompt akan muncul di sini..."></textarea>
         <div class="mt-2 flex flex-wrap gap-2">
           <span class="muted text-xs">Struktur: <span class="kbd">engine</span>, <span class="kbd">global</span>, <span class="kbd">script/characters</span>, <span class="kbd">scenes[3]</span>.</span>
           <span class="muted text-xs">Shortcut: <span class="kbd">Ctrl/Cmd</span> + <span class="kbd">Enter</span> = Generate.</span>
@@ -158,286 +216,10 @@
     // ===== UTIL =====
     const el = id => document.getElementById(id);
     const sanitize = s => (s||'').toString().trim();
-
-    // ====== API KEY STORAGE ======
-    const LS_KEY = 'aionade_or_api_key';
-    function loadKey(){
-      const k = localStorage.getItem(LS_KEY) || '';
-      el('orKey').value = k;
-      setButtonsState(Boolean(k));
-    }
-    function saveKey(){
-      const v = sanitize(el('orKey').value);
-      if(!v){ alert('Masukkan API key dulu.'); return; }
-      localStorage.setItem(LS_KEY, v);
-      setButtonsState(true);
-      alert('API key disimpan di perangkat ini.');
-    }
-    function clearKey(){
-      localStorage.removeItem(LS_KEY);
-      el('orKey').value = '';
-      setButtonsState(false);
-      alert('API key dihapus dari perangkat ini.');
-    }
-    function getKeyRequired(){
-      const k = sanitize(el('orKey').value || localStorage.getItem(LS_KEY) || '');
-      if(!k){
-        alert('❌ Anda harus mengisi & menyimpan API key pribadi untuk menggunakan mesin ini.');
-        return null;
-      }
-      return k;
-    }
-    function setButtonsState(enabled){
-      ['genBtn','assistScenes','assistCopy'].forEach(id=>{
-        el(id).disabled = !enabled;
-      });
-    }
-
-    // show/hide
-    el('toggleKey').addEventListener('click', ()=>{
-      const i = el('orKey');
-      i.type = i.type === 'password' ? 'text' : 'password';
-    });
-    el('saveKey').addEventListener('click', saveKey);
-    el('clearKey').addEventListener('click', clearKey);
-
-    // JSON cleaners & strict system prompt
-    function cleanToJSON(text){
-      if(!text) return null;
-      let t = String(text).replace(/```json|```/gi,'').trim();
-      const first = Math.min(...['{','['].map(ch => {const i=t.indexOf(ch); return i<0?1e9:i;}));
-      const last  = Math.max(t.lastIndexOf('}'), t.lastIndexOf(']'));
-      if(last < first || first===1e9) return null;
-      const slice = t.slice(first, last+1).trim();
-      try { return JSON.parse(slice); } catch(e){}
-      const safe = slice.replace(/,\s*([}\]])/g,'$1').replace(/[\u0000-\u001F]/g,'');
-      try { return JSON.parse(safe); } catch(e){ return null; }
-    }
-    function forceJSONSystem(schemaHint){
-      return "Kamu adalah formatter. Jawab HANYA dalam JSON valid tanpa teks lain. " + (schemaHint?("Skema: "+schemaHint):"");
-    }
-
-    // ===== MODE TOGGLE =====
-    const modeEl = el('mode'), out = el('output');
-    const hiburanFields = el('hiburanFields');
-    const afiliasiFields = el('afiliasiFields');
-    modeEl.addEventListener('change', () => {
-      const ad = modeEl.value === 'afiliasi';
-      hiburanFields.classList.toggle('hidden', ad);
-      afiliasiFields.classList.toggle('hidden', !ad);
-      out.value = '';
-    });
-    document.addEventListener('keydown', (e)=>{
-      if((e.ctrlKey||e.metaKey) && e.key === 'Enter'){ el('genBtn').click(); }
-    });
-
-    // ===== BUILDERS (analogimu tetap) =====
-    function buildHiburan(){
-      const charIdea = sanitize(el('charIdea').value);
-      const premis   = sanitize(el('premis').value);
-      const visual   = sanitize(el('visual').value);
-      const lang     = sanitize(el('lang').value || 'id-ID');
-      const arah     = sanitize(el('arah').value);
-
-      return JSON.stringify({
-        template:{
-          engine:'gemini_veo3',
-          project_title:'Proyek_Hiburan',
-          global:{
-            language:lang, style:'realistic_cinematic',
-            aspect_ratio:'9:16', resolution:'1080x1920', fps:24,
-            duration_per_scene_sec:8,
-            color_grade:'teal_orange_moderate',
-            camera_profile:'anamorphic_soft_bokeh',
-            audio:{ voice_over:{enabled:true, voice_id:'id_female_soft', tone:'warm_storytelling', pace_wpm:145},
-                    music:{global_theme:'orchestral_electronic_hybrid', mix_level_db:-16},
-                    sfx:{lufs_target:-18} },
-            safety:{ no_logo:true, no_trademark:true }
-          },
-          characters:[{ description:charIdea, notes:'tanpa merek nyata' }],
-          scenes:[
-            { id:1, duration_sec:8, visual_style:visual, camera:'wide → push-in lembut',
-              sfx:['ambience_room_soft','woosh_subtle'],
-              actions:[
-                'Establishing tokoh di ruang personal.',
-                premis ? ('Premis: '+premis) : 'Premis: temuan anomali halus di ruang kerja.'
-              ],
-              voice_over:'Aku tak sengaja menemukan pintu kecil di dunia yang sudah sempit ini.' },
-            { id:2, duration_sec:8, visual_style:visual, camera:'handheld halus, eye-level',
-              sfx:['low_rumble','soft_chime'],
-              actions:['Tokoh berinteraksi dengan anomali; close-up emosi & cahaya.'],
-              voice_over:'Di baliknya, ada sunyi yang berbicara—dan aku mendengarnya.' },
-            { id:3, duration_sec:8, visual_style:visual, camera:'slow dolly-out',
-              sfx:['heartbeat_soft','air_whisper'],
-              actions:[
-                'Konsekuensi pertama muncul; sesuatu menyeberang ke sini.',
-                arah ? ('Catatan sutradara: '+arah) : 'Catatan sutradara: akhir terbuka, nada bittersweet.'
-              ],
-              voice_over:'Kalau rumah adalah rahasia, mungkin aku pulang ke yang tak bernama.' }
-          ]
-        }
-      }, null, 2);
-    }
-
-    function buildAfiliasi(){
-      const brand   = sanitize(el('brand').value);
-      const premis  = sanitize(el('premisAd').value);
-      const benefit = sanitize(el('benefit').value);
-      const cta     = sanitize(el('cta').value || 'KLIK KERANJANG KUNING / BELI SEKARANG');
-      const lang    = sanitize(el('langAd').value || 'id-ID');
-
-      const list = benefit ? benefit.split(/,|;|\n/).map(s=>s.trim()).filter(Boolean).slice(0,3) : [];
-      const voHook = `Butuh upgrade cepat? ${brand || 'Brand kamu'} jawabannya.`;
-      const voBody = list.length >= 2 ? `${list[0]}; ${list[1]}.` : 'Desain rapi, nyaman dipakai.';
-
-      return JSON.stringify({
-        ad_prompt:{
-          engine:'gemini_veo3',
-          project_title:`Iklan_${brand||'TanpaNama'}`,
-          global:{
-            language:lang, style:'realistic_cinematic',
-            aspect_ratio:'9:16', resolution:'1080x1920', fps:24,
-            duration_total_sec:8,
-            safety:{ no_logo:true, no_price:true, no_health_claim:true }
-          },
-          script:{ hook:voHook, body:voBody, cta },
-          scenes:[
-            { id:1, duration_sec:3,
-              actions:[ premis ? `Mulai: ${premis}` : 'Tangan memegang objek biasa di meja; cahaya natural.' ],
-              text_overlay:'Upgrade sekarang', audio:{ voice_over: voHook } },
-            { id:2, duration_sec:1, actions:['Transisi “woosh” cepat, efek partikel halus.'], sfx:['whoosh_light'] },
-            { id:3, duration_sec:4,
-              actions:['Objek → versi aesthetic; close-up detail; senyum ke kamera.'],
-              text_overlay: brand || 'Merek Anda',
-              audio:{ voice_over: `${voBody} ${cta}` } }
-          ]
-        }
-      }, null, 2);
-    }
-
-    // ===== AI CORE (wajib key) =====
-    async function aiJSON(userPrompt, schemaHint){
-      const key = getKeyRequired();
-      if(!key) return null;
-
-      const body = {
-        model: "google/gemma-2-9b-it:free",
-        messages: [
-          { role: "system", content: forceJSONSystem(schemaHint) },
-          { role: "user",   content: userPrompt }
-        ],
-        temperature: 0.6
-      };
-
-      const res = await fetch("https://openrouter.ai/api/v1/chat/completions",{
-        method:"POST",
-        headers:{
-          "Content-Type":"application/json",
-          "Authorization":`Bearer ${key}`,
-          "HTTP-Referer": location.origin,
-          "X-Title": "Mesin Prompt Veo3"
-        },
-        body: JSON.stringify(body)
-      });
-
-      const data = await res.json();
-      const text = data?.choices?.[0]?.message?.content || "";
-      const parsed = cleanToJSON(text);
-      if(!parsed){
-        console.warn("AI raw output (non-JSON):", text);
-        alert("AI tidak mengembalikan JSON yang valid.");
-        return null;
-      }
-      return parsed;
-    }
-
-    // ===== EVENTS =====
-    el('genBtn').addEventListener('click', ()=>{
-      if(!getKeyRequired()) return; // wajib key
-      const isAd = el('mode').value === 'afiliasi';
-      out.value = isAd ? buildAfiliasi() : buildHiburan();
-    });
-
-    el('assistScenes').addEventListener('click', async ()=>{
-      if(!getKeyRequired()) return;
-      const isAd = el('mode').value === 'afiliasi';
-
-      if(isAd){
-        const brand = (el('brand').value || 'produk').trim();
-        const prem  = (el('premisAd').value || 'transisi objek jadi versi aesthetic').trim();
-
-        const schema = `[{"visual":"deskripsi shot sinematik","voice_over":"naskah VO satu kalimat"}]`;
-        const prompt = `Buat TEPAT 3 objek array JSON untuk iklan 8 detik Bahasa Indonesia.
-- Fokus soft-selling untuk brand "${brand}".
-- Premis: "${prem}".
-- Tiap objek WAJIB punya "visual" dan "voice_over".
-- Jangan tambahkan kalimat di luar JSON.`;
-
-        const arr = await aiJSON(prompt, schema);
-        if(!Array.isArray(arr) || arr.length===0) return;
-
-        const base = JSON.parse(buildAfiliasi());
-        arr.slice(0,3).forEach((s,i)=>{
-          if(base.ad_prompt.scenes[i]){
-            base.ad_prompt.scenes[i].actions = [ (s.visual||"").toString() ];
-            base.ad_prompt.scenes[i].audio   = { voice_over: (s.voice_over||"").toString() };
-          }
-        });
-        el('output').value = JSON.stringify(base,null,2);
-        alert('Scene terisi oleh AI (afiliasi).');
-      } else {
-        const charIdea = (el('charIdea').value || 'seseorang yang kesepian').trim();
-        const prem     = (el('premis').value || 'menemukan pintu kecil di laci').trim();
-
-        const schema = `[{"visual":"deskripsi shot sinematik","voice_over":"naskah VO satu kalimat"}]`;
-        const prompt = `Buat TEPAT 3 objek array JSON untuk cerita sinematik (8 detik per scene), Bahasa Indonesia.
-- Karakter: ${charIdea}
-- Premis: ${prem}
-- Tiap objek WAJIB punya "visual" dan "voice_over".
-- Jangan tambahkan kalimat di luar JSON.`;
-
-        const arr = await aiJSON(prompt, schema);
-        if(!Array.isArray(arr) || arr.length===0) return;
-
-        const base = JSON.parse(buildHiburan());
-        arr.slice(0,3).forEach((s,i)=>{
-          if(base.template.scenes[i]){
-            base.template.scenes[i].actions    = [ (s.visual||"").toString() ];
-            base.template.scenes[i].voice_over = (s.voice_over||"").toString();
-          }
-        });
-        el('output').value = JSON.stringify(base,null,2);
-        alert('Scene terisi oleh AI (hiburan).');
-      }
-    });
-
-    el('assistCopy').addEventListener('click', async ()=>{
-      if(!getKeyRequired()) return;
-      const current = el('output').value || '';
-      if(!current.trim()){ alert('Generate dulu atau tempel JSON yang ingin diperhalus.'); return; }
-
-      const schema = "Kembalikan JSON yang sama persis struktur key-nya, hanya perbaiki redaksi teks.";
-      const prompt = `Perhalus copywriting Bahasa Indonesia di dalam JSON berikut.
-- JANGAN ubah struktur kunci atau menambah/menghapus field.
-- Hanya perbaiki kalimat (tone sinematik, natural).
-- Kembalikan HANYA JSON.
-JSON:
-${current}`;
-
-      const fixed = await aiJSON(prompt, schema);
-      if(!fixed) return;
-      el('output').value = JSON.stringify(fixed, null, 2);
-      alert('Copy diperhalus AI.');
-    });
-
-    el('copyBtn').addEventListener('click', async ()=>{
-      out.select();
-      try { await navigator.clipboard.writeText(out.value || ''); alert('JSON disalin.'); }
-      catch{ document.execCommand('copy'); alert('JSON disalin (fallback).'); }
-    });
-
-    // init
-    loadKey();
-  </script>
-</body>
-</html>
+    const LS = {
+      textProvider: 'aionade_text_provider',
+      hfKey: 'aionade_hf_key',
+      hfModel: 'aionade_hf_model',
+      orKey: 'aionade_or_key',
+      orModel: 'aionade_or_model',
+      imgProvider:
