@@ -82,6 +82,12 @@
                         </div>
                         <div class="space-y-4">
                             <div>
+                                <label for="api-key" class="block text-sm font-medium mb-1" data-lang-key="apiKeyLabel">Your API Key</label>
+                                <input type="password" id="api-key" class="form-input rounded-md p-2 w-full" data-lang-key-placeholder="apiKeyPlaceholder">
+                                <p class="text-xs text-gray-500 mt-1" data-lang-key="apiKeyHelp">Your key is stored only in your browser.</p>
+                            </div>
+                             <hr class="my-4 border-gray-600">
+                            <div>
                                 <label for="language-selector" class="block text-sm font-medium mb-2" data-lang-key="languageLabel">Language</label>
                                 <select id="language-selector" class="form-select rounded-md p-2 w-full">
                                     <option value="id">Bahasa Indonesia</option>
@@ -245,6 +251,7 @@
                 id: {
                     mainTitle: "AIonade Continuum", tagline: "Dari premis ke publikasi, konsisten di setiap frame.",
                     projectSettingsTitle: "1. Pengaturan Proyek", languageLabel: "Bahasa",
+                    apiKeyLabel: "API Key Anda", apiKeyPlaceholder: "Masukkan API Key Google AI Anda di sini", apiKeyHelp: "Kunci Anda hanya disimpan di browser Anda.",
                     purposeLabel: "Tujuan Cerita", purposeEntertainment: "Hiburan", purposeAffiliate: "Afiliasi",
                     affiliateDetailsTitle: "Detail Afiliasi",
                     productNameLabel: "Nama Produk",
@@ -275,11 +282,13 @@
                     notificationCharacterIdeaRequired: "Masukkan ide karakter terlebih dahulu.",
                     notificationSceneRequired: "Buat setidaknya satu adegan terlebih dahulu.",
                     notificationJsonCopied: "JSON disalin ke clipboard!", notificationCopyFail: "Gagal menyalin.",
+                    notificationApiKeyRequired: "Silakan masukkan API Key Anda terlebih dahulu.",
                     langInstructionForAI: "Please provide the response in Indonesian."
                 },
                 en: {
                     mainTitle: "AIonade Continuum", tagline: "From premise to publish, consistent every frame.",
                     projectSettingsTitle: "1. Project Setup", languageLabel: "Language",
+                    apiKeyLabel: "Your API Key", apiKeyPlaceholder: "Enter your Google AI API Key here", apiKeyHelp: "Your key is stored only in your browser.",
                     purposeLabel: "Story Purpose", purposeEntertainment: "Entertainment", purposeAffiliate: "Affiliate",
                     affiliateDetailsTitle: "Affiliate Details",
                     productNameLabel: "Product Name",
@@ -310,11 +319,13 @@
                     notificationCharacterIdeaRequired: "Please enter a character idea first.",
                     notificationSceneRequired: "Please create at least one scene first.",
                     notificationJsonCopied: "JSON copied to clipboard!", notificationCopyFail: "Failed to copy.",
+                    notificationApiKeyRequired: "Please enter your API Key first.",
                     langInstructionForAI: "Please provide the response in English."
                 },
                 zh: {
                     mainTitle: "AIonade Continuum", tagline: "从构思到发布，每一帧都保持一致。",
                     projectSettingsTitle: "1. 项目设置", languageLabel: "语言",
+                    apiKeyLabel: "您的 API 密钥", apiKeyPlaceholder: "在此处输入您的 Google AI API 密钥", apiKeyHelp: "您的密钥仅存储在您的浏览器中。",
                     purposeLabel: "故事目的", purposeEntertainment: "娱乐", purposeAffiliate: "联盟营销",
                     affiliateDetailsTitle: "联盟营销详情",
                     productNameLabel: "产品名称",
@@ -345,6 +356,7 @@
                     notificationCharacterIdeaRequired: "请先输入角色想法。",
                     notificationSceneRequired: "请先创建至少一个场景。",
                     notificationJsonCopied: "JSON 已复制到剪贴板！", notificationCopyFail: "复制失败。",
+                    notificationApiKeyRequired: "请先输入您的 API 密钥。",
                     langInstructionForAI: "请用中文回答。"
                 }
             };
@@ -410,57 +422,56 @@
                 document.querySelectorAll('.btn-gemini, #proceed-btn').forEach(btn => btn.disabled = lock);
             };
             
-            /**
-             * NEW: Robustly extracts a JSON object or array from a string,
-             * even if it's surrounded by other text or markdown code blocks.
-             * @param {string} text - The text containing the JSON.
-             * @returns {object|null} The parsed JSON object or null if not found/invalid.
-             */
             function extractJson(text) {
                 if (!text || typeof text !== 'string') return null;
-                
-                // Find the first '{' or '[' to determine the start of the JSON
-                const firstBracket = text.indexOf('{');
-                const firstSquare = text.indexOf('[');
-                
-                let startIndex;
-                if (firstBracket === -1 && firstSquare === -1) return null;
-                
-                if (firstBracket === -1) startIndex = firstSquare;
-                else if (firstSquare === -1) startIndex = firstBracket;
-                else startIndex = Math.min(firstBracket, firstSquare);
-
-                // Find the last '}' or ']' to determine the end
-                const lastBracket = text.lastIndexOf('}');
-                const lastSquare = text.lastIndexOf(']');
-                
-                if (lastBracket === -1 && lastSquare === -1) return null;
-                
-                const endIndex = Math.max(lastBracket, lastSquare);
-
-                if (endIndex < startIndex) return null;
-
-                const jsonString = text.substring(startIndex, endIndex + 1);
-                
+                const jsonMatch = text.match(/```json\s*([\s\S]*?)\s*```|(\{[\s\S]*\}|\[[\s\S]*\])/);
+                if (!jsonMatch) return null;
+                const jsonString = jsonMatch[1] || jsonMatch[2];
                 try {
                     return JSON.parse(jsonString);
                 } catch (e) {
-                    console.error("Failed to parse extracted JSON string:", e);
-                    console.error("Original text:", text);
-                    console.error("Extracted string:", jsonString);
+                    console.error("Failed to parse extracted JSON string:", e, "String was:", jsonString);
                     return null;
                 }
             }
 
 
-            async function callGemini(prompt, buttonElement, imageBase64 = null) {
+            async function callApi(apiUrl, payload, buttonElement) {
                 if (isAIBusy) return;
+
+                const apiKeyInput = document.getElementById('api-key');
+                const apiKey = apiKeyInput.value.trim();
+
+                if (!apiKey) {
+                    showNotification('notificationApiKeyRequired', 'error');
+                    return null;
+                }
+
                 toggleAILock(true);
                 const originalContent = buttonElement.innerHTML;
                 buttonElement.innerHTML = `<span class="loader"></span> Generating...`;
-                const apiKey = "AIzaSyBbffuqsDlZV3KKUZcpCa6_-uGP60eCBng";
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
                 
+                const finalApiUrl = `${apiUrl}?key=${apiKey}`;
+
+                try {
+                    const response = await fetch(finalApiUrl, {
+                        method: 'POST', headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    if (!response.ok) throw new Error(`HTTP error! status: ${response.status} ${response.statusText}`);
+                    return await response.json();
+                } catch (error) {
+                    console.error(`Error calling API (${apiUrl}):`, error);
+                    showNotification("notificationError", 'error', 5000);
+                    return null;
+                } finally {
+                    buttonElement.innerHTML = originalContent;
+                    toggleAILock(false);
+                }
+            }
+
+            async function callGemini(prompt, buttonElement, imageBase64 = null) {
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent`;
                 const parts = [{ text: prompt }];
                 if (imageBase64) {
                     parts.push({
@@ -471,53 +482,27 @@
                     });
                 }
                 const payload = { contents: [{ role: "user", parts: parts }] };
-
-                try {
-                    const response = await fetch(apiUrl, {
-                        method: 'POST', headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(payload)
-                    });
-                    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-                    const result = await response.json();
-                    if (result.candidates?.[0]?.content?.parts?.[0]?.text) {
-                        return result.candidates[0].content.parts[0].text.trim();
-                    } else { throw new Error("Invalid text response from Gemini API."); }
-                } catch (error) {
-                    console.error("Error calling Gemini API:", error);
-                    showNotification("notificationError", 'error', 5000);
+                
+                const result = await callApi(apiUrl, payload, buttonElement);
+                if (result && result.candidates?.[0]?.content?.parts?.[0]?.text) {
+                    return result.candidates[0].content.parts[0].text.trim();
+                } else {
+                    console.error("Invalid text response from Gemini API:", result);
                     return null;
-                } finally {
-                    buttonElement.innerHTML = originalContent;
-                    toggleAILock(false);
                 }
             }
 
             async function callImagenApi(prompt, buttonElement) {
-                if (isAIBusy) return;
-                toggleAILock(true);
-                const originalContent = buttonElement.innerHTML;
-                buttonElement.innerHTML = `<span class="loader"></span> Generating...`;
-                const apiKey = "AIzaSyBbffuqsDlZV3KKUZcpCa6_-uGP60eCBng";
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-002:predict?key=${apiKey}`;
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-002:predict`;
                 const payload = { instances: [{ prompt: prompt }], parameters: { "sampleCount": 1 } };
-                try {
-                    const response = await fetch(apiUrl, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(payload)
-                    });
-                    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-                    const result = await response.json();
-                    if (result.predictions?.[0]?.bytesBase64Encoded) {
-                        return `data:image/png;base64,${result.predictions[0].bytesBase64Encoded}`;
-                    } else { throw new Error("Invalid image response from Imagen API."); }
-                } catch (error) {
-                    console.error("Error calling Imagen API:", error);
+
+                const result = await callApi(apiUrl, payload, buttonElement);
+                if (result && result.predictions?.[0]?.bytesBase64Encoded) {
+                    return `data:image/png;base64,${result.predictions[0].bytesBase64Encoded}`;
+                } else {
+                    console.error("Invalid image response from Imagen API:", result);
                     showNotification("notificationCharGenFail", 'error', 5000);
                     return null;
-                } finally {
-                    buttonElement.innerHTML = originalContent;
-                    toggleAILock(false);
                 }
             }
             
@@ -627,7 +612,6 @@
                 imagePlaceholder.innerHTML = `<div class="flex flex-col items-center gap-2"><span class="loader"></span><p class="text-sm text-gray-400">${uiStrings[currentLang].characterPlaceholder.replace('Menunggu', 'Melukis')}</p></div>`;
                 
                 const style = document.getElementById('project_style').value;
-                // --- FIX: Use the original characterIdea for the image prompt to ensure fidelity ---
                 const imagePrompt = `character concept art, full body portrait of a ${characterIdea}. Style: ${style}.`;
 
                 characterImageUrl = await callImagenApi(imagePrompt, e.target);
@@ -642,7 +626,6 @@
                     imagePlaceholder.innerHTML = `<p class="text-gray-500 text-sm">${uiStrings[currentLang].notificationCharGenFail}</p>`;
                 }
                 
-                // Automatically populate storyboard with empty structured cards
                 scenesContainer.innerHTML = '';
                 addScene();
                 addScene();
@@ -676,7 +659,6 @@
                     prompt = `Premise: "${coreIdea}".${characterContext}\nStory Directives: ${storyDirectives}\n\nBased on this, generate a cohesive 3-scene story arc. For each scene, provide a 'visual' description and a 'voice_over' script. Format as a raw JSON array. ${langInstruction}`;
                 }
 
-                // For affiliate, ensure storyboard cards exist if they don't
                 if (purpose === 'affiliate' && scenesContainer.querySelectorAll('.scene-card').length === 0) {
                     scenesContainer.innerHTML = '';
                     addScene(); addScene(); addScene();
@@ -800,4 +782,4 @@
         });
     </script>
 </body>
-</ht
+</html>
