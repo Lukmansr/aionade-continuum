@@ -21,19 +21,47 @@
     .muted{color:var(--muted)} .hr{height:1px;background:var(--line)}
     .kbd{font-family:ui-monospace,Consolas,monospace;background:#0e1630;border:1px solid var(--line);padding:1px 6px;border-radius:6px}
     .link{color:#9ec1ff;text-decoration:underline}
+    .danger{background:#ff6272;color:#1b0b0e}
   </style>
 </head>
 <body>
   <main class="max-w-6xl mx-auto p-4 sm:p-6">
     <header class="mb-5">
       <h1 class="text-2xl sm:text-3xl font-extrabold">Mesin Prompt JSON — Veo3</h1>
-      <p class="muted">Dua mode: <b>Hiburan</b> (cerita) & <b>Afiliasi</b> (iklan 8 detik). Output: JSON siap pakai.</p>
+      <p class="muted">Wajib: pengguna memasukkan <b>API key pribadi</b> untuk memakai mesin (disimpan aman di browser mereka).</p>
     </header>
 
     <section class="grid grid-cols-1 lg:grid-cols-3 gap-4">
-      <!-- FORM -->
-      <div class="card p-4 lg:col-span-1">
-        <div class="flex items-center gap-2 mb-3">
+      <!-- PANEL KIRI -->
+      <div class="card p-4 space-y-4 lg:col-span-1">
+
+        <!-- API KEY (WAJIB) -->
+        <div>
+          <div class="flex items-center justify-between mb-2">
+            <label class="muted text-sm">OpenRouter API Key (wajib)</label>
+            <a class="link text-xs" target="_blank" rel="noopener" href="https://openrouter.ai">Dapatkan key</a>
+          </div>
+
+          <div class="grid grid-cols-1 gap-2">
+            <div class="flex gap-2">
+              <input id="orKey" class="input" type="password" placeholder="sk-or-..." autocomplete="off"/>
+              <button id="toggleKey" class="btn btn-ghost" title="Lihat/Sembunyikan">👁️</button>
+            </div>
+            <div class="flex flex-wrap gap-2">
+              <button id="saveKey" class="btn btn-ghost">💾 Simpan di Perangkat Ini</button>
+              <button id="clearKey" class="btn danger">🗑️ Hapus Key</button>
+            </div>
+            <p class="muted text-xs">
+              Disimpan lokal via <span class="kbd">localStorage</span> pada perangkat/Browser ini.
+              Tidak dikirim ke server selain ke OpenRouter saat Anda menekan tombol AI.
+            </p>
+          </div>
+        </div>
+
+        <div class="hr my-2"></div>
+
+        <!-- MODE -->
+        <div class="flex items-center gap-2">
           <span class="pill">Mode</span>
           <select id="mode" class="input w-auto">
             <option value="hiburan">Hiburan (Cerita)</option>
@@ -103,32 +131,25 @@
           <p class="muted text-xs">Guard: tanpa logo, harga, klaim kesehatan berlebih—akan diset otomatis di JSON.</p>
         </div>
 
-        <div class="my-4 hr"></div>
+        <div class="hr my-2"></div>
 
         <div class="flex gap-2 flex-wrap">
-          <button id="genBtn" class="btn btn-primary">⚡ Hasilkan Prompt JSON</button>
-          <button id="copyBtn" class="btn btn-ghost">📋 Salin JSON</button>
+          <button id="genBtn" class="btn btn-primary" disabled>⚡ Hasilkan Prompt JSON</button>
+          <button id="assistScenes" class="btn btn-ghost" disabled>✨ AI Assist: Isi 3 Scene</button>
+          <button id="assistCopy" class="btn btn-ghost" disabled>🧪 AI Perbaiki VO</button>
         </div>
-
-        <details class="mt-4">
-          <summary class="cursor-pointer muted">Opsional: AI Assist (tanpa Google Cloud)</summary>
-          <div class="mt-3 space-y-2">
-            <label class="muted text-sm">OpenRouter API Key (opsional)</label>
-            <input id="orKey" class="input" placeholder="sk-or-... (jika diisi, tombol AI aktif)"/>
-            <div class="flex gap-2">
-              <button id="assistScenes" class="btn btn-ghost">✨ AI Assist: Isi 3 Scene</button>
-              <button id="assistCopy" class="btn btn-ghost">🧪 AI Perbaiki VO</button>
-            </div>
-            <p class="muted text-xs">Jika kosong, mesin tetap bekerja offline. Daftar gratis: <a class="link" href="https://openrouter.ai" target="_blank" rel="noopener">openrouter.ai</a></p>
-          </div>
-        </details>
+        <p class="muted text-xs">Semua tombol aktif setelah API key tersimpan.</p>
       </div>
 
-      <!-- OUTPUT -->
+      <!-- PANEL KANAN -->
       <div class="card p-4 lg:col-span-2">
         <label class="muted text-sm mb-1 block">Output Prompt (JSON)</label>
         <textarea id="output" class="input mono min-h-[420px]" spellcheck="false" placeholder="Hasil prompt akan muncul di sini..."></textarea>
-        <p class="muted text-xs mt-2">Struktur: <span class="kbd">engine</span>, <span class="kbd">global</span>, <span class="kbd">script/characters</span>, <span class="kbd">scenes[3]</span>. Shortcut: <span class="kbd">Ctrl/Cmd</span> + <span class="kbd">Enter</span> = Generate.</p>
+        <div class="mt-2 flex flex-wrap gap-2">
+          <span class="muted text-xs">Struktur: <span class="kbd">engine</span>, <span class="kbd">global</span>, <span class="kbd">script/characters</span>, <span class="kbd">scenes[3]</span>.</span>
+          <span class="muted text-xs">Shortcut: <span class="kbd">Ctrl/Cmd</span> + <span class="kbd">Enter</span> = Generate.</span>
+          <button id="copyBtn" class="btn btn-ghost ml-auto">📋 Salin JSON</button>
+        </div>
       </div>
     </section>
   </main>
@@ -137,6 +158,48 @@
     // ===== UTIL =====
     const el = id => document.getElementById(id);
     const sanitize = s => (s||'').toString().trim();
+
+    // ====== API KEY STORAGE ======
+    const LS_KEY = 'aionade_or_api_key';
+    function loadKey(){
+      const k = localStorage.getItem(LS_KEY) || '';
+      el('orKey').value = k;
+      setButtonsState(Boolean(k));
+    }
+    function saveKey(){
+      const v = sanitize(el('orKey').value);
+      if(!v){ alert('Masukkan API key dulu.'); return; }
+      localStorage.setItem(LS_KEY, v);
+      setButtonsState(true);
+      alert('API key disimpan di perangkat ini.');
+    }
+    function clearKey(){
+      localStorage.removeItem(LS_KEY);
+      el('orKey').value = '';
+      setButtonsState(false);
+      alert('API key dihapus dari perangkat ini.');
+    }
+    function getKeyRequired(){
+      const k = sanitize(el('orKey').value || localStorage.getItem(LS_KEY) || '');
+      if(!k){
+        alert('❌ Anda harus mengisi & menyimpan API key pribadi untuk menggunakan mesin ini.');
+        return null;
+      }
+      return k;
+    }
+    function setButtonsState(enabled){
+      ['genBtn','assistScenes','assistCopy'].forEach(id=>{
+        el(id).disabled = !enabled;
+      });
+    }
+
+    // show/hide
+    el('toggleKey').addEventListener('click', ()=>{
+      const i = el('orKey');
+      i.type = i.type === 'password' ? 'text' : 'password';
+    });
+    el('saveKey').addEventListener('click', saveKey);
+    el('clearKey').addEventListener('click', clearKey);
 
     // JSON cleaners & strict system prompt
     function cleanToJSON(text){
@@ -168,7 +231,7 @@
       if((e.ctrlKey||e.metaKey) && e.key === 'Enter'){ el('genBtn').click(); }
     });
 
-    // ===== BUILDERS =====
+    // ===== BUILDERS (analogimu tetap) =====
     function buildHiburan(){
       const charIdea = sanitize(el('charIdea').value);
       const premis   = sanitize(el('premis').value);
@@ -252,24 +315,13 @@
       }, null, 2);
     }
 
-    // ===== MAIN BUTTONS =====
-    el('genBtn').addEventListener('click', ()=>{
-      const isAd = modeEl.value === 'afiliasi';
-      out.value = isAd ? buildAfiliasi() : buildHiburan();
-    });
-    el('copyBtn').addEventListener('click', async ()=>{
-      out.select();
-      try { await navigator.clipboard.writeText(out.value || ''); alert('JSON disalin.'); }
-      catch{ document.execCommand('copy'); alert('JSON disalin (fallback).'); }
-    });
-
-    // ===== AI ASSIST via OpenRouter (tanpa Google Cloud) =====
+    // ===== AI CORE (wajib key) =====
     async function aiJSON(userPrompt, schemaHint){
-      const key = (el('orKey')?.value || '').trim();
-      if(!key){ alert('Isi OpenRouter API Key dulu atau abaikan fitur AI.'); return null; }
+      const key = getKeyRequired();
+      if(!key) return null;
 
       const body = {
-        model: "google/gemma-2-9b-it:free",   // bisa ganti model lain di OpenRouter
+        model: "google/gemma-2-9b-it:free",
         messages: [
           { role: "system", content: forceJSONSystem(schemaHint) },
           { role: "user",   content: userPrompt }
@@ -299,8 +351,15 @@
       return parsed;
     }
 
-    // AI Assist: Isi 3 Scene
+    // ===== EVENTS =====
+    el('genBtn').addEventListener('click', ()=>{
+      if(!getKeyRequired()) return; // wajib key
+      const isAd = el('mode').value === 'afiliasi';
+      out.value = isAd ? buildAfiliasi() : buildHiburan();
+    });
+
     el('assistScenes').addEventListener('click', async ()=>{
+      if(!getKeyRequired()) return;
       const isAd = el('mode').value === 'afiliasi';
 
       if(isAd){
@@ -352,8 +411,8 @@
       }
     });
 
-    // AI Perbaiki VO
     el('assistCopy').addEventListener('click', async ()=>{
+      if(!getKeyRequired()) return;
       const current = el('output').value || '';
       if(!current.trim()){ alert('Generate dulu atau tempel JSON yang ingin diperhalus.'); return; }
 
@@ -370,6 +429,15 @@ ${current}`;
       el('output').value = JSON.stringify(fixed, null, 2);
       alert('Copy diperhalus AI.');
     });
+
+    el('copyBtn').addEventListener('click', async ()=>{
+      out.select();
+      try { await navigator.clipboard.writeText(out.value || ''); alert('JSON disalin.'); }
+      catch{ document.execCommand('copy'); alert('JSON disalin (fallback).'); }
+    });
+
+    // init
+    loadKey();
   </script>
 </body>
 </html>
