@@ -516,7 +516,8 @@
             }
 
             async function callGemini(prompt, buttonElement, imageBase64 = null) {
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent`;
+                // CORRECTED API ENDPOINT
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.0-pro:generateContent`;
                 const parts = [{ text: prompt }];
                 if (imageBase64) {
                      parts.push({
@@ -673,7 +674,7 @@
 
                 if (purpose === 'entertainment') {
                     try {
-                        currentCharacterSheet = JSON.parse(characterSheetOutput.value);
+                        currentCharacterSheet = JSON.parse(document.getElementById('character-sheet-output').value);
                     } catch {
                          return showNotification('Please generate a valid character first.', 'error');
                     }
@@ -814,4 +815,4 @@
         });
     </script>
 </body>
-</html>
+</ht
