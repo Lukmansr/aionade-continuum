@@ -293,6 +293,7 @@
                     voiceoverLabel: "Voice Over", copyJsonBtn: "Copy JSON", shotTypeLabel: "Tipe Shot", cameraMoveLabel: "Gerakan Kamera",
                     notificationSuccess: "Berhasil!", notificationError: "Gagal!",
                     notificationBillingError: "Gagal (Error 400). Pastikan akun penagihan (billing) aktif di proyek Google Cloud Anda.",
+                    notificationModelNotFound: "Gagal (Error 404). Model AI tidak ditemukan. Cek kembali nama model dalam kode.",
                     notificationCharGenSuccess: "Konsep karakter berhasil dibuat!", notificationCharGenFail: "Gagal membuat konsep karakter.",
                     notificationStoryArcSuccess: "Story arc berhasil dibuat!", notificationInvalidResponse: "AI memberikan respons tidak valid. Coba lagi.",
                     notificationPremiseRequired: "Masukkan premis cerita terlebih dahulu.",
@@ -336,6 +337,7 @@
                     voiceoverLabel: "Voice Over", copyJsonBtn: "Copy JSON", shotTypeLabel: "Shot Type", cameraMoveLabel: "Camera Movement",
                     notificationSuccess: "Success!", notificationError: "Failed!",
                     notificationBillingError: "Failed (Error 400). Please ensure billing is enabled on your Google Cloud project.",
+                    notificationModelNotFound: "Failed (Error 404). AI Model not found. Please check the model name in the code.",
                     notificationCharGenSuccess: "Character concept generated successfully!", notificationCharGenFail: "Failed to generate character concept.",
                     notificationStoryArcSuccess: "Story arc created successfully!", notificationInvalidResponse: "AI returned an invalid response. Please try again.",
                     notificationPremiseRequired: "Please enter a story premise first.",
@@ -379,6 +381,7 @@
                     voiceoverLabel: "旁白", copyJsonBtn: "复制 JSON", shotTypeLabel: "镜头类型", cameraMoveLabel: "摄像机移动",
                     notificationSuccess: "成功！", notificationError: "失败！",
                     notificationBillingError: "失败 (错误 400)。请确保您的 Google Cloud 项目已启用结算功能。",
+                    notificationModelNotFound: "失败 (错误 404)。AI 模型未找到。请检查代码中的模型名称。",
                     notificationCharGenSuccess: "角色概念生成成功！", notificationCharGenFail: "角色概念生成失败。",
                     notificationStoryArcSuccess: "故事线创建成功！", notificationInvalidResponse: "AI 返回了无效的回应。请重试。",
                     notificationPremiseRequired: "请先输入故事前提。",
@@ -499,7 +502,10 @@
                         
                         if (response.status === 400) {
                             showNotification('notificationBillingError', 'error', 10000);
-                        } else {
+                        } else if (response.status === 404) {
+                            showNotification('notificationModelNotFound', 'error', 10000);
+                        }
+                        else {
                             showNotification("notificationError", 'error', 5000);
                         }
                         return null; 
@@ -815,4 +821,4 @@
         });
     </script>
 </body>
-</ht
+</html>
