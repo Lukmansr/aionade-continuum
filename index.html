@@ -1,233 +1,619 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AIonade Continuum - Open Source Version</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.11.0/dist/tf.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/universal-sentence-encoder@1.3.3"></script>
-    <style>
-        /* CSS tetap sama seperti sebelumnya */
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AIonade Continuum (Local • No Billing)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-dark: #111827; --bg-med: #1f2937; --bg-light: #374151;
+      --border-color: #4b5563; --text-primary: #f9fafb; --text-secondary: #d1d5db;
+      --accent-blue: #3b82f6; --accent-indigo: #6366f1; --accent-red: #ef4444; --accent-green: #22c55e;
+    }
+    body { font-family: 'Inter', sans-serif; background-color: var(--bg-dark); color: var(--text-secondary); }
+    .hub-section { background-color: var(--bg-med); border: 1px solid var(--bg-light); }
+    .form-input, .form-select, .form-textarea { background-color: var(--bg-light); border: 1px solid var(--border-color); color: var(--text-primary); transition: all .2s; }
+    .form-input:focus, .form-select:focus, .form-textarea:focus { outline: none; border-color: var(--accent-blue); box-shadow: 0 0 0 2px rgba(59,130,246,.4); }
+    .btn { transition: all .2s; cursor: pointer; }
+    .btn-primary { background-color: var(--accent-blue); color: #fff; }
+    .btn-primary:hover:not(:disabled) { background-color: #2563eb; }
+    .btn-secondary { background-color: var(--bg-light); color: #fff; }
+    .btn-secondary:hover:not(:disabled) { background-color: #4b5563; }
+    .btn-danger { background-color: #dc2626; color: #fff; }
+    .btn-danger:hover:not(:disabled) { background-color: #b91c1c; }
+    .btn-gemini { background-color: var(--accent-indigo); color: #fff; padding: 6px 12px; font-size: 14px; font-weight: 500; border-radius: 6px; display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
+    .btn-gemini:hover:not(:disabled) { background-color: #4f46e5; }
+    .btn:disabled { background-color: #6b7280; opacity: .7; cursor: not-allowed; }
+    .notification { position: fixed; bottom: -100px; left: 50%; transform: translateX(-50%); color: #fff; padding: 12px 24px; border-radius: 8px; z-index: 100; opacity: 0; transition: all .4s cubic-bezier(.25,.8,.25,1); }
+    .notification.show { opacity: 1; bottom: 20px; }
+    .notification.success { background-color: var(--accent-green); }
+    .notification.error { background-color: var(--accent-red); }
+    .loader { width: 14px; height: 14px; border: 2px solid #fff; border-bottom-color: transparent; border-radius: 50%; display: inline-block; box-sizing: border-box; animation: rotation 1s linear infinite; }
+    @keyframes rotation { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    .json-output { background-color: #0c111d; border: 1px solid var(--bg-light); color: #a5b4fc; white-space: pre-wrap; word-wrap: break-word; font-size: 12px; }
+    .radio-label { padding: 8px 16px; border: 1px solid var(--border-color); border-radius: 6px; cursor: pointer; transition: all .2s; }
+    input[type="radio"]:checked + .radio-label { background-color: var(--accent-indigo); border-color: var(--accent-indigo); color: #fff; }
+    .kbd { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; background:#0b1220; border:1px solid #374151; color:#a5b4fc; border-radius:6px; padding:2px 6px; font-size:12px; }
+  </style>
 </head>
 <body class="p-4 sm:p-6 lg:p-8">
-    <!-- UI tetap sama seperti sebelumnya -->
-    <script>
-        document.addEventListener('DOMContentLoaded', async () => {
-            // --- Open Source AI Models ---
-            let textModel, imageModel;
-            let isModelsLoaded = false;
-            
-            async function loadModels() {
-                showNotification("Loading AI models...", 'info', 5000);
-                try {
-                    // Muat model teks
-                    textModel = await universalSentenceEncoder.load();
-                    
-                    // Muat model gambar (Stable Diffusion Lite)
-                    const modelPath = 'https://cdn.jsdelivr.net/npm/@tensorflow-models/stable-diffusion@0.1.0/dist/model.json';
-                    imageModel = await tf.loadLayersModel(modelPath);
-                    
-                    isModelsLoaded = true;
-                    showNotification("AI models loaded successfully!", 'success');
-                } catch (error) {
-                    console.error("Error loading models:", error);
-                    showNotification("Failed to load AI models. Using fallback methods.", 'error');
-                }
-            }
-            
-            // Panggil fungsi loadModels saat halaman dimuat
-            await loadModels();
+  <!--
+    AIonade Continuum – Local (No Billing)
+    -------------------------------------------------------
+    • Semua generasi TEKS dilakukan di-browser via WebGPU (WebLLM). Tidak ada server/API berbayar.
+    • Pertama kali muat, model (~200–600MB tergantung pilihan) diunduh & dicache (IndexedDB).
+    • Butuh Chrome/Edge/Arc dengan WebGPU aktif. Jika tidak tersedia, fallback WASM lebih lambat.
+    • VISI/GAMBAR: tidak ada image-understanding lokal; unggahan gambar hanya sebagai referensi tampilan.
+  -->
+  <div class="max-w-7xl mx-auto">
+    <!-- View: Editor -->
+    <div id="editor-view">
+      <header class="text-center mb-8">
+        <h1 class="text-3xl sm:text-4xl font-bold text-white" data-lang-key="mainTitle">AIonade Continuum</h1>
+        <p class="mt-2 text-lg text-gray-400" data-lang-key="tagline">Dari premis ke publikasi, konsisten di setiap frame.</p>
+      </header>
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Column 1: AI & Global Settings -->
+        <div class="lg:col-span-1 space-y-6">
+          <section class="hub-section p-6 rounded-lg sticky top-8">
+            <div class="flex justify-between items-center border-b border-gray-600 pb-3 mb-4">
+              <h2 class="text-2xl font-semibold text-white" data-lang-key="projectSettingsTitle">1. Pengaturan Proyek</h2>
+            </div>
+            <div class="space-y-4">
+              <div>
+                <label for="language-selector" class="block text-sm font-medium mb-2" data-lang-key="languageLabel">Bahasa</label>
+                <select id="language-selector" class="form-select rounded-md p-2 w-full">
+                  <option value="id">Bahasa Indonesia</option>
+                  <option value="en">English</option>
+                  <option value="zh">中文 (Chinese)</option>
+                </select>
+              </div>
 
-            // --- Fungsi AI Open Source ---
-            async function generateCharacterSheet(characterIdea) {
-                if (!isModelsLoaded) {
-                    return JSON.stringify({
-                        name: "Generated Character",
-                        description: `Karakter berdasarkan: ${characterIdea.slice(0, 100)}...`,
-                        clothing: "Pakaian khas",
-                        key_items: "Item penting"
-                    }, null, 2);
-                }
-                
-                try {
-                    // Gunakan Universal Sentence Encoder untuk membuat embedding
-                    const embeddings = await textModel.embed([characterIdea]);
-                    const embeddingArray = await embeddings.array();
-                    
-                    // Proses sederhana untuk menghasilkan sheet karakter
-                    return JSON.stringify({
-                        name: `Karakter ${Math.floor(Math.random() * 1000)}`,
-                        description: `Karakter dengan ciri: ${characterIdea.slice(0, 50)}. Detail lebih lanjut dihasilkan berdasarkan deskripsi.`,
-                        clothing: "Pakaian yang sesuai dengan peran",
-                        key_items: "Objek penting terkait karakter"
-                    }, null, 2);
-                } catch (error) {
-                    console.error("Error generating character sheet:", error);
-                    return JSON.stringify({
-                        error: "Failed to generate character sheet. Please try again."
-                    }, null, 2);
-                }
-            }
+              <!-- Local Model selector (no billing) -->
+              <div>
+                <label for="model-selector" class="block text-sm font-medium mb-2">Local Model (WebLLM)</label>
+                <select id="model-selector" class="form-select rounded-md p-2 w-full">
+                  <option value="Qwen2.5-1.5B-Instruct-q4f16_1-MLC">Qwen2.5 1.5B Instruct (fast)</option>
+                  <option value="Llama-3.2-1B-Instruct-q4f16_1-MLC">Llama 3.2 1B Instruct (lightest)</option>
+                  <option value="Phi-3-mini-4k-instruct-q4f16_1-MLC">Phi-3 Mini 4K Instruct (balanced)</option>
+                </select>
+                <p class="mt-1 text-xs text-gray-400">Semua berjalan di perangkat Anda. Unduhan awal 200–600MB.</p>
+                <div class="mt-2 text-xs text-gray-400">Jika model gagal memuat, coba refresh atau ganti model.</div>
+              </div>
 
-            async function generateCharacterImage(prompt) {
-                if (!isModelsLoaded) {
-                    // Fallback jika model tidak bisa dimuat
-                    return "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400' viewBox='0 0 400 400'%3E%3Crect width='400' height='400' fill='%23374151'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='20' fill='%23d1d5db'%3EImage%20Generation%20Disabled%3C/text%3E%3C/svg%3E";
-                }
-                
-                try {
-                    // Proses pembuatan gambar menggunakan Stable Diffusion Lite
-                    // (Implementasi sebenarnya membutuhkan lebih banyak kode)
-                    // Di sini kita akan menggunakan placeholder untuk demo
-                    
-                    // Untuk implementasi nyata, Anda bisa menggunakan:
-                    // https://github.com/tensorflow/tfjs-models/tree/master/stable-diffusion
-                    return "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400' viewBox='0 0 400 400'%3E%3Crect width='400' height='400' fill='%231f2937'/%3E%3Ccircle cx='200' cy='150' r='50' fill='%23f9fafb'/%3E%3Crect x='150' y='200' width='100' height='150' fill='%233b82f6'/%3E%3Ctext x='50%25' y='90%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='16' fill='%23d1d5db'%3ECharacter%20Image%3C/text%3E%3C/svg%3E";
-                } catch (error) {
-                    console.error("Error generating character image:", error);
-                    return null;
-                }
-            }
+              <div>
+                <label class="block text-sm font-medium mb-2" data-lang-key="purposeLabel">Tujuan Cerita</label>
+                <div class="flex gap-4">
+                  <input type="radio" name="purpose" id="purpose-entertainment" value="entertainment" class="sr-only" checked />
+                  <label for="purpose-entertainment" class="radio-label flex-1 text-center" data-lang-key="purposeEntertainment">Hiburan</label>
+                  <input type="radio" name="purpose" id="purpose-affiliate" value="affiliate" class="sr-only" />
+                  <label for="purpose-affiliate" class="radio-label flex-1 text-center" data-lang-key="purposeAffiliate">Afiliasi</label>
+                </div>
+              </div>
 
-            async function generateStoryArc(coreIdea, characterSheet, directives = "") {
-                // Algoritma sederhana untuk menghasilkan story arc
-                const scenes = [];
-                const sceneCount = 3;
-                
-                for (let i = 0; i < sceneCount; i++) {
-                    scenes.push({
-                        visual: `Adegan ${i+1}: ${coreIdea.slice(0, 60)}...`,
-                        voice_over: `Narasi untuk adegan ${i+1} berdasarkan ide utama.`,
-                        shot_type: ["wide_establishing", "medium_shot", "emotive_closeup"][i % 3],
-                        camera: ["static", "slow_push_in", "handheld"][i % 3]
-                    });
-                }
-                
-                return scenes;
-            }
+              <div id="affiliate-details" class="hidden space-y-4 pt-4 border-t border-gray-700">
+                <h3 class="text-md font-semibold text-gray-300" data-lang-key="affiliateDetailsTitle">Detail Afiliasi</h3>
+                <div>
+                  <label for="product-name" class="block text-sm font-medium mb-1" data-lang-key="productNameLabel">Nama Produk</label>
+                  <input type="text" id="product-name" class="form-input rounded-md p-2 w-full" data-lang-key-placeholder="productNamePlaceholder" />
+                </div>
+                <div>
+                  <label for="product-image" class="block text-sm font-medium mb-1" data-lang-key="productImageLabel">Referensi Gambar Produk</label>
+                  <div id="image-upload-container" class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-600 border-dashed rounded-md">
+                    <div id="image-upload-prompt" class="space-y-1 text-center">
+                      <svg class="mx-auto h-12 w-12 text-gray-500" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true"><path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                      <div class="flex text-sm text-gray-500"><label for="product-image-input" class="relative cursor-pointer bg-gray-800 rounded-md font-medium text-indigo-400 hover:text-indigo-300"><span data-lang-key="uploadFile">Unggah file</span><input id="product-image-input" name="product-image" type="file" class="sr-only" accept="image/png, image/jpeg, image/webp" /></label><p class="pl-1" data-lang-key="dragDrop">atau tarik dan lepas</p></div>
+                      <p class="text-xs text-gray-600">PNG, JPG, WEBP</p>
+                    </div>
+                    <div id="image-preview-container" class="hidden w-full text-center">
+                      <img id="image-preview" src="#" class="mx-auto max-h-32 rounded-lg" alt="Product Image Preview" />
+                      <button id="remove-image-btn" class="mt-2 text-sm text-red-400 hover:text-red-300" data-lang-key="removeImage">Hapus Gambar</button>
+                    </div>
+                  </div>
+                  <p class="mt-2 text-xs text-yellow-400">Catatan: model lokal tidak "melihat" gambar; unggahan hanya untuk referensi visual pengguna.</p>
+                </div>
+              </div>
 
-            // --- Modifikasi Fungsi Utama ---
-            generateCharacterBtn.addEventListener('click', async (e) => {
-                // ... (kode sebelumnya tetap sama)
-                
-                // Ganti callGemini dengan fungsi lokal
-                const sheetResult = await generateCharacterSheet(characterIdea);
-                // ... (proses hasil seperti sebelumnya)
-                
-                // Ganti callImagenApi dengan fungsi lokal
-                characterImageUrl = await generateCharacterImage(imagePrompt);
-                // ... (proses hasil seperti sebelumnya)
-            });
+              <hr class="my-4 border-gray-600" />
 
-            generateStoryBtn.addEventListener('click', async (e) => {
-                // ... (kode sebelumnya tetap sama)
-                
-                // Ganti callGemini dengan fungsi lokal
-                const scenes = await generateStoryArc(coreIdea, currentCharacterSheet, storyDirectives);
-                // ... (proses hasil seperti sebelumnya)
-            });
+              <div id="character-idea-container">
+                <label for="character-idea" class="block text-sm font-medium mb-1" data-lang-key="characterIdeaLabel">2. Ide Karakter</label>
+                <textarea id="character-idea" class="form-textarea rounded-md p-2 w-full" rows="3" data-lang-key-placeholder="characterIdeaPlaceholder"></textarea>
+              </div>
+              <button id="generate-character-btn" class="btn btn-gemini w-full" data-lang-key="generateCharacterBtn">✨ 3. Buat Karakter Utama</button>
 
-            // --- Solusi untuk Hosting Statis ---
-            const saveToLocalStorage = () => {
-                const state = {
-                    language: currentLang,
-                    purpose: document.querySelector('input[name="purpose"]:checked').value,
-                    productName: document.getElementById('product-name').value,
-                    characterIdea: document.getElementById('character-idea').value,
-                    coreIdea: document.getElementById('core-idea').value,
-                    storyDirectives: document.getElementById('story-directives').value,
-                    projectStyle: document.getElementById('project_style').value,
-                    characterSheet: characterSheetOutput.value,
-                    scenes: Array.from(scenesContainer.querySelectorAll('.scene-card')).map(scene => ({
-                        visual: scene.querySelector('[data-key="visual"]').value,
-                        voice_over: scene.querySelector('[data-key="voice_over"]').value,
-                        shot_type: scene.querySelector('[data-key="shot_type"]').value,
-                        camera: scene.querySelector('[data-key="camera"]').value
-                    }))
-                };
-                localStorage.setItem('aionadeState', JSON.stringify(state));
-            };
+              <div id="character-concept-container" class="mt-4 hidden">
+                <label class="block text-sm font-medium mb-2" data-lang-key="characterConceptLabel">Character Concept</label>
+                <div id="character-image-placeholder" class="aspect-square bg-gray-900 rounded-lg flex items-center justify-center border border-dashed border-gray-600">
+                  <p class="text-gray-500 text-sm" data-lang-key="characterPlaceholder">Menunggu konsep karakter...</p>
+                </div>
+                <label class="block text-sm font-medium mt-2 mb-1" data-lang-key="characterSheetLabel">Lembar Karakter (Dapat Diedit)</label>
+                <textarea id="character-sheet-output" class="json-output p-2 rounded-md mt-1 text-xs w-full h-32"></textarea>
+              </div>
 
-            const loadFromLocalStorage = () => {
-                const savedState = localStorage.getItem('aionadeState');
-                if (savedState) {
-                    const state = JSON.parse(savedState);
-                    
-                    // Restore UI state
-                    setLanguage(state.language || 'id');
-                    document.getElementById('language-selector').value = state.language || 'id';
-                    
-                    if (state.purpose) {
-                        document.querySelector(`input[name="purpose"][value="${state.purpose}"]`).checked = true;
-                        affiliateDetails.classList.toggle('hidden', state.purpose !== 'affiliate');
-                    }
-                    
-                    document.getElementById('product-name').value = state.productName || '';
-                    document.getElementById('character-idea').value = state.characterIdea || '';
-                    document.getElementById('core-idea').value = state.coreIdea || '';
-                    document.getElementById('story-directives').value = state.storyDirectives || '';
-                    document.getElementById('project_style').value = state.projectStyle || 'realistic_cinematic, 4k, dramatic lighting';
-                    
-                    if (state.characterSheet) {
-                        characterSheetOutput.value = state.characterSheet;
-                        document.getElementById('character-concept-container').classList.remove('hidden');
-                    }
-                    
-                    // Restore scenes
-                    if (state.scenes && state.scenes.length > 0) {
-                        scenesContainer.innerHTML = '';
-                        state.scenes.forEach(sceneData => addScene(sceneData));
-                    }
-                }
-            };
+              <hr class="my-4 border-gray-600" />
 
-            // Simpan state secara berkala
-            setInterval(saveToLocalStorage, 10000);
-            
-            // Muat state saat halaman dimuat
-            window.addEventListener('load', loadFromLocalStorage);
+              <div>
+                <label for="core-idea" class="block text-sm font-medium mb-1" data-lang-key="premiseLabel">4. Masukkan Premis Cerita</label>
+                <textarea id="core-idea" class="form-textarea rounded-md p-2 w-full" rows="4" data-lang-key-placeholder="premisePlaceholder"></textarea>
+              </div>
+              <div>
+                <label for="story-directives" class="block text-sm font-medium mb-1" data-lang-key="storyDirectivesLabel">5. Arahan Cerita (Opsional)</label>
+                <input type="text" id="story-directives" class="form-input rounded-md p-2 w-full" data-lang-key-placeholder="storyDirectivesPlaceholder" />
+                <button id="generate-story-btn" class="btn btn-gemini w-full mt-2" data-lang-key="generateStoryBtn">✨ Generate/Isi Story Arc</button>
+              </div>
 
-            // --- Fallback untuk Image Upload ---
-            productImageInput.addEventListener('change', (e) => {
-                const file = e.target.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = (event) => {
-                        productImageBase64 = event.target.result;
-                        imagePreview.src = event.target.result;
-                        imageUploadPrompt.classList.add('hidden');
-                        imagePreviewContainer.classList.remove('hidden');
-                        
-                        // Simpan gambar di localStorage (ukuran terbatas)
-                        if (event.target.result.length < 500000) { // ~500KB
-                            localStorage.setItem('productImage', event.target.result);
-                        }
-                    };
-                    reader.readAsDataURL(file);
-                }
-            });
+              <hr class="my-6 border-gray-600" />
+              <h2 class="text-xl font-semibold text-white mb-4" data-lang-key="globalSettingsTitle">Global Settings</h2>
+              <div class="space-y-4">
+                <div>
+                  <label for="continuity-seed" class="block text-sm font-medium mb-1" data-lang-key="seedLabel">Continuity Seed</label>
+                  <input type="number" id="continuity-seed" class="form-input rounded-md p-2 w-full bg-gray-900" readonly />
+                </div>
+                <div>
+                  <label for="project_style" class="block text-sm font-medium mb-1" data-lang-key="styleLabel">Visual Style</label>
+                  <input type="text" id="project_style" value="realistic_cinematic, 4k, dramatic lighting" class="form-input rounded-md p-2 w-full" />
+                </div>
+              </div>
 
-            // Muat gambar yang disimpan
-            const savedImage = localStorage.getItem('productImage');
-            if (savedImage) {
-                productImageBase64 = savedImage;
-                imagePreview.src = savedImage;
-                imageUploadPrompt.classList.add('hidden');
-                imagePreviewContainer.classList.remove('hidden');
-            }
+              <!-- Diagnostics / Test Cases -->
+              <div class="mt-6 hub-section p-4 rounded-lg">
+                <h3 class="text-lg font-semibold text-white mb-2">Diagnostics</h3>
+                <div class="text-sm text-gray-300 space-y-2">
+                  <p>• Uji pabrik engine WebLLM dan coba satu generasi ringkas.</p>
+                  <div class="flex gap-2 flex-wrap">
+                    <button id="btn-test-factory" class="btn btn-secondary px-3 py-1">Test Engine Factory</button>
+                    <button id="btn-test-generate" class="btn btn-secondary px-3 py-1">Test Generate JSON</button>
+                    <button id="btn-reset-engine" class="btn btn-danger px-3 py-1">Reset Engine</button>
+                  </div>
+                  <pre id="diag-log" class="json-output p-2 rounded-md mt-2 h-40 overflow-auto"></pre>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
 
-            // --- Fungsi Lainnya Tetap Sama ---
-            // ... (setLanguage, showNotification, addScene, dll)
+        <!-- Column 2: Scenes & Production -->
+        <div class="lg:col-span-2 space-y-6">
+          <section class="hub-section p-6 rounded-lg">
+            <h2 class="text-2xl font-semibold text-white border-b border-gray-600 pb-3 mb-4" data-lang-key="storyboardTitle">Storyboard</h2>
+            <div id="scenes-container" class="space-y-6">
+              <p class="text-center text-gray-400 py-8" data-lang-key="storyboardPlaceholder">Buat karakter untuk memulai storyboard Anda.</p>
+            </div>
+            <button id="add-scene-btn" class="btn btn-secondary w-full mt-4 py-2" data-lang-key="addSceneBtn">Tambah Adegan Manual</button>
+          </section>
 
-            // --- Inisialisasi ---
-            generateAndSetSeed();
-            setLanguage('id');
+          <section class="hub-section p-6 rounded-lg">
+            <h2 class="text-2xl font-semibold text-white mb-4" data-lang-key="productionTitle">Production</h2>
+            <button id="proceed-btn" class="btn btn-primary w-full px-4 py-3 rounded-md font-bold text-lg" data-lang-key="proceedBtn">Generate Production Prompts →</button>
+          </section>
+        </div>
+      </div>
+    </div>
+
+    <!-- View: Production Deck -->
+    <div id="deck-view" class="hidden">
+      <header class="text-center mb-8">
+        <h1 class="text-3xl sm:text-4xl font-bold text-white" data-lang-key="deckTitle">Production Deck</h1>
+        <p class="mt-2 text-lg text-gray-400" data-lang-key="deckTagline">Tiga prompt JSON siap pakai untuk VEO3. Gunakan satu per satu.</p>
+      </header>
+      <div id="json-deck-container" class="grid grid-cols-1 lg:grid-cols-3 gap-6"></div>
+      <div class="text-center mt-8">
+        <button id="back-to-editor-btn" class="btn btn-secondary py-2 px-6" data-lang-key="backToEditorBtn">← Kembali ke Editor</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Templates & Notification -->
+  <template id="scene-template">
+    <div class="scene-card p-4 rounded-lg border-l-4 border-indigo-500 bg-gray-800/50">
+      <div class="flex justify-between items-start mb-3">
+        <h3 class="scene-title text-xl font-bold text-white">Scene</h3>
+        <button class="remove-scene-btn btn btn-danger p-1 rounded-full leading-none">&times;</button>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div class="sm:col-span-2">
+          <label class="block text-sm font-medium mb-1" data-lang-key="visualDescLabel">Visual Description</label>
+          <textarea data-key="visual" class="form-textarea rounded-md p-2 w-full" rows="4"></textarea>
+        </div>
+        <div class="sm:col-span-2">
+          <label class="block text-sm font-medium mb-1" data-lang-key="voiceoverLabel">Voice Over</label>
+          <textarea data-key="voice_over" class="form-textarea rounded-md p-2 w-full" rows="2"></textarea>
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1" data-lang-key="shotTypeLabel">Shot Type</label>
+          <select data-key="shot_type" class="form-select rounded-md p-2 w-full">
+            <option value="">-- Select --</option>
+            <option value="wide_establishing">Wide Establishing</option>
+            <option value="medium_shot">Medium Shot</option>
+            <option value="emotive_closeup">Emotive Closeup</option>
+            <option value="dutch_angle">Dutch Angle</option>
+            <option value="pov">Point of View (POV)</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1" data-lang-key="cameraMoveLabel">Camera Movement</label>
+          <select data-key="camera" class="form-select rounded-md p-2 w-full">
+            <option value="">-- Select --</option>
+            <option value="static">Static</option>
+            <option value="slow_push_in">Slow Push-in</option>
+            <option value="drone_shot">Drone Shot</option>
+            <option value="handheld">Handheld</option>
+            <option value="circular_orbit">Circular Orbit</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </template>
+
+  <template id="json-card-template">
+    <div class="hub-section p-4 rounded-lg flex flex-col">
+      <h3 class="json-title text-lg font-bold text-white mb-2"></h3>
+      <pre class="json-output p-3 rounded-md h-96 overflow-auto flex-grow"></pre>
+      <button class="copy-json-btn btn btn-secondary w-full mt-4 text-sm py-2" data-lang-key="copyJsonBtn">Copy JSON</button>
+    </div>
+  </template>
+
+  <div id="notification" class="notification"></div>
+
+  <!-- App Script -->
+  <script type="module">
+    // Import modul WebLLM. Beberapa versi mengekspor API pabrik dengan nama berbeda.
+    import * as webllm from 'https://esm.run/@mlc-ai/web-llm@0.2.36';
+
+    // --- UI STRINGS (ID/EN/ZH) ---
+    const uiStrings = {
+      id: {
+        mainTitle: 'AIonade Continuum', tagline: 'Dari premis ke publikasi, konsisten di setiap frame.',
+        projectSettingsTitle: '1. Pengaturan Proyek', languageLabel: 'Bahasa',
+        purposeLabel: 'Tujuan Cerita', purposeEntertainment: 'Hiburan', purposeAffiliate: 'Afiliasi',
+        affiliateDetailsTitle: 'Detail Afiliasi', productNameLabel: 'Nama Produk', productNamePlaceholder: 'Contoh: Smartwatch Kronos V2',
+        productImageLabel: 'Referensi Gambar Produk', uploadFile: 'Unggah file', dragDrop: 'atau tarik dan lepas', removeImage: 'Hapus Gambar',
+        characterIdeaLabel: '2. Ide Karakter', characterIdeaPlaceholder: 'Contoh: Seekor kucing oranye dengan pedang perak berkilauan...',
+        premiseLabel: '4. Masukkan Premis Cerita', premisePlaceholder: 'Contoh: Di sebuah kota yang terus hujan, ia menemukan jam yang bisa menghentikan waktu...',
+        generateCharacterBtn: '✨ 3. Buat Karakter Utama', characterConceptLabel: 'Character Concept', characterPlaceholder: 'Menunggu konsep karakter...',
+        characterSheetLabel: 'Lembar Karakter (Dapat Diedit)', storyDirectivesLabel: '5. Arahan Cerita (Opsional)', storyDirectivesPlaceholder: 'Contoh: menegangkan, akhir yang mengejutkan...',
+        generateStoryBtn: '✨ Generate/Isi Story Arc', globalSettingsTitle: 'Global Settings', seedLabel: 'Continuity Seed', styleLabel: 'Visual Style',
+        storyboardTitle: 'Storyboard', storyboardPlaceholder: 'Buat karakter untuk memulai storyboard Anda.', addSceneBtn: 'Tambah Adegan Manual',
+        productionTitle: 'Production', proceedBtn: 'Generate Production Prompts →', deckTitle: 'Production Deck', deckTagline: 'Tiga prompt JSON siap pakai untuk VEO3. Gunakan satu per satu.', backToEditorBtn: '← Kembali ke Editor',
+        visualDescLabel: 'Visual Description', voiceoverLabel: 'Voice Over', copyJsonBtn: 'Copy JSON', shotTypeLabel: 'Tipe Shot', cameraMoveLabel: 'Gerakan Kamera',
+        notificationSuccess: 'Berhasil!', notificationError: 'Gagal!', notificationCharGenSuccess: 'Karakter berhasil dibuat!', notificationCharGenFail: 'Gagal membuat karakter.', notificationStoryArcSuccess: 'Story arc berhasil dibuat!', notificationInvalidResponse: 'Respons AI tidak valid. Coba lagi.', notificationPremiseRequired: 'Masukkan premis cerita terlebih dahulu.', notificationCharacterIdeaRequired: 'Masukkan ide karakter terlebih dahulu.', notificationSceneRequired: 'Buat setidaknya satu adegan terlebih dahulu.', notificationJsonCopied: 'JSON disalin ke clipboard!', notificationCopyFail: 'Gagal menyalin.', langInstructionForAI: 'Jawab dalam Bahasa Indonesia yang jelas dan ringkas.'
+      },
+      en: {
+        mainTitle: 'AIonade Continuum', tagline: 'From premise to publish, consistent every frame.',
+        projectSettingsTitle: '1. Project Setup', languageLabel: 'Language', purposeLabel: 'Story Purpose', purposeEntertainment: 'Entertainment', purposeAffiliate: 'Affiliate', affiliateDetailsTitle: 'Affiliate Details', productNameLabel: 'Product Name', productNamePlaceholder: 'e.g., Kronos V2 Smartwatch', productImageLabel: 'Product Image Reference', uploadFile: 'Upload a file', dragDrop: 'or drag and drop', removeImage: 'Remove Image', characterIdeaLabel: '2. Character Idea', characterIdeaPlaceholder: 'e.g., An orange cat with a gleaming silver sword...', premiseLabel: '4. Enter Story Premise', premisePlaceholder: 'e.g., In a city of constant rain, he finds a clock that can stop time...', generateCharacterBtn: '✨ 3. Generate Main Character', characterConceptLabel: 'Character Concept', characterPlaceholder: 'Awaiting character concept...', characterSheetLabel: 'Character Sheet (Editable)', storyDirectivesLabel: '5. Story Directives (Optional)', storyDirectivesPlaceholder: 'e.g., thrilling, surprising ending...', generateStoryBtn: '✨ Generate/Fill Story Arc', globalSettingsTitle: 'Global Settings', seedLabel: 'Continuity Seed', styleLabel: 'Visual Style', storyboardTitle: 'Storyboard', storyboardPlaceholder: 'Generate a character to begin your storyboard.', addSceneBtn: 'Add Scene Manually', productionTitle: 'Production', proceedBtn: 'Generate Production Prompts →', deckTitle: 'Production Deck', deckTagline: 'Three production-ready JSON prompts for VEO3. Use them one by one.', backToEditorBtn: '← Back to Editor', visualDescLabel: 'Visual Description', voiceoverLabel: 'Voice Over', copyJsonBtn: 'Copy JSON', shotTypeLabel: 'Shot Type', cameraMoveLabel: 'Camera Movement', notificationSuccess: 'Success!', notificationError: 'Failed!', notificationCharGenSuccess: 'Character generated successfully!', notificationCharGenFail: 'Failed to generate character.', notificationStoryArcSuccess: 'Story arc created successfully!', notificationInvalidResponse: 'AI returned an invalid response. Please try again.', notificationPremiseRequired: 'Please enter a story premise first.', notificationCharacterIdeaRequired: 'Please enter a character idea first.', notificationSceneRequired: 'Please create at least one scene first.', notificationJsonCopied: 'JSON copied to clipboard!', notificationCopyFail: 'Failed to copy.', langInstructionForAI: 'Respond in clear, concise Indonesian.'
+      },
+      zh: {
+        mainTitle: 'AIonade Continuum', tagline: '从构思到发布，每一帧都保持一致。', projectSettingsTitle: '1. 项目设置', languageLabel: '语言', purposeLabel: '故事目的', purposeEntertainment: '娱乐', purposeAffiliate: '联盟营销', affiliateDetailsTitle: '联盟营销详情', productNameLabel: '产品名称', productNamePlaceholder: '例如：克洛诺斯 V2 智能手表', productImageLabel: '产品图片参考', uploadFile: '上传文件', dragDrop: '或拖放', removeImage: '移除图片', characterIdeaLabel: '2. 角色想法', characterIdeaPlaceholder: '例如：一只拿着闪亮银剑的橘猫...', premiseLabel: '4. 输入故事前提', premisePlaceholder: '例如：在一个不停下雨的城市里，他发现了一个可以停止时间的时钟...', generateCharacterBtn: '✨ 3. 生成主角', characterConceptLabel: '角色概念', characterPlaceholder: '等待角色概念...', characterSheetLabel: '角色表 (可编辑)', storyDirectivesLabel: '5. 故事指令 (可选)', storyDirectivesPlaceholder: '例如：惊险, 意外结局...', generateStoryBtn: '✨ 生成/填充故事线', globalSettingsTitle: '全局设置', seedLabel: '连续性种子', styleLabel: '视觉风格', storyboardTitle: '故事板', storyboardPlaceholder: '生成一个角色以开始您的故事板。', addSceneBtn: '手动添加场景', productionTitle: '制作', proceedBtn: '生成制作提示 →', deckTitle: '制作面板', deckTagline: '为 VEO3 准备的三个制作提示。请逐一使用。', backToEditorBtn: '← 返回编辑器', visualDescLabel: '视觉描述', voiceoverLabel: '旁白', copyJsonBtn: '复制 JSON', shotTypeLabel: '镜头类型', cameraMoveLabel: '摄像机移动', notificationSuccess: '成功！', notificationError: '失败！', notificationCharGenSuccess: '角色生成成功！', notificationCharGenFail: '角色生成失败。', notificationStoryArcSuccess: '故事线创建成功。', notificationInvalidResponse: 'AI 返回了无效的回应。请重试。', notificationPremiseRequired: '请先输入故事前提。', notificationCharacterIdeaRequired: '请先输入角色想法。', notificationSceneRequired: '请先创建至少一个场景。', notificationJsonCopied: 'JSON 已复制到剪贴板！', notificationCopyFail: '复制失败。', langInstructionForAI: '请用清晰简洁的印尼语回答。'
+      }
+    };
+
+    // --- Helpers ---
+    const $ = (id) => document.getElementById(id);
+    const qs = (sel, el = document) => el.querySelector(sel);
+
+    let currentLang = 'id';
+    let isAIBusy = false;
+    let characterSheet = null;
+    let productImageBase64 = null;
+
+    const editorView = $('editor-view');
+    const deckView = $('deck-view');
+    const scenesContainer = $('scenes-container');
+    const jsonDeckContainer = $('json-deck-container');
+    const sceneTemplate = $('scene-template');
+    const jsonCardTemplate = $('json-card-template');
+    const notificationEl = $('notification');
+    const generateStoryBtn = $('generate-story-btn');
+    const generateCharacterBtn = $('generate-character-btn');
+    const addSceneBtn = $('add-scene-btn');
+    const proceedBtn = $('proceed-btn');
+    const backToEditorBtn = $('back-to-editor-btn');
+    const continuitySeedInput = $('continuity-seed');
+    const affiliateDetails = $('affiliate-details');
+    const languageSelector = $('language-selector');
+    const modelSelector = $('model-selector');
+    const productImageInput = $('product-image-input');
+    const imageUploadPrompt = $('image-upload-prompt');
+    const imagePreviewContainer = $('image-preview-container');
+    const imagePreview = $('image-preview');
+    const removeImageBtn = $('remove-image-btn');
+    const diagLog = $('diag-log');
+
+    // --- Language ---
+    function setLanguage(lang) {
+      currentLang = lang;
+      const strings = uiStrings[lang] || uiStrings['en'];
+      document.querySelectorAll('[data-lang-key]').forEach((el) => {
+        const key = el.dataset.langKey; if (strings[key]) el.textContent = strings[key];
+      });
+      document.querySelectorAll('[data-lang-key-placeholder]').forEach((el) => {
+        const key = el.dataset.langKeyPlaceholder; if (strings[key]) el.placeholder = strings[key];
+      });
+      document.documentElement.lang = lang; document.title = strings.mainTitle;
+    }
+
+    function showNotification(messageKey, type = 'success', duration = 3000) {
+      const message = (uiStrings[currentLang] && uiStrings[currentLang][messageKey]) || messageKey;
+      notificationEl.textContent = message; notificationEl.className = 'notification'; notificationEl.classList.add(type, 'show');
+      setTimeout(() => notificationEl.classList.remove('show'), duration);
+    }
+
+    function toggleAILock(lock) {
+      isAIBusy = lock;
+      document.querySelectorAll('.btn-gemini, #proceed-btn').forEach((btn) => (btn.disabled = lock));
+    }
+
+    // Robust JSON extractor
+    function extractJson(text) {
+      if (!text || typeof text !== 'string') return null;
+      const first = Math.min(...['{','['].map(c => text.indexOf(c)).filter(i => i>=0));
+      if (first===Infinity) return null;
+      const last = Math.max(text.lastIndexOf('}'), text.lastIndexOf(']'));
+      if (last < first) return null;
+      const jsonString = text.substring(first, last + 1);
+      try { return JSON.parse(jsonString); } catch { return null; }
+    }
+
+    // --- WebLLM Engine (Local) ---
+    let engine = null; let engineReady = false; let selectedModel = modelSelector.value;
+
+    function logDiag(obj) {
+      if (!diagLog) return;
+      const time = new Date().toLocaleTimeString();
+      diagLog.textContent += `\n[${time}] ${typeof obj === 'string' ? obj : JSON.stringify(obj, null, 2)}`;
+      diagLog.scrollTop = diagLog.scrollHeight;
+    }
+
+    function resolveEngineFactory(mod) {
+      // Cari pabrik engine yang tersedia antar versi
+      const candidates = [
+        'CreateMLCEngine',
+        'createMLCEngine',
+        'CreateWebWorkerMLCEngine',
+        'createEngine'
+      ];
+      for (const k of candidates) {
+        if (typeof mod?.[k] === 'function') return mod[k].bind(mod);
+      }
+      return null;
+    }
+
+    async function ensureEngine() {
+      if (engineReady && engine) return engine;
+      if (!('gpu' in navigator)) {
+        alert('Browser Anda tidak mendukung WebGPU. Coba Chrome/Edge terbaru.');
+      }
+
+      const createEngine = resolveEngineFactory(webllm);
+      if (!createEngine) {
+        const keys = Object.keys(webllm || {});
+        throw new Error(`WebLLM engine factory tidak ditemukan. Ekspor tersedia: ${keys.join(', ')}`);
+      }
+
+      const progressBar = document.createElement('div');
+      progressBar.className = 'fixed bottom-6 left-1/2 -translate-x-1/2 w-11/12 sm:w-2/3 md:w-1/2 bg-gray-800 rounded-lg overflow-hidden border border-gray-700 z-50';
+      progressBar.innerHTML = `<div class="px-4 py-2 text-xs text-gray-300">Menginisialisasi model lokal (${selectedModel})… <span id="dlp">0%</span></div><div class="h-1 bg-gray-700"><div id="dll" class="h-1 bg-indigo-500" style="width:0%"></div></div>`;
+      document.body.appendChild(progressBar);
+      const dlp = () => document.getElementById('dlp'); const dll = () => document.getElementById('dll');
+
+      engine = await createEngine(selectedModel, {
+        initProgressCallback: (report) => {
+          if (report && report.progress != null) {
+            const pct = Math.floor(report.progress * 100);
+            if (dlp()) dlp().textContent = pct + '%';
+            if (dll()) dll().style.width = pct + '%';
+          }
+        }
+      });
+
+      engineReady = true;
+      setTimeout(() => progressBar.remove(), 600);
+      return engine;
+    }
+
+    async function callLocalLLM(prompt, buttonElement) {
+      if (isAIBusy) return null; toggleAILock(true);
+      const original = buttonElement.innerHTML; buttonElement.innerHTML = `<span class="loader"></span> Generating…`;
+      try {
+        await ensureEngine();
+        const sys = uiStrings[currentLang].langInstructionForAI + '\nAnda adalah asisten untuk pembuatan prompt video Gemini VEO3. Jawab ringkas & boleh JSON murni saat diminta.';
+
+        // Kompatibilitas antar versi API WebLLM
+        let text = '';
+        if (engine?.chat?.completions?.create) {
+          const resp = await engine.chat.completions.create({
+            messages: [ { role: 'system', content: sys }, { role: 'user', content: prompt } ],
+            temperature: 0.8, stream: false, max_tokens: 512
+          });
+          text = resp?.choices?.[0]?.message?.content?.trim?.() || '';
+        } else if (engine?.chat?.generate) {
+          const resp = await engine.chat.generate([ { role: 'system', content: sys }, { role: 'user', content: prompt } ], { temperature: 0.8, maxTokens: 512 });
+          text = resp?.output_text || resp?.text || '';
+        } else if (engine?.generate) {
+          const resp = await engine.generate(prompt, { system: sys, temperature: 0.8, maxTokens: 512 });
+          text = resp?.output_text || resp?.text || '';
+        } else {
+          throw new Error('Tidak menemukan metode generate yang kompatibel pada engine.');
+        }
+        return text;
+      } catch (e) {
+        console.error(e); logDiag(String(e)); showNotification('notificationError', 'error', 5000); return null;
+      } finally {
+        buttonElement.innerHTML = original; toggleAILock(false);
+      }
+    }
+
+    // --- Scenes ---
+    function addScene(sceneData = {}) {
+      const frag = sceneTemplate.content.cloneNode(true);
+      qs('[data-key="visual"]', frag).value = sceneData.visual || '';
+      qs('[data-key="voice_over"]', frag).value = sceneData.voice_over || '';
+      qs('[data-key="shot_type"]', frag).value = sceneData.shot_type || '';
+      qs('[data-key="camera"]', frag).value = sceneData.camera || '';
+      scenesContainer.appendChild(frag); updateSceneTitles(); setLanguage(currentLang);
+    }
+
+    function updateSceneTitles() {
+      const scenes = scenesContainer.querySelectorAll('.scene-card');
+      if (scenes.length === 0) {
+        scenesContainer.innerHTML = `<p class="text-center text-gray-400 py-8" data-lang-key="storyboardPlaceholder">${uiStrings[currentLang].storyboardPlaceholder}</p>`;
+      } else { scenes.forEach((scene, idx) => { qs('.scene-title', scene).textContent = `Scene ${idx + 1}`; }); }
+    }
+
+    function resetWorkflow() {
+      $('core-idea').value = ''; $('character-idea').value = ''; $('story-directives').value = '';
+      $('character-concept-container').classList.add('hidden'); characterSheet = null; scenesContainer.innerHTML = `<p class="text-center text-gray-400 py-8" data-lang-key="storyboardPlaceholder">${uiStrings[currentLang].storyboardPlaceholder}</p>`;
+    }
+
+    // --- Events ---
+    languageSelector.addEventListener('change', (e) => setLanguage(e.target.value));
+    modelSelector.addEventListener('change', (e) => { selectedModel = e.target.value; if (engine) { try { engine?.dispose?.(); } catch {} } engine = null; engineReady = false; showNotification('Model diganti. Model baru akan diunduh saat generasi berikutnya.', 'success', 2500); });
+
+    document.querySelectorAll('input[name="purpose"]').forEach((radio) => {
+      radio.addEventListener('change', (e) => {
+        const isAffiliate = e.target.value === 'affiliate';
+        affiliateDetails.classList.toggle('hidden', !isAffiliate);
+        $('character-idea-container').classList.toggle('hidden', isAffiliate);
+        $('generate-character-btn').classList.toggle('hidden', isAffiliate);
+        $('character-concept-container').classList.toggle('hidden', isAffiliate);
+        resetWorkflow();
+      });
+    });
+
+    productImageInput.addEventListener('change', (e) => {
+      const file = e.target.files[0]; if (!file) return; const reader = new FileReader();
+      reader.onload = (ev) => { productImageBase64 = ev.target.result; imagePreview.src = ev.target.result; $('image-upload-prompt').classList.add('hidden'); imagePreviewContainer.classList.remove('hidden'); };
+      reader.readAsDataURL(file);
+    });
+    removeImageBtn.addEventListener('click', () => { productImageBase64 = null; productImageInput.value = ''; $('image-upload-prompt').classList.remove('hidden'); imagePreviewContainer.classList.add('hidden'); });
+
+    // --- Character Generation (TEXT ONLY, local) ---
+    generateCharacterBtn.addEventListener('click', async (e) => {
+      const characterIdea = $('character-idea').value?.trim(); if (!characterIdea) return showNotification('notificationCharacterIdeaRequired', 'error');
+      $('character-concept-container').classList.remove('hidden'); const imgBox = $('character-image-placeholder'); const sheetOut = $('character-sheet-output');
+      sheetOut.value = ''; imgBox.innerHTML = `<div class="flex flex-col items-center gap-2"><span class="loader"></span><p class="text-sm text-gray-400">${uiStrings[currentLang].characterPlaceholder}</p></div>`;
+
+      const langInstruction = uiStrings[currentLang].langInstructionForAI;
+      const sheetPrompt = `Buat JSON lembar karakter terstruktur dari ide: \"${characterIdea}\". Kunci wajib: name, description (fisik + kepribadian), clothing (rinci), key_items (array), traits (array), backstory (1 paragraf). ${langInstruction}`;
+
+      const sheetResult = await callLocalLLM(sheetPrompt, e.target); if (!sheetResult) { sheetOut.value = 'Gagal mengambil data karakter.'; return; }
+      const parsed = extractJson(sheetResult);
+      if (!parsed || !parsed.name || !parsed.description) { sheetOut.value = 'Gagal parsing data karakter.'; return showNotification('notificationInvalidResponse', 'error'); }
+
+      sheetOut.value = JSON.stringify(parsed, null, 2); characterSheet = parsed; imgBox.innerHTML = `<div class=\"w-full h-full flex items-center justify-center\"><div class=\"text-center text-xs text-gray-400\">(Offline) Tidak menghasilkan gambar. Gunakan referensi visual sendiri.</div></div>`; showNotification('notificationCharGenSuccess', 'success');
+
+      // Autopopulate 3 scene cards
+      scenesContainer.innerHTML = ''; addScene(); addScene(); addScene();
+    });
+
+    // --- Story Arc Generation (local) ---
+    generateStoryBtn.addEventListener('click', async (e) => {
+      const coreIdea = $('core-idea').value?.trim(); if (!coreIdea) return showNotification('notificationPremiseRequired', 'error');
+      const purpose = document.querySelector('input[name="purpose"]:checked').value;
+      let currentSheet = null; if (purpose === 'entertainment') { try { currentSheet = JSON.parse($('character-sheet-output').value || '{}'); } catch { return showNotification('Harap buat karakter valid dulu.', 'error'); } }
+
+      const directives = $('story-directives').value || '';
+      const langInstruction = uiStrings[currentLang].langInstructionForAI;
+
+      let prompt;
+      if (purpose === 'affiliate') {
+        const productName = $('product-name').value || '(nama produk belum diisi)';
+        prompt = `Ini video afiliasi untuk produk \"${productName}\". Premis: \"${coreIdea}\". Arahan: ${directives}. Hasilkan 3 adegan dalam JSON array: tiap elemen berisi kunci 'visual' (deskripsi visual rinci, tanpa klaim kesehatan berlebih), 'voice_over' (teks VO singkat, bahasa Indonesia), 'shot_type', 'camera'. Hindari menyebut harga/logo. ${langInstruction}`;
+      } else {
+        prompt = `Premis: \"${coreIdea}\". Character Sheet: ${JSON.stringify(currentSheet || {})}. Arahan: ${directives}. Hasilkan 3 adegan sebagai JSON array dengan kunci 'visual', 'voice_over', 'shot_type', 'camera'. Bahasa Indonesia alami. ${langInstruction}`;
+      }
+
+      if (purpose === 'affiliate' && scenesContainer.querySelectorAll('.scene-card').length === 0) { scenesContainer.innerHTML = ''; addScene(); addScene(); addScene(); }
+
+      const result = await callLocalLLM(prompt, e.target);
+      if (!result) return; const scenes = extractJson(result);
+      if (Array.isArray(scenes) && scenes.length > 0) {
+        const sceneCards = scenesContainer.querySelectorAll('.scene-card');
+        scenes.forEach((s, idx) => {
+          if (sceneCards[idx]) {
+            qs('[data-key="visual"]', sceneCards[idx]).value = s.visual || '';
+            qs('[data-key="voice_over"]', sceneCards[idx]).value = s.voice_over || '';
+            qs('[data-key="shot_type"]', sceneCards[idx]).value = s.shot_type || '';
+            qs('[data-key="camera"]', sceneCards[idx]).value = s.camera || '';
+          }
         });
-    </script>
+        showNotification('notificationStoryArcSuccess', 'success');
+      } else { showNotification('notificationInvalidResponse', 'error'); }
+    });
+
+    // --- Proceed → Build VEO3 JSON prompts ---
+    proceedBtn.addEventListener('click', () => {
+      const scenes = Array.from(document.querySelectorAll('.scene-card')); if (!scenes.length) return showNotification('notificationSceneRequired', 'error');
+      const seed = $('continuity-seed').value; const style = $('project_style').value; jsonDeckContainer.innerHTML = '';
+      let currentSheet = null; try { currentSheet = JSON.parse($('character-sheet-output').value || '{}'); } catch {}
+
+      scenes.forEach((sceneEl, idx) => {
+        const finalPrompt = {
+          engine: 'gemini_veo3',
+          global: { style, aspect_ratio: '9:16', fps: 24, generation: { seed: parseInt(seed), guidance: 7.5, negative_prompts: ['cartoonish', 'text', 'watermark', 'blurry'] } },
+          scenes: [ {
+            id: `scene-${String(idx + 1).padStart(2, '0')}`,
+            duration_sec: 8,
+            visual: qs('[data-key="visual"]', sceneEl).value,
+            voice_over: qs('[data-key="voice_over"]', sceneEl).value,
+            shot_type: qs('[data-key="shot_type"]', sceneEl).value,
+            camera: qs('[data-key="camera"]', sceneEl).value
+          } ]
+        };
+        if (currentSheet && Object.keys(currentSheet).length) finalPrompt.global.character_sheet = currentSheet;
+
+        const card = jsonCardTemplate.content.cloneNode(true);
+        qs('.json-title', card).textContent = `Prompt for Scene ${idx + 1}`;
+        qs('.json-output', card).textContent = JSON.stringify(finalPrompt, null, 2);
+        jsonDeckContainer.appendChild(card);
+      });
+
+      editorView.classList.add('hidden'); deckView.classList.remove('hidden'); setLanguage(currentLang);
+    });
+
+    // --- Diagnostics / TEST CASES ---
+    function assertOk(name, cond, extra='') {
+      const msg = cond ? `✅ ${name}` : `❌ ${name}`;
+      logDiag(extra ? `${msg} — ${extra}` : msg);
+    }
+
+    $('btn-reset-engine').addEventListener('click', async () => {
+      try { engine?.dispose?.(); } catch {}
+      engine = null; engineReady = false; logDiag('Engine direset.'); showNotification('notificationSuccess','success',1500);
+    });
+
+    $('btn-test-factory').addEventListener('click', async () => {
+      const keys = Object.keys(webllm || {});
+      logDiag({ exports: keys });
+      const factory = resolveEngineFactory(webllm);
+      assertOk('Factory resolved', !!factory, `pilihan=${factory ? factory.name : 'null'}`);
+      try { await ensureEngine(); assertOk('Engine initialized', !!engine, selectedModel); } catch (e) { assertOk('Engine initialized', false, String(e)); }
+    });
+
+    $('btn-test-generate').addEventListener('click', async (e) => {
+      const out = await callLocalLLM('Kembalikan JSON murni {"ok":true,"model":"test"}', e.target);
+      const parsed = extractJson(out || '');
+      assertOk('LLM returned text', !!out && typeof out === 'string');
+      assertOk('Parsable JSON', !!parsed);
+      if (parsed) logDiag(parsed);
+    });
+
+    // --- Misc ---
+    $('back-to-editor-btn').addEventListener('click', () => { deckView.classList.add('hidden'); editorView.classList.remove('hidden'); });
+    $('add-scene-btn').addEventListener('click', () => { if (scenesContainer.querySelector('p')) scenesContainer.innerHTML = ''; addScene(); });
+    scenesContainer.addEventListener('click', (e) => { if (e.target.classList.contains('remove-scene-btn')) { e.target.closest('.scene-card').remove(); updateSceneTitles(); } });
+    jsonDeckContainer.addEventListener('click', (e) => { if (e.target.classList.contains('copy-json-btn')) { const jsonText = e.target.previousElementSibling.textContent; const ta = document.createElement('textarea'); ta.value = jsonText; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); showNotification('notificationJsonCopied', 'success'); } catch { showNotification('notificationCopyFail', 'error'); } document.body.removeChild(ta); } });
+
+    // --- Init ---
+    (function init() {
+      const seed = Math.floor(Math.random() * 100000); $('continuity-seed').value = seed;
+      setLanguage('id');
+    })();
+  </script>
 </body>
 </html>
