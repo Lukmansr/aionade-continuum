@@ -523,7 +523,7 @@
 
             async function callGemini(prompt, buttonElement, imageBase64 = null) {
                 // CORRECTED API ENDPOINT
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.0-pro:generateContent`;
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent`;
                 const parts = [{ text: prompt }];
                 if (imageBase64) {
                      parts.push({
