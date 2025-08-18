@@ -281,7 +281,7 @@
                     characterStyleLabel: "Gaya Visual Karakter",
                     characterIdeaPlaceholder: "Contoh: Seekor kucing oranye dengan pedang perak berkilauan...",
                     premiseLabel: "4. Masukkan Premis Cerita", premisePlaceholder: "Contoh: Di sebuah kota yang terus hujan, ia menemukan jam yang bisa menghentikan waktu...",
-                    generateCharacterBtn: "✨ 3. Buat Karakter Utama", characterConceptLabel: "Character Concept",
+                    generateCharacterBtn: "✨ 3. Buat Karakter Utama", characterConceptLabel: "Konsep Karakter",
                     characterPlaceholder: "Menunggu konsep karakter...",
                     characterPaintingPlaceholder: "Melukis konsep karakter...",
                     characterSheetLabel: "Lembar Karakter (Dapat Diedit)",
@@ -916,7 +916,7 @@
 
                 imagePlaceholder.innerHTML = `<div class="flex flex-col items-center gap-2"><span class="loader"></span><p class="text-sm text-gray-400">${uiStrings[currentLang].characterPaintingPlaceholder}</p></div>`;
                 
-                const imagePrompt = `Character sheet of: ${characterIdea}. Show four views of the character on a plain background: full body front view, full body back view, full body left side view, and full body right side view. Style: ${characterStyle}, high detail.`;
+                const imagePrompt = `Character turnaround sheet for: ${characterIdea}. Show four full-body views on a plain white background: front, back, left side, and right side. The image must not contain any text, labels, or words. Style: ${characterStyle}, high detail, clean line art.`;
 
                 characterImageUrl = await callImagenApi(imagePrompt, e.target);
                 if (characterImageUrl) {
@@ -1030,7 +1030,8 @@
                         }]
                     };
                     
-                    if (currentCharacterSheet && Object.keys(currentCharacterSheet).length > 0) {
+                    const purpose = document.querySelector('input[name="purpose"]:checked').value;
+                    if (purpose === 'entertainment' && currentCharacterSheet && Object.keys(currentCharacterSheet).length > 0) {
                         finalPrompt.global.character_sheet = currentCharacterSheet;
                     }
 
