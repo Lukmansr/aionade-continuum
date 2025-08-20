@@ -1,7 +1,10 @@
-<!-- Banner -->
-<p align="center">
-  <img src="https://raw.githubusercontent.com/Lukmansr/aionade-continuum/main/assets/banner.png" alt="Aionade Continuum Banner" width="100%">
-</p>
+<div align="center" style="background: linear-gradient(90deg, #1e3c72, #2a5298); padding: 20px; border-radius: 12px; color: white;">
+
+# 🌌 Aionade Continuum  
+_AI Prompt Generation & Creative Automation_  
+
+</div>
+
 
 ---
 
