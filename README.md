@@ -72,7 +72,8 @@ Aionade Continuum is an **experimental AI prompt generation tool** that transfor
 
 <div align="center">
 
-![Aionade Continuum UI](ss-aionade-web-live.jpg)  
+![Aionade Continuum UI](ss-aiona![ss aionade web live](https://github.com/user-attachments/assets/5910b383-8e07-4ce6-8e0c-63096a884516)
+de-web-live.jpg)  
 
 *Web interface of Aionade Continuum (live demo version)*  
 
