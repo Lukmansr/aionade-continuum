@@ -15,19 +15,6 @@ It is designed to help users generate prompts, create images/videos, and explore
 
 ---
 
-## 🚀 Features
-- Prompt generation system (character ideas, stories, creative assets).
-- AI integration (image & text generation).
-- Simple web interface (GitHub Pages support).
-- Free & privacy-focused (API key handled by user).
-
----
-
-📦 aionade-continuum
-┣ 📜 index.html
-┣ 📜 README.md
-┗ 📂 assets (for images/banners)
-
 ## ✨ Features  
 - 🎛 Prompt generation system with multiple categories  
 - 🎨 Creative + experimental prompt templates  
