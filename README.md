@@ -23,3 +23,6 @@ It is designed to help users generate prompts, create images/videos, and explore
 ## 📂 Repository Structure  
 ## 🚀 Demo  
 Try it live here: [Aionade Continuum](https://lukmansr.github.io/aionade-continuum/)
+## 📫 Author  
+Created by [Lukman](https://github.com/Lukmansr)
+
