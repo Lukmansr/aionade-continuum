@@ -85,5 +85,13 @@ Contributions, suggestions, and feedback are welcome.
 - Email: [lukmansar32@gmail.com](mailto:lukmansar32@gmail.com)  
 - TikTok: [@frostbit36](https://www.tiktok.com/@frostbit36)
 
+---
 
 ---
+
+<div align="center" style="background: linear-gradient(90deg, #2a5298, #1e3c72); padding: 15px; border-radius: 12px; color: white;">
+
+🌌 <b>Aionade Continuum</b> — Built step by step with ❤️ by <b>Lukman</b>  
+🚀 Exploring AI · Prompt Engineering · Creative Automation  
+
+</div>
