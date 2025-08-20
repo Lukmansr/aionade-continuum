@@ -5,7 +5,16 @@ _From premise to publish, consistent every frame_
 
 [![Live Demo](https://img.shields.io/badge/Demo-Live-blue?style=for-the-badge)](https://lukmansr.github.io/aionade-continuum/)  
 ![Repo Size](https://img.shields.io/github/repo-size/Lukmansr/aionade-continuum)  
-![License](https://img.shields.io/github/license/Lukmansr/aionade-continuum)  
+## 📄 License
+This project is **dual-licensed** under **MIT OR GPL v3**.  
+You are free to choose the license that best fits your needs.  
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
+
+> ⚖️ For companies interested in a **custom/commercial license** (outside MIT/GPL terms),  
+> please contact me at **lukmansar32@gmail.com**.
+  
 
 </div>
 
