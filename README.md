@@ -1,99 +1,124 @@
 <div align="center" style="background: linear-gradient(90deg, #1e3c72, #2a5298); padding: 20px; border-radius: 12px; color: white;">
 
 # 🌌 Aionade Continuum  
-_A simple AI prompt generator for stories, characters, and scenes — consistent every frame._  
+_From premise to publish, consistent every frame_  
 
 [![Live Demo](https://img.shields.io/badge/Demo-Live-blue?style=for-the-badge)](https://lukmansr.github.io/aionade-continuum/)  
 ![Repo Size](https://img.shields.io/github/repo-size/Lukmansr/aionade-continuum)  
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE) 
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
 
-</div>
+</div>  
 
 ---
 
 ## 📖 About  
-Aionade Continuum is an **experimental AI prompt generator**.  
-It helps you create characters, story arcs, and scene storyboards with **global consistency** — all in your browser, no install required.  
+Aionade Continuum is an **experimental AI prompt generation tool** that helps transform your creative ideas — from characters and scenes to story arcs — into **structured outputs** with consistency, directly in your browser.  
 
 ---
 
-## ✨ Features  
-- 🔑 Works with your API key (Gemini supported, more engines coming)  
-- 🌐 Multi-language UI: English, Bahasa Indonesia, 中文  
-- 🖼️ Image upload for character references  
-- 🎨 Visual style presets: Realistic, Cinematic, Anime, etc.  
-- 🎭 Story arc + storyboard builder  
-- 🔁 Consistency across scenes with “continuity seed”  
-- 📤 Export JSON for production workflows  
+## ✨ Key Features  
+- 🔑 **API Key Integration** → Support for Gemini (and future engines)  
+- 🌍 **Multi-language UI** → Bahasa Indonesia, English, 中文  
+- 🎭 **Prompt Intent Selection** → Entertainment / Affiliate story types  
+- 🖼️ **Image Upload & Character Design** → Use visual references for prompts  
+- 🎨 **Visual Style Presets** → Realistic, Cinematic, Anime, etc.  
+- 📑 **Multi-Angle Character Sheets** → Front, back, sides + editable sheet  
+- 📖 **Story Arc Generator** → Premise → Narrative + voice direction  
+- 🎬 **Scene & Storyboard Builder** → Shots, camera angles, movement  
+- 🔄 **Global Scene Consistency** → Seed + style applied across prompts  
+- 📦 **Production Deck Export** → JSON output for pipelines (e.g., VEO3)  
 
 ---
 
 ## 🛠 Tech Stack  
-- HTML, CSS, JavaScript  
-- TailwindCSS for responsive UI  
-- (Planned) OpenRouter, OpenAI, Stable Diffusion integrations  
-
----
-
-## 🚀 Usage  
-1. Open the [Live Demo](https://lukmansr.github.io/aionade-continuum/).  
-2. Enter your API key.  
-3. Upload an image or pick a prompt type (Entertainment / Affiliate).  
-4. Choose visual style & generate.  
-5. Build story arc + scenes.  
-6. Export JSON for further use.  
-
----
-
-## 📌 Roadmap  
-
-**v0.1 (Alpha)**  
-- [x] Character + story arc generation  
-- [x] JSON export for workflows  
-
-**v0.2**  
-- [ ] More AI engine support  
-- [ ] Save prompt history  
-- [ ] Dark / light theme  
-
-**v1.0 (Beta)**  
-- [ ] Multimodal outputs (text + image/video)  
-- [ ] Full production pipeline automation  
-- [ ] Downloadable creative assets  
+- ⚡ HTML, CSS, JavaScript  
+- 🎨 TailwindCSS for responsive modern UI  
+- 🤖 (Future) OpenRouter, OpenAI, Gemini, Stable Diffusion  
 
 ---
 
 ## 📸 Screenshots  
 
-📍 Coming soon: UI preview & example outputs  
+<div align="center">
+
+### 🔑 Project Setup  
+*Enter API key, choose language, and set story purpose.*  
+![Project Setup](ss-aionade-web-live.jpg)  
+
+---
+
+### 🎭 Storyboard Builder  
+*Generate characters, add scenes manually, and shape your story.*  
+![Storyboard Builder](ss-aionade-web-live.jpg)  
+
+---
+
+### 📦 Production & JSON Export  
+*Export structured JSON for pipelines (e.g., VEO3).*  
+![Production Export](ss-aionade-web-live.jpg)  
+
+</div>
+
+---
+
+## 🚀 Usage  
+1. Open the [Live Demo](https://lukmansr.github.io/aionade-continuum/).  
+2. Enter your **Gemini API key**.  
+3. Select **language** + **story purpose**.  
+4. Upload an image or build a character.  
+5. Generate **story arc** + **storyboard scenes**.  
+6. Export as **JSON** for production workflows.  
+
+---
+
+## 🗺 Roadmap  
+
+**v0.1 (Alpha)** ✅  
+- Character prompts + image upload  
+- Story arc + storyboard generation  
+- JSON export  
+
+**v0.2 (Planned)**  
+- Multi-AI engine support (OpenAI, Stable Diffusion)  
+- Save & load prompts  
+- UI themes (dark/light)  
+
+**v1.0 (Beta)**  
+- Direct multimodal outputs (text + image/video)  
+- Automated pipelines  
+- Downloadable assets  
 
 ---
 
 ## 🤝 Contributing  
-Contributions are welcome!  
-- Fork this repo  
-- Create a feature branch  
+We welcome contributions!  
+- Fork the repo  
+- Work on a branch  
 - Submit a Pull Request  
-- Or open an [Issue](https://github.com/Lukmansr/aionade-continuum/issues)  
+- Report issues [here](https://github.com/Lukmansr/aionade-continuum/issues)  
 
 ---
 
 ## 📄 License  
-This project is licensed under the **MIT License**.  
-You’re free to use, modify, and share with attribution.  
+This project is **dual-licensed** under **MIT OR GPL v3**.  
+Choose the license that fits your needs.  
+
+> ⚖️ For companies interested in a **custom/commercial license**,  
+> contact me at **lukmansar32@gmail.com**.  
 
 ---
 
 ## 📬 Contact  
 - 📧 Email: [lukmansar32@gmail.com](mailto:lukmansar32@gmail.com)  
 - 🎥 TikTok: [@frostbit36](https://www.tiktok.com/@frostbit36)  
-- 🐙 GitHub: [Lukmansr](https://github.com/Lukmansr)  
+- 💻 GitHub: [Lukmansr](https://github.com/Lukmansr)  
 
 ---
 
 <div align="center" style="background: linear-gradient(90deg, #2a5298, #1e3c72); padding: 15px; border-radius: 12px; color: white;">
 
 🌌 <b>Aionade Continuum</b> — Built step by step with ❤️ by <b>Lukman</b>  
-AI · Prompt Engineering · Creative Automation  
+✨ Beginner-friendly · Professional · Creative Automation  
 
 </div>
