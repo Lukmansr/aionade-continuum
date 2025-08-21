@@ -64,7 +64,7 @@ Live site: Aionade Continuum
 
 ## Screenshot  
 <p align="center">
-  <img src="assets/screenshot.png" width="700" />
+  <img src="assets/screenshot.jpg" width="700" />
 </p>
 
 ![ss aionade web live](https://github.com/user-attachments/assets/a3ae3b4d-4912-439a-b83d-d0f3393453fc)
