@@ -63,9 +63,8 @@ Live site: Aionade Continuum
 ---
 
 Screenshot
-<div align="center"> <img src="assets/screenshot.png" alt="Project Screenshot" width="700"> </div>
-
-![Uploading ss aionade web live.jpg…]()
+<div align="center"> <img src=
+![ss aionade web live](https://github.com/user-attachments/assets/2551e8e8-c28a-4f2f-af44-e1114582ea5b)
 
 
 ---
