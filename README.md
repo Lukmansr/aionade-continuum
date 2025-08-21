@@ -14,6 +14,30 @@ This repository is open-source and beginner-friendly, serving as a reference for
 
 ---
 
+# Aionade Continuum  
+*From premise to publish, consistent every frame*
+
+[![Deployment Status](https://github.com/Lukmansr/aionade-continuum/actions/workflows/pages.yml/badge.svg)](https://github.com/Lukmansr/aionade-continuum/actions/workflows/pages.yml)  
+[Live Demo](https://lukmansr.github.io/aionade-continuum/) | [MIT License](LICENSE)
+
+---
+
+## About  
+Aionade Continuum is an experimental **AI prompt generation tool** designed to transform creative ideas into structured outputs.  
+It enables a workflow that goes from **character concepts** to **story arcs** to **visual prompts**, ensuring consistency across every frame.  
+
+This repository is open-source and beginner-friendly, serving as a reference for integrating **AI-driven content generation** with **GitHub Pages deployment**.
+
+---
+
+## Tech Stack  
+- **HTML5** – core structure  
+- **TailwindCSS** – styling  
+- **GitHub Actions** – CI/CD for deployment  
+- **GitHub Pages** – hosting  
+
+---
+
 ## Getting Started  
 
 ### Clone the repository
@@ -25,7 +49,7 @@ cd aionade-continuum
 
 Local preview
 
-Open index.html directly in your browser.
+Simply open index.html in your browser.
 
 Deployment
 
@@ -38,21 +62,10 @@ Live site: Aionade Continuum
 
 ---
 
-Features
-
-AI-powered character concept generation
-
-Support for story premises and narrative arcs
-
-Scene structure with suggested shot types and camera movements
-
-Automatic deployment to GitHub Pages
-
----
-
 Screenshot
 <div align="center"> <img src="assets/screenshot.png" alt="Project Screenshot" width="700"> </div>
-![ss aionade web live](https://github.com/user-attachments/assets/3b287b02-eeaf-4c08-bc4f-3eae8ece7838)
+
+(Replace the path with your actual screenshot)
 
 ---
 
@@ -67,4 +80,3 @@ License
 
 This project is licensed under the MIT License
 .
-
