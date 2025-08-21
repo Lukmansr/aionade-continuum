@@ -65,7 +65,8 @@ Live site: Aionade Continuum
 Screenshot
 <div align="center"> <img src="assets/screenshot.png" alt="Project Screenshot" width="700"> </div>
 
-(Replace the path with your actual screenshot)
+![Uploading ss aionade web live.jpg…]()
+
 
 ---
 
