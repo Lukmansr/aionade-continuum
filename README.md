@@ -11,6 +11,14 @@ _From premise to publish, consistent every frame_
 
 ---
 
+# Aionade Continuum
+
+[![Deploy to GitHub Pages](https://github.com/Lukmansr/aionade-continuum/actions/workflows/pages.yml/badge.svg)](https://github.com/Lukmansr/aionade-continuum/actions/workflows/pages.yml)
+
+Your AIonade project description here...
+
+---
+
 ## 📖 About  
 Aionade Continuum is an **experimental AI prompt generation tool** that transforms your creative ideas — from character/scene visions to story arcs — into structured outputs with global consistency, all within your browser.
 
