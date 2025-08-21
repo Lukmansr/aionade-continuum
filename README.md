@@ -41,7 +41,7 @@ This repository is open-source and beginner-friendly, serving as a reference for
 ## Getting Started  
 
 ### Clone the repository
-```bash
+
 git clone https://github.com/Lukmansr/aionade-continuum.git
 cd aionade-continuum
 
