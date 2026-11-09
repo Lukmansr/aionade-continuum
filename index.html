@@ -114,8 +114,8 @@
                                      <label for="product-image" class="block text-sm font-medium mb-1" data-lang-key="productImageLabel">Product Image Reference</label>
                                      <div id="image-upload-container" class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-600 border-dashed rounded-md">
                                          <div id="image-upload-prompt" class="space-y-1 text-center">
-                                             <svg class="mx-auto h-12 w-12 text-gray-500" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true"><path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg>
-                                             <div class="flex text-sm text-gray-500"><label for="product-image-input" class="relative cursor-pointer bg-gray-800 rounded-md font-medium text-indigo-400 hover:text-indigo-300"><span data-lang-key="uploadFile">Upload file</span><input id="product-image-input" name="product-image" type="file" class="sr-only" accept="image/png, image/jpeg, image/webp"></label><p class="pl-1" data-lang-key="dragDrop">or drag and drop</p></div>
+                                             <svg class="mx-auto h-12 w-12 text-gray-500" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true"><path d="M28 8H12a4 4 0 00-4 4v20[...]
+                                             <div class="flex text-sm text-gray-500"><label for="product-image-input" class="relative cursor-pointer bg-gray-800 rounded-md font-medium text-indigo-[...]
                                              <p class="text-xs text-gray-600">PNG, JPG, WEBP</p>
                                          </div>
                                          <div id="image-preview-container" class="hidden w-full text-center">
@@ -125,919 +125,928 @@
                                      </div>
                                  </div>
                              </div>
-                            <hr class="my-4 border-gray-600">
-                            <div id="character-idea-container">
-                                <label for="character-idea" class="block text-sm font-medium mb-1" data-lang-key="characterIdeaLabel">2. Character Idea</label>
-                                <textarea id="character-idea" class="form-textarea rounded-md p-2 w-full" rows="3" data-lang-key-placeholder="characterIdeaPlaceholder"></textarea>
-                            </div>
-                            <div class="mt-4">
-                                <label for="character-style-selector" class="block text-sm font-medium mb-1" data-lang-key="characterStyleLabel">Character Visual Style</label>
-                                <select id="character-style-selector" class="form-select rounded-md p-2 w-full">
-                                    <option value="realistic cinematic">Realistic Cinematic</option>
-                                    <option value="hyper realistic">Hyper Realistic</option>
-                                    <option value="3d render">3D Render</option>
-                                    <option value="anime style">Anime</option>
-                                    <option value="cartoon style">Cartoon</option>
-                                    <option value="2d illustration">2D Illustration</option>
-                                </select>
-                            </div>
-                            <button id="generate-character-btn" class="btn btn-gemini w-full mt-4" data-lang-key="generateCharacterBtn">✨ 3. Generate Main Character</button>
-                            <div id="character-concept-container" class="mt-4 hidden">
-                                <label class="block text-sm font-medium mb-2" data-lang-key="characterConceptLabel">Character Concept</label>
-                                <div id="character-image-grid" class="grid grid-cols-2 gap-2 aspect-square bg-gray-900/50 rounded-lg border border-dashed border-gray-600 p-2">
-                                    <div id="image-placeholder-1" class="bg-gray-800/50 rounded flex items-center justify-center"><p class="text-gray-500 text-xs text-center" data-lang-key="frontView">Front View</p></div>
-                                    <div id="image-placeholder-2" class="bg-gray-800/50 rounded flex items-center justify-center"><p class="text-gray-500 text-xs text-center" data-lang-key="backView">Back View</p></div>
-                                    <div id="image-placeholder-3" class="bg-gray-800/50 rounded flex items-center justify-center"><p class="text-gray-500 text-xs text-center" data-lang-key="leftView">Left View</p></div>
-                                    <div id="image-placeholder-4" class="bg-gray-800/50 rounded flex items-center justify-center"><p class="text-gray-500 text-xs text-center" data-lang-key="rightView">Right View</p></div>
-                                </div>
-                                <label class="block text-sm font-medium mt-2 mb-1" data-lang-key="characterSheetLabel">Character Sheet (Editable)</label>
-                                <textarea id="character-sheet-output" class="json-output p-2 rounded-md mt-1 text-xs w-full h-32"></textarea>
-                            </div>
-                            <hr class="my-4 border-gray-600">
-                             <div>
-                                <label for="core-idea" class="block text-sm font-medium mb-1" data-lang-key="premiseLabel">4. Enter Story Premise</label>
-                                <textarea id="core-idea" class="form-textarea rounded-md p-2 w-full" rows="4" data-lang-key-placeholder="premisePlaceholder"></textarea>
-                            </div>
-                             <div>
-                                <label for="story-directives" class="block text-sm font-medium mb-1" data-lang-key="storyDirectivesLabel">5. Story Directives (Optional)</label>
-                                <input type="text" id="story-directives" class="form-input rounded-md p-2 w-full" data-lang-key-placeholder="storyDirectivesPlaceholder">
-                                <label for="voice-over-style" class="block text-sm font-medium mb-1 mt-2" data-lang-key="voiceOverStyleLabel">Voice Over Style (Optional)</label>
-                                <input type="text" id="voice-over-style" class="form-input rounded-md p-2 w-full" data-lang-key-placeholder="voiceOverStylePlaceholder">
-                                <button id="generate-story-btn" class="btn btn-gemini w-full mt-2" data-lang-key="generateStoryBtn">✨ Generate/Fill Story Arc</button>
-                            </div>
-                        </div>
-                        <hr class="my-6 border-gray-600">
-                        <h2 class="text-xl font-semibold text-white mb-4" data-lang-key="globalSettingsTitle">Global Settings</h2>
-                         <div class="space-y-4">
-                             <div>
-                                <label for="continuity-seed" class="block text-sm font-medium mb-1" data-lang-key="seedLabel">Continuity Seed</label>
-                                <input type="number" id="continuity-seed" class="form-input rounded-md p-2 w-full bg-gray-900" readonly>
-                            </div>
-                             <div>
-                                <label for="project_style" class="block text-sm font-medium mb-1" data-lang-key="styleLabel">Visual Style</label>
-                                <input type="text" id="project_style" value="realistic_cinematic, 4k, dramatic lighting" class="form-input rounded-md p-2 w-full">
-                            </div>
-                        </div>
-                    </section>
-                </div>
-                <!-- Column 2: Scenes & Production -->
-                <div class="lg:col-span-2 space-y-6">
-                    <section class="hub-section p-6 rounded-lg">
-                        <h2 class="text-2xl font-semibold text-white border-b border-gray-600 pb-3 mb-4" data-lang-key="storyboardTitle">Storyboard</h2>
-                        <div id="scenes-container" class="space-y-6">
-                            <p class="text-center text-gray-400 py-8" data-lang-key="storyboardPlaceholder">Generate a character to begin building your storyboard.</p>
-                        </div>
-                        <button id="add-scene-btn" class="btn btn-secondary w-full mt-4 py-2" data-lang-key="addSceneBtn">Add Scene Manually</button>
-                    </section>
-                    <section class="hub-section p-6 rounded-lg">
-                        <h2 class="text-2xl font-semibold text-white mb-4" data-lang-key="productionTitle">Production</h2>
-                        <button id="proceed-btn" class="btn btn-primary w-full px-4 py-3 rounded-md font-bold text-lg" data-lang-key="proceedBtn">Generate Production Prompts &rarr;</button>
-                    </section>
-                </div>
-            </div>
-        </div>
-
-        <!-- View: Production Deck -->
-        <div id="deck-view" class="hidden">
-            <header class="text-center mb-8">
-                <h1 class="text-3xl sm:text-4xl font-bold text-white" data-lang-key="deckTitle">Production Deck</h1>
-                <p class="mt-2 text-lg text-gray-400" data-lang-key="deckTagline">Three production-ready JSON prompts for VEO3. Use them one by one.</p>
-            </header>
-            <div id="json-deck-container" class="grid grid-cols-1 lg:grid-cols-3 gap-6"></div>
-            <div class="text-center mt-8">
-                <button id="back-to-editor-btn" class="btn btn-secondary py-2 px-6" data-lang-key="backToEditorBtn">&larr; Back to Editor</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Templates & Notification -->
-    <template id="scene-template">
-        <div class="scene-card p-4 rounded-lg border-l-4 border-indigo-500 bg-gray-800/50">
-            <div class="flex justify-between items-start mb-3">
-                <h3 class="scene-title text-xl font-bold text-white">Scene</h3>
-                <button class="remove-scene-btn btn btn-danger p-1 rounded-full leading-none">&times;</button>
-            </div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div class="sm:col-span-2">
-                    <label class="block text-sm font-medium mb-1" data-lang-key="visualDescLabel">Visual Description</label>
-                    <textarea data-key="visual" class="form-textarea rounded-md p-2 w-full" rows="4"></textarea>
-                </div>
-                <div class="sm:col-span-2">
-                    <label class="block text-sm font-medium mb-1" data-lang-key="voiceoverLabel">Voice Over</label>
-                    <textarea data-key="voice_over" class="form-textarea rounded-md p-2 w-full" rows="2"></textarea>
-                </div>
-                <div>
-                    <label class="block text-sm font-medium mb-1" data-lang-key="shotTypeLabel">Shot Type</label>
-                    <select data-key="shot_type" class="form-select rounded-md p-2 w-full">
-                        <option value="">-- Select --</option>
-                        <option value="wide_establishing">Wide Establishing</option>
-                        <option value="medium_shot">Medium Shot</option>
-                        <option value="emotive_closeup">Emotive Closeup</option>
-                        <option value="dutch_angle">Dutch Angle</option>
-                        <option value="pov">Point of View (POV)</option>
-                    </select>
-                </div>
+                             <hr class="my-4 border-gray-600">
+                             <div id="character-idea-container">
+                                 <label for="character-idea" class="block text-sm font-medium mb-1" data-lang-key="characterIdeaLabel">2. Character Idea</label>
+                                 <textarea id="character-idea" class="form-textarea rounded-md p-2 w-full" rows="3" data-lang-key-placeholder="characterIdeaPlaceholder"></textarea>
+                             </div>
+                             <div class="mt-4">
+                                 <label for="character-style-selector" class="block text-sm font-medium mb-1" data-lang-key="characterStyleLabel">Character Visual Style</label>
+                                 <select id="character-style-selector" class="form-select rounded-md p-2 w-full">
+                                     <option value="realistic cinematic">Realistic Cinematic</option>
+                                     <option value="hyper realistic">Hyper Realistic</option>
+                                     <option value="3d render">3D Render</option>
+                                     <option value="anime style">Anime</option>
+                                     <option value="cartoon style">Cartoon</option>
+                                     <option value="2d illustration">2D Illustration</option>
+                                 </select>
+                             </div>
+                             <button id="generate-character-btn" class="btn btn-gemini w-full mt-4" data-lang-key="generateCharacterBtn">✨ 3. Generate Main Character</button>
+                             <div id="character-concept-container" class="mt-4 hidden">
+                                 <label class="block text-sm font-medium mb-2" data-lang-key="characterConceptLabel">Character Concept</label>
+                                 <div id="character-image-grid" class="grid grid-cols-2 gap-2 aspect-square bg-gray-900/50 rounded-lg border border-dashed border-gray-600 p-2">
+                                     <div id="image-placeholder-1" class="bg-gray-800/50 rounded flex items-center justify-center"><p class="text-gray-500 text-xs text-center" data-lang-key="frontView">Front View</p></div>
+                                     <div id="image-placeholder-2" class="bg-gray-800/50 rounded flex items-center justify-center"><p class="text-gray-500 text-xs text-center" data-lang-key="backView">Back View</p></div>
+                                     <div id="image-placeholder-3" class="bg-gray-800/50 rounded flex items-center justify-center"><p class="text-gray-500 text-xs text-center" data-lang-key="leftView">Left View</p></div>
+                                     <div id="image-placeholder-4" class="bg-gray-800/50 rounded flex items-center justify-center"><p class="text-gray-500 text-xs text-center" data-lang-key="rightView">Right View</p></div>
+                                 </div>
+                                 <label class="block text-sm font-medium mt-2 mb-1" data-lang-key="characterSheetLabel">Character Sheet (Editable)</label>
+                                 <textarea id="character-sheet-output" class="json-output p-2 rounded-md mt-1 text-xs w-full h-32"></textarea>
+                             </div>
+                             <hr class="my-4 border-gray-600">
+                              <div>
+                                 <label for="core-idea" class="block text-sm font-medium mb-1" data-lang-key="premiseLabel">4. Enter Story Premise</label>
+                                 <textarea id="core-idea" class="form-textarea rounded-md p-2 w-full" rows="4" data-lang-key-placeholder="premisePlaceholder"></textarea>
+                             </div>
+                              <div>
+                                 <label for="story-directives" class="block text-sm font-medium mb-1" data-lang-key="storyDirectivesLabel">5. Story Directives (Optional)</label>
+                                 <input type="text" id="story-directives" class="form-input rounded-md p-2 w-full" data-lang-key-placeholder="storyDirectivesPlaceholder">
+                                 <label for="voice-over-style" class="block text-sm font-medium mb-1 mt-2" data-lang-key="voiceOverStyleLabel">Voice Over Style (Optional)</label>
+                                 <input type="text" id="voice-over-style" class="form-input rounded-md p-2 w-full" data-lang-key-placeholder="voiceOverStylePlaceholder">
+                                 <button id="generate-story-btn" class="btn btn-gemini w-full mt-2" data-lang-key="generateStoryBtn">✨ Generate/Fill Story Arc</button>
+                             </div>
+                         </div>
+                         <hr class="my-6 border-gray-600">
+                         <h2 class="text-xl font-semibold text-white mb-4" data-lang-key="globalSettingsTitle">Global Settings</h2>
+                          <div class="space-y-4">
+                              <div>
+                                 <label for="continuity-seed" class="block text-sm font-medium mb-1" data-lang-key="seedLabel">Continuity Seed</label>
+                                 <input type="number" id="continuity-seed" class="form-input rounded-md p-2 w-full bg-gray-900" readonly>
+                              </div>
+                              <div>
+                                 <label for="project_style" class="block text-sm font-medium mb-1" data-lang-key="styleLabel">Visual Style</label>
+                                 <input type="text" id="project_style" value="realistic_cinematic, 4k, dramatic lighting" class="form-input rounded-md p-2 w-full">
+                              </div>
+                         </div>
+                     </section>
+                 </div>
+                 <!-- Column 2: Scenes & Production -->
+                 <div class="lg:col-span-2 space-y-6">
+                     <section class="hub-section p-6 rounded-lg">
+                         <h2 class="text-2xl font-semibold text-white border-b border-gray-600 pb-3 mb-4" data-lang-key="storyboardTitle">Storyboard</h2>
+                         <div id="scenes-container" class="space-y-6">
+                             <p class="text-center text-gray-400 py-8" data-lang-key="storyboardPlaceholder">Generate a character to begin building your storyboard.</p>
+                         </div>
+                         <button id="add-scene-btn" class="btn btn-secondary w-full mt-4 py-2" data-lang-key="addSceneBtn">Add Scene Manually</button>
+                     </section>
+                     <section class="hub-section p-6 rounded-lg">
+                         <h2 class="text-2xl font-semibold text-white mb-4" data-lang-key="productionTitle">Production</h2>
+                         <button id="proceed-btn" class="btn btn-primary w-full px-4 py-3 rounded-md font-bold text-lg" data-lang-key="proceedBtn">Generate Production Prompts &rarr;</button>
+                     </section>
+                 </div>
+             </div>
+         </div>
+ 
+         <!-- View: Production Deck -->
+         <div id="deck-view" class="hidden">
+             <header class="text-center mb-8">
+                 <h1 class="text-3xl sm:text-4xl font-bold text-white" data-lang-key="deckTitle">Production Deck</h1>
+                 <p class="mt-2 text-lg text-gray-400" data-lang-key="deckTagline">Three production-ready JSON prompts for VEO3. Use them one by one.</p>
+             </header>
+             <div id="json-deck-container" class="grid grid-cols-1 lg:grid-cols-3 gap-6"></div>
+             <div class="text-center mt-8">
+                 <button id="back-to-editor-btn" class="btn btn-secondary py-2 px-6" data-lang-key="backToEditorBtn">&larr; Back to Editor</button>
+             </div>
+         </div>
+     </div>
+ 
+     <!-- Templates & Notification -->
+     <template id="scene-template">
+         <div class="scene-card p-4 rounded-lg border-l-4 border-indigo-500 bg-gray-800/50">
+             <div class="flex justify-between items-start mb-3">
+                 <h3 class="scene-title text-xl font-bold text-white">Scene</h3>
+                 <button class="remove-scene-btn btn btn-danger p-1 rounded-full leading-none">&times;</button>
+             </div>
+             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                 <div class="sm:col-span-2">
+                     <label class="block text-sm font-medium mb-1" data-lang-key="visualDescLabel">Visual Description</label>
+                     <textarea data-key="visual" class="form-textarea rounded-md p-2 w-full" rows="4"></textarea>
+                 </div>
+                 <div class="sm:col-span-2">
+                     <label class="block text-sm font-medium mb-1" data-lang-key="voiceoverLabel">Voice Over</label>
+                     <textarea data-key="voice_over" class="form-textarea rounded-md p-2 w-full" rows="2"></textarea>
+                 </div>
                  <div>
-                    <label class="block text-sm font-medium mb-1" data-lang-key="cameraMoveLabel">Camera Movement</label>
-                    <select data-key="camera" class="form-select rounded-md p-2 w-full">
-                        <option value="">-- Select --</option>
-                        <option value="static">Static</option>
-                        <option value="slow_push_in">Slow Push-in</option>
-                        <option value="drone_shot">Drone Shot</option>
-                        <option value="handheld">Handheld</option>
-                        <option value="circular_orbit">Circular Orbit</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-    </template>
-    <template id="json-card-template">
-        <div class="hub-section p-4 rounded-lg flex flex-col">
-            <h3 class="json-title text-lg font-bold text-white mb-2"></h3>
-            <pre class="json-output p-3 rounded-md h-96 overflow-auto flex-grow"></pre>
-            <button class="copy-json-btn btn btn-secondary w-full mt-4 text-sm py-2" data-lang-key="copyJsonBtn">Copy JSON</button>
-        </div>
-    </template>
-    <div id="notification" class="notification"></div>
+                     <label class="block text-sm font-medium mb-1" data-lang-key="shotTypeLabel">Shot Type</label>
+                     <select data-key="shot_type" class="form-select rounded-md p-2 w-full">
+                         <option value="">-- Select --</option>
+                         <option value="wide_establishing">Wide Establishing</option>
+                         <option value="medium_shot">Medium Shot</option>
+                         <option value="emotive_closeup">Emotive Closeup</option>
+                         <option value="dutch_angle">Dutch Angle</option>
+                         <option value="pov">Point of View (POV)</option>
+                     </select>
+                 </div>
+                  <div>
+                     <label class="block text-sm font-medium mb-1" data-lang-key="cameraMoveLabel">Camera Movement</label>
+                     <select data-key="camera" class="form-select rounded-md p-2 w-full">
+                         <option value="">-- Select --</option>
+                         <option value="static">Static</option>
+                         <option value="slow_push_in">Slow Push-in</option>
+                         <option value="drone_shot">Drone Shot</option>
+                         <option value="handheld">Handheld</option>
+                         <option value="circular_orbit">Circular Orbit</option>
+                     </select>
+                 </div>
+             </div>
+         </div>
+     </template>
+     <template id="json-card-template">
+         <div class="hub-section p-4 rounded-lg flex flex-col">
+             <h3 class="json-title text-lg font-bold text-white mb-2"></h3>
+             <pre class="json-output p-3 rounded-md h-96 overflow-auto flex-grow"></pre>
+             <button class="copy-json-btn btn btn-secondary w-full mt-4 text-sm py-2" data-lang-key="copyJsonBtn">Copy JSON</button>
+         </div>
+     </template>
+     <div id="notification" class="notification"></div>
+ 
+     <script>
+         document.addEventListener('DOMContentLoaded', () => {
+             // --- UI String Dictionary ---
+             const uiStrings = {
+                 id: {
+                     mainTitle: "AIonade Continuum", tagline: "Dari premis ke publikasi, konsisten di setiap frame.",
+                     newProjectBtn: "Proyek Baru",
+                     apiKeyLabel: "Kunci API Gemini", apiKeyPlaceholder: "Masukkan kunci API pribadi Anda di sini",
+                     projectSettingsTitle: "1. Pengaturan Proyek", languageLabel: "Bahasa",
+                     purposeLabel: "Tujuan Cerita", purposeEntertainment: "Hiburan", purposeAffiliate: "Afiliasi",
+                     affiliateDetailsTitle: "Detail Afiliasi",
+                     productNameLabel: "Nama Produk",
+                     productNamePlaceholder: "Contoh: Smartwatch Kronos V2",
+                     productImageLabel: "Referensi Gambar Produk",
+                     uploadFile: "Unggah file", dragDrop: "atau tarik dan lepas", removeImage: "Hapus Gambar",
+                     characterIdeaLabel: "2. Ide Karakter",
+                     characterStyleLabel: "Gaya Visual Karakter",
+                     characterIdeaPlaceholder: "Contoh: Seekor kucing oranye dengan pedang perak berkilauan...",
+                     premiseLabel: "4. Masukkan Premis Cerita", premisePlaceholder: "Contoh: Di sebuah kota yang terus hujan, ia menemukan jam yang bisa menghentikan waktu...",
+                     generateCharacterBtn: "✨ 3. Buat Karakter Utama", characterConceptLabel: "Character Concept",
+                     characterPlaceholder: "Menunggu konsep karakter...",
+                     characterSheetLabel: "Lembar Karakter (Dapat Diedit)",
+                     storyArcLabel: "5. Buat Alur Cerita",
+                     storyDirectivesLabel: "5. Arahan Cerita (Opsional)",
+                     storyDirectivesPlaceholder: "Contoh: menegangkan, akhir yang mengejutkan...",
+                     voiceOverStyleLabel: "Gaya Voice Over (Opsional)",
+                     voiceOverStylePlaceholder: "Contoh: tenang, informatif, bersemangat",
+                     generateStoryBtn: "✨ Generate/Isi Story Arc", globalSettingsTitle: "Global Settings",
+                     seedLabel: "Continuity Seed", styleLabel: "Visual Style", storyboardTitle: "Storyboard",
+                     storyboardPlaceholder: "Buat karakter untuk memulai storyboard Anda.",
+                     addSceneBtn: "Tambah Adegan Manual", productionTitle: "Production",
+                     proceedBtn: "Generate Production Prompts \u2192", deckTitle: "Production Deck",
+                     deckTagline: "Tiga prompt JSON siap pakai untuk VEO3. Gunakan satu per satu.",
+                     backToEditorBtn: "\u2190 Kembali ke Editor", visualDescLabel: "Visual Description",
+                     voiceoverLabel: "Voice Over", copyJsonBtn: "Copy JSON", shotTypeLabel: "Tipe Shot", cameraMoveLabel: "Gerakan Kamera",
+                     notificationSuccess: "Berhasil!", notificationError: "Gagal!",
+                     notificationApiKeyMissing: "Silakan masukkan Kunci API Gemini Anda.",
+                     notificationCharGenSuccess: "Karakter berhasil dibuat!", notificationCharGenFail: "Gagal membuat karakter.",
+                     notificationStoryArcSuccess: "Story arc berhasil dibuat!", notificationInvalidResponse: "AI memberikan respons tidak valid. Coba lagi.",
+                     notificationPremiseRequired: "Masukkan premis cerita terlebih dahulu.",
+                     notificationCharacterIdeaRequired: "Masukkan ide karakter terlebih dahulu.",
+                     notificationSceneRequired: "Buat setidaknya satu adegan terlebih dahulu.",
+                     notificationJsonCopied: "JSON disalin ke clipboard!", notificationCopyFail: "Gagal menyalin.",
+                     notificationStateSaved: "Proyek disimpan!", notificationStateCleared: "Proyek baru dimulai.",
+                     langInstructionForAI: "Please provide the response in Indonesian.",
+                     frontView: "Tampak Depan", backView: "Tampak Belakang", leftView: "Tampak Kiri", rightView: "Tampak Kanan"
+                 },
+                 en: {
+                     mainTitle: "AIonade Continuum", tagline: "From premise to publish, consistent every frame.",
+                     newProjectBtn: "New Project",
+                     apiKeyLabel: "Gemini API Key", apiKeyPlaceholder: "Enter your personal API key here",
+                     projectSettingsTitle: "1. Project Setup", languageLabel: "Language",
+                     purposeLabel: "Story Purpose", purposeEntertainment: "Entertainment", purposeAffiliate: "Affiliate",
+                     affiliateDetailsTitle: "Affiliate Details",
+                     productNameLabel: "Product Name",
+                     productNamePlaceholder: "e.g., Kronos V2 Smartwatch",
+                     productImageLabel: "Product Image Reference",
+                     uploadFile: "Upload a file", dragDrop: "or drag and drop", removeImage: "Remove Image",
+                     characterIdeaLabel: "2. Character Idea",
+                     characterStyleLabel: "Character Visual Style",
+                     characterIdeaPlaceholder: "e.g., An orange cat with a gleaming silver sword...",
+                     premiseLabel: "4. Enter Story Premise", premisePlaceholder: "e.g., In a city of constant rain, he finds a clock that can stop time...",
+                     generateCharacterBtn: "✨ 3. Generate Main Character", characterConceptLabel: "Character Concept",
+                     characterPlaceholder: "Awaiting character concept...",
+                     characterSheetLabel: "Character Sheet (Editable)",
+                     storyArcLabel: "5. Create Story Arc",
+                     storyDirectivesLabel: "5. Story Directives (Optional)",
+                     storyDirectivesPlaceholder: "e.g., thrilling, surprising ending...",
+                     voiceOverStyleLabel: "Voice Over Style (Optional)",
+                     voiceOverStylePlaceholder: "e.g., calm, informative, energetic",
+                     generateStoryBtn: "✨ Generate/Fill Story Arc", globalSettingsTitle: "Global Settings",
+                     seedLabel: "Continuity Seed", styleLabel: "Visual Style", storyboardTitle: "Storyboard",
+                     storyboardPlaceholder: "Generate a character to begin your storyboard.",
+                     addSceneBtn: "Add Scene Manually", productionTitle: "Production",
+                     proceedBtn: "Generate Production Prompts \u2192", deckTitle: "Production Deck",
+                     deckTagline: "Three production-ready JSON prompts for VEO3. Use them one by one.",
+                     backToEditorBtn: "\u2190 Back to Editor", visualDescLabel: "Visual Description",
+                     voiceoverLabel: "Voice Over", copyJsonBtn: "Copy JSON", shotTypeLabel: "Shot Type", cameraMoveLabel: "Camera Movement",
+                     notificationSuccess: "Success!", notificationError: "Failed!",
+                     notificationApiKeyMissing: "Please enter your Gemini API Key.",
+                     notificationCharGenSuccess: "Character generated successfully!", notificationCharGenFail: "Failed to generate character.",
+                     notificationStoryArcSuccess: "Story arc created successfully!", notificationInvalidResponse: "AI returned an invalid response. Please try again.",
+                     notificationPremiseRequired: "Please enter a story premise first.",
+                     notificationCharacterIdeaRequired: "Please enter a character idea first.",
+                     notificationSceneRequired: "Please create at least one scene first.",
+                     notificationJsonCopied: "JSON copied to clipboard!", notificationCopyFail: "Failed to copy.",
+                     notificationStateSaved: "Project saved!", notificationStateCleared: "New project started.",
+                     langInstructionForAI: "Please provide the response in English.",
+                     frontView: "Front View", backView: "Back View", leftView: "Left View", rightView: "Right View"
+                 },
+                 zh: {
+                     mainTitle: "AIonade Continuum", tagline: "从构思到发布，每一帧都保持一致。",
+                     newProjectBtn: "新项目",
+                     apiKeyLabel: "Gemini API 密钥", apiKeyPlaceholder: "在此输入您的个人 API 密钥",
+                     projectSettingsTitle: "1. 项目设置", languageLabel: "语言",
+                     purposeLabel: "故事目的", purposeEntertainment: "娱乐", purposeAffiliate: "联盟营销",
+                     affiliateDetailsTitle: "联盟营销详情",
+                     productNameLabel: "产品名称",
+                     productNamePlaceholder: "例如：克洛诺斯 V2 智能手表",
+                     productImageLabel: "产品图片参考",
+                     uploadFile: "上传文件", dragDrop: "或拖放", removeImage: "移除图片",
+                     characterIdeaLabel: "2. 角色想法",
+                     characterStyleLabel: "角色视觉风格",
+                     characterIdeaPlaceholder: "例如：一只拿着闪亮银剑的橘猫...",
+                     premiseLabel: "4. 输入故事前提", premisePlaceholder: "例如：在一个不停下雨的城市里，他发现了一个可以停止时间的时钟...",
+                     generateCharacterBtn: "✨ 3. 生成主角", characterConceptLabel: "角色概念",
+                     characterPlaceholder: "等待角色概念...",
+                     characterSheetLabel: "角色表 (可编辑)",
+                     storyArcLabel: "5. 创建故事线",
+                     storyDirectivesLabel: "5. 故事指令 (可选)",
+                     storyDirectivesPlaceholder: "例如：惊险, 意外结局...",
+                     voiceOverStyleLabel: "旁白风格 (可选)",
+                     voiceOverStylePlaceholder: "例如：平静、信息丰富、充满活力",
+                     generateStoryBtn: "✨ 生成/填充故事线", globalSettingsTitle: "全局设置",
+                     seedLabel: "连续性种子", styleLabel: "视觉风格", storyboardTitle: "故事板",
+                     storyboardPlaceholder: "生成一个角色以开始您的故事板。",
+                     addSceneBtn: "手动添加场景", productionTitle: "制作",
+                     proceedBtn: "生成制作提示 \u2192", deckTitle: "制作面板",
+                     deckTagline: "为 VEO3 准备的三个制作提示。请逐一使用。",
+                     backToEditorBtn: "\u2190 返回编辑器", visualDescLabel: "视觉描述",
+                     voiceoverLabel: "旁白", copyJsonBtn: "复制 JSON", shotTypeLabel: "镜头类型", cameraMoveLabel: "摄像机移动",
+                     notificationSuccess: "成功！", notificationError: "失败！",
+                     notificationApiKeyMissing: "请输入您的 Gemini API 密钥。",
+                     notificationCharGenSuccess: "角色生成成功！", notificationCharGenFail: "角色生成失败。",
+                     notificationStoryArcSuccess: "故事线创建成功！", notificationInvalidResponse: "AI 返回了无效的回应。请重试。",
+                     notificationPremiseRequired: "请先输入故事前提。",
+                     notificationCharacterIdeaRequired: "请先输入角色想法。",
+                     notificationSceneRequired: "请先创建至少一个场景。",
+                     notificationJsonCopied: "JSON 已复制到剪贴板！", notificationCopyFail: "复制失败。",
+                     notificationStateSaved: "项目已保存！", notificationStateCleared: "已开始新项目。",
+                     langInstructionForAI: "请用中文回答。",
+                     frontView: "正面图", backView: "背面图", leftView: "左视图", rightView: "右视图"
+                 }
+             };
+ 
+             let currentLang = 'id';
+             let characterSheet = null; 
+             let characterImageUrls = [];
+             let productImageBase64 = null;
+             let isAIBusy = false;
+             const storageKey = 'aionadeContinuumProject';
+ 
+             // --- DOM Elements ---
+             const editorView = document.getElementById('editor-view');
+             const deckView = document.getElementById('deck-view');
+             const scenesContainer = document.getElementById('scenes-container');
+             const jsonDeckContainer = document.getElementById('json-deck-container');
+             const sceneTemplate = document.getElementById('scene-template');
+             const jsonCardTemplate = document.getElementById('json-card-template');
+             const notificationEl = document.getElementById('notification');
+             const generateStoryBtn = document.getElementById('generate-story-btn');
+             const generateCharacterBtn = document.getElementById('generate-character-btn');
+             const addSceneBtn = document.getElementById('add-scene-btn');
+             const proceedBtn = document.getElementById('proceed-btn');
+             const backToEditorBtn = document.getElementById('back-to-editor-btn');
+             const continuitySeedInput = document.getElementById('continuity-seed');
+             const affiliateDetails = document.getElementById('affiliate-details');
+             const purposeRadios = document.querySelectorAll('input[name="purpose"]');
+             const languageSelector = document.getElementById('language-selector');
+             const characterSheetOutput = document.getElementById('character-sheet-output');
+             const characterIdeaContainer = document.getElementById('character-idea-container');
+             const characterStyleSelector = document.getElementById('character-style-selector');
+             const productImageInput = document.getElementById('product-image-input');
+             const imageUploadPrompt = document.getElementById('image-upload-prompt');
+             const imagePreviewContainer = document.getElementById('image-preview-container');
+             const imagePreview = document.getElementById('image-preview');
+             const removeImageBtn = document.getElementById('remove-image-btn');
+             const newProjectBtn = document.getElementById('new-project-btn');
+             const apiKeyInput = document.getElementById('api-key-input');
+ 
+             // --- Core Functions ---
+             const setLanguage = (lang) => {
+                 currentLang = lang;
+                 const strings = uiStrings[lang] || uiStrings['en'];
+                 document.querySelectorAll('[data-lang-key]').forEach(el => {
+                     const key = el.dataset.langKey;
+                     if (strings[key]) el.textContent = strings[key];
+                 });
+                 document.querySelectorAll('[data-lang-key-placeholder]').forEach(el => {
+                     const key = el.dataset.langKeyPlaceholder;
+                     if (strings[key]) el.placeholder = strings[key];
+                 });
+                 document.documentElement.lang = lang;
+                 document.title = strings.mainTitle;
+             };
+ 
+             const showNotification = (messageKey, type = 'success', duration = 3000) => {
+                 const message = uiStrings[currentLang][messageKey] || messageKey;
+                 notificationEl.textContent = message;
+                 notificationEl.className = 'notification';
+                 notificationEl.classList.add(type, 'show');
+                 setTimeout(() => notificationEl.classList.remove('show'), duration);
+             };
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // --- UI String Dictionary ---
-            const uiStrings = {
-                id: {
-                    mainTitle: "AIonade Continuum", tagline: "Dari premis ke publikasi, konsisten di setiap frame.",
-                    newProjectBtn: "Proyek Baru",
-                    apiKeyLabel: "Kunci API Gemini", apiKeyPlaceholder: "Masukkan kunci API pribadi Anda di sini",
-                    projectSettingsTitle: "1. Pengaturan Proyek", languageLabel: "Bahasa",
-                    purposeLabel: "Tujuan Cerita", purposeEntertainment: "Hiburan", purposeAffiliate: "Afiliasi",
-                    affiliateDetailsTitle: "Detail Afiliasi",
-                    productNameLabel: "Nama Produk",
-                    productNamePlaceholder: "Contoh: Smartwatch Kronos V2",
-                    productImageLabel: "Referensi Gambar Produk",
-                    uploadFile: "Unggah file", dragDrop: "atau tarik dan lepas", removeImage: "Hapus Gambar",
-                    characterIdeaLabel: "2. Ide Karakter",
-                    characterStyleLabel: "Gaya Visual Karakter",
-                    characterIdeaPlaceholder: "Contoh: Seekor kucing oranye dengan pedang perak berkilauan...",
-                    premiseLabel: "4. Masukkan Premis Cerita", premisePlaceholder: "Contoh: Di sebuah kota yang terus hujan, ia menemukan jam yang bisa menghentikan waktu...",
-                    generateCharacterBtn: "✨ 3. Buat Karakter Utama", characterConceptLabel: "Character Concept",
-                    characterPlaceholder: "Menunggu konsep karakter...",
-                    characterSheetLabel: "Lembar Karakter (Dapat Diedit)",
-                    storyArcLabel: "5. Buat Alur Cerita",
-                    storyDirectivesLabel: "5. Arahan Cerita (Opsional)",
-                    storyDirectivesPlaceholder: "Contoh: menegangkan, akhir yang mengejutkan...",
-                    voiceOverStyleLabel: "Gaya Voice Over (Opsional)",
-                    voiceOverStylePlaceholder: "Contoh: tenang, informatif, bersemangat",
-                    generateStoryBtn: "✨ Generate/Isi Story Arc", globalSettingsTitle: "Global Settings",
-                    seedLabel: "Continuity Seed", styleLabel: "Visual Style", storyboardTitle: "Storyboard",
-                    storyboardPlaceholder: "Buat karakter untuk memulai storyboard Anda.",
-                    addSceneBtn: "Tambah Adegan Manual", productionTitle: "Production",
-                    proceedBtn: "Generate Production Prompts \u2192", deckTitle: "Production Deck",
-                    deckTagline: "Tiga prompt JSON siap pakai untuk VEO3. Gunakan satu per satu.",
-                    backToEditorBtn: "\u2190 Kembali ke Editor", visualDescLabel: "Visual Description",
-                    voiceoverLabel: "Voice Over", copyJsonBtn: "Copy JSON", shotTypeLabel: "Tipe Shot", cameraMoveLabel: "Gerakan Kamera",
-                    notificationSuccess: "Berhasil!", notificationError: "Gagal!",
-                    notificationApiKeyMissing: "Silakan masukkan Kunci API Gemini Anda.",
-                    notificationCharGenSuccess: "Karakter berhasil dibuat!", notificationCharGenFail: "Gagal membuat karakter.",
-                    notificationStoryArcSuccess: "Story arc berhasil dibuat!", notificationInvalidResponse: "AI memberikan respons tidak valid. Coba lagi.",
-                    notificationPremiseRequired: "Masukkan premis cerita terlebih dahulu.",
-                    notificationCharacterIdeaRequired: "Masukkan ide karakter terlebih dahulu.",
-                    notificationSceneRequired: "Buat setidaknya satu adegan terlebih dahulu.",
-                    notificationJsonCopied: "JSON disalin ke clipboard!", notificationCopyFail: "Gagal menyalin.",
-                    notificationStateSaved: "Proyek disimpan!", notificationStateCleared: "Proyek baru dimulai.",
-                    langInstructionForAI: "Please provide the response in Indonesian.",
-                    frontView: "Tampak Depan", backView: "Tampak Belakang", leftView: "Tampak Kiri", rightView: "Tampak Kanan"
-                },
-                en: {
-                    mainTitle: "AIonade Continuum", tagline: "From premise to publish, consistent every frame.",
-                    newProjectBtn: "New Project",
-                    apiKeyLabel: "Gemini API Key", apiKeyPlaceholder: "Enter your personal API key here",
-                    projectSettingsTitle: "1. Project Setup", languageLabel: "Language",
-                    purposeLabel: "Story Purpose", purposeEntertainment: "Entertainment", purposeAffiliate: "Affiliate",
-                    affiliateDetailsTitle: "Affiliate Details",
-                    productNameLabel: "Product Name",
-                    productNamePlaceholder: "e.g., Kronos V2 Smartwatch",
-                    productImageLabel: "Product Image Reference",
-                    uploadFile: "Upload a file", dragDrop: "or drag and drop", removeImage: "Remove Image",
-                    characterIdeaLabel: "2. Character Idea",
-                    characterStyleLabel: "Character Visual Style",
-                    characterIdeaPlaceholder: "e.g., An orange cat with a gleaming silver sword...",
-                    premiseLabel: "4. Enter Story Premise", premisePlaceholder: "e.g., In a city of constant rain, he finds a clock that can stop time...",
-                    generateCharacterBtn: "✨ 3. Generate Main Character", characterConceptLabel: "Character Concept",
-                    characterPlaceholder: "Awaiting character concept...",
-                    characterSheetLabel: "Character Sheet (Editable)",
-                    storyArcLabel: "5. Create Story Arc",
-                    storyDirectivesLabel: "5. Story Directives (Optional)",
-                    storyDirectivesPlaceholder: "e.g., thrilling, surprising ending...",
-                    voiceOverStyleLabel: "Voice Over Style (Optional)",
-                    voiceOverStylePlaceholder: "e.g., calm, informative, energetic",
-                    generateStoryBtn: "✨ Generate/Fill Story Arc", globalSettingsTitle: "Global Settings",
-                    seedLabel: "Continuity Seed", styleLabel: "Visual Style", storyboardTitle: "Storyboard",
-                    storyboardPlaceholder: "Generate a character to begin your storyboard.",
-                    addSceneBtn: "Add Scene Manually", productionTitle: "Production",
-                    proceedBtn: "Generate Production Prompts \u2192", deckTitle: "Production Deck",
-                    deckTagline: "Three production-ready JSON prompts for VEO3. Use them one by one.",
-                    backToEditorBtn: "\u2190 Back to Editor", visualDescLabel: "Visual Description",
-                    voiceoverLabel: "Voice Over", copyJsonBtn: "Copy JSON", shotTypeLabel: "Shot Type", cameraMoveLabel: "Camera Movement",
-                    notificationSuccess: "Success!", notificationError: "Failed!",
-                    notificationApiKeyMissing: "Please enter your Gemini API Key.",
-                    notificationCharGenSuccess: "Character generated successfully!", notificationCharGenFail: "Failed to generate character.",
-                    notificationStoryArcSuccess: "Story arc created successfully!", notificationInvalidResponse: "AI returned an invalid response. Please try again.",
-                    notificationPremiseRequired: "Please enter a story premise first.",
-                    notificationCharacterIdeaRequired: "Please enter a character idea first.",
-                    notificationSceneRequired: "Please create at least one scene first.",
-                    notificationJsonCopied: "JSON copied to clipboard!", notificationCopyFail: "Failed to copy.",
-                    notificationStateSaved: "Project saved!", notificationStateCleared: "New project started.",
-                    langInstructionForAI: "Please provide the response in English.",
-                    frontView: "Front View", backView: "Back View", leftView: "Left View", rightView: "Right View"
-                },
-                zh: {
-                    mainTitle: "AIonade Continuum", tagline: "从构思到发布，每一帧都保持一致。",
-                    newProjectBtn: "新项目",
-                    apiKeyLabel: "Gemini API 密钥", apiKeyPlaceholder: "在此输入您的个人 API 密钥",
-                    projectSettingsTitle: "1. 项目设置", languageLabel: "语言",
-                    purposeLabel: "故事目的", purposeEntertainment: "娱乐", purposeAffiliate: "联盟营销",
-                    affiliateDetailsTitle: "联盟营销详情",
-                    productNameLabel: "产品名称",
-                    productNamePlaceholder: "例如：克洛诺斯 V2 智能手表",
-                    productImageLabel: "产品图片参考",
-                    uploadFile: "上传文件", dragDrop: "或拖放", removeImage: "移除图片",
-                    characterIdeaLabel: "2. 角色想法",
-                    characterStyleLabel: "角色视觉风格",
-                    characterIdeaPlaceholder: "例如：一只拿着闪亮银剑的橘猫...",
-                    premiseLabel: "4. 输入故事前提", premisePlaceholder: "例如：在一个不停下雨的城市里，他发现了一个可以停止时间的时钟...",
-                    generateCharacterBtn: "✨ 3. 生成主角", characterConceptLabel: "角色概念",
-                    characterPlaceholder: "等待角色概念...",
-                    characterSheetLabel: "角色表 (可编辑)",
-                    storyArcLabel: "5. 创建故事线",
-                    storyDirectivesLabel: "5. 故事指令 (可选)",
-                    storyDirectivesPlaceholder: "例如：惊险, 意外结局...",
-                    voiceOverStyleLabel: "旁白风格 (可选)",
-                    voiceOverStylePlaceholder: "例如：平静、信息丰富、充满活力",
-                    generateStoryBtn: "✨ 生成/填充故事线", globalSettingsTitle: "全局设置",
-                    seedLabel: "连续性种子", styleLabel: "视觉风格", storyboardTitle: "故事板",
-                    storyboardPlaceholder: "生成一个角色以开始您的故事板。",
-                    addSceneBtn: "手动添加场景", productionTitle: "制作",
-                    proceedBtn: "生成制作提示 \u2192", deckTitle: "制作面板",
-                    deckTagline: "为 VEO3 准备的三个制作提示。请逐一使用。",
-                    backToEditorBtn: "\u2190 返回编辑器", visualDescLabel: "视觉描述",
-                    voiceoverLabel: "旁白", copyJsonBtn: "复制 JSON", shotTypeLabel: "镜头类型", cameraMoveLabel: "摄像机移动",
-                    notificationSuccess: "成功！", notificationError: "失败！",
-                    notificationApiKeyMissing: "请输入您的 Gemini API 密钥。",
-                    notificationCharGenSuccess: "角色生成成功！", notificationCharGenFail: "角色生成失败。",
-                    notificationStoryArcSuccess: "故事线创建成功！", notificationInvalidResponse: "AI 返回了无效的回应。请重试。",
-                    notificationPremiseRequired: "请先输入故事前提。",
-                    notificationCharacterIdeaRequired: "请先输入角色想法。",
-                    notificationSceneRequired: "请先创建至少一个场景。",
-                    notificationJsonCopied: "JSON 已复制到剪贴板！", notificationCopyFail: "复制失败。",
-                    notificationStateSaved: "项目已保存！", notificationStateCleared: "已开始新项目。",
-                    langInstructionForAI: "请用中文回答。",
-                    frontView: "正面图", backView: "背面图", leftView: "左视图", rightView: "右视图"
-                }
-            };
+             const clearApiKey = () => {
+                 apiKeyInput.value = '';
+             };
+ 
+             const toggleAILock = (lock) => {
+                 isAIBusy = lock;
+                 document.querySelectorAll('.btn-gemini, #proceed-btn').forEach(btn => btn.disabled = lock);
+             };
+             
+             function extractJson(text) {
+                 if (!text || typeof text !== 'string') return null;
+                 const firstBracket = text.indexOf('{');
+                 const firstSquare = text.indexOf('[');
+                 if (firstBracket === -1 && firstSquare === -1) return null;
+                 let startIndex;
+                 if (firstBracket === -1) startIndex = firstSquare;
+                 else if (firstSquare === -1) startIndex = firstBracket;
+                 else startIndex = Math.min(firstBracket, firstSquare);
+                 const lastBracket = text.lastIndexOf('}');
+                 const lastSquare = text.lastIndexOf(']');
+                 if (lastBracket === -1 && lastSquare === -1) return null;
+                 const endIndex = Math.max(lastBracket, lastSquare);
+                 if (endIndex < startIndex) return null;
+                 const jsonString = text.substring(startIndex, endIndex + 1);
+                 try {
+                     return JSON.parse(jsonString);
+                 } catch (e) {
+                     console.error("Failed to parse extracted JSON string:", e, { originalText: text, extractedString: jsonString });
+                     return null;
+                 }
+             }
+ 
+             async function callApi(apiUrl, payload, buttonElement) {
+                 const apiKey = apiKeyInput.value.trim();
+                 if (!apiKey) {
+                     showNotification('notificationApiKeyMissing', 'error');
+                     return null;
+                 }
+ 
+                 const originalContent = buttonElement.innerHTML;
+                 if (!isAIBusy) {
+                     buttonElement.innerHTML = `<span class="loader"></span> Generating...`;
+                 }
+                 
+                 const fullApiUrl = `${apiUrl}?key=${apiKey}`;
+                 
+                 let lastError = null;
+                 const maxRetries = 3;
+                 let delay = 1000;
+ 
+                 for (let i = 0; i < maxRetries; i++) {
+                     try {
+                         const response = await fetch(fullApiUrl, {
+                             method: 'POST',
+                             headers: { 'Content-Type': 'application/json' },
+                             body: JSON.stringify(payload)
+                         });
+ 
+                         if (response.ok) {
+                             if (!isAIBusy) buttonElement.innerHTML = originalContent;
+                             return await response.json();
+                         }
+ 
+                         if (response.status === 503 || response.status === 429) {
+                             console.log(`Attempt ${i + 1} failed with ${response.status}. Retrying in ${delay / 1000}s...`);
+                             await new Promise(resolve => setTimeout(resolve, delay));
+                             delay *= 2; 
+                             continue; 
+                         }
+ 
+                         let errorBody = 'Could not read error body.';
+                         try {
+                             errorBody = await response.json();
+                         } catch (e) { /* Ignore */ }
+                         console.error("API Error Body:", errorBody);
+                         lastError = new Error(`HTTP error! status: ${response.status}`);
+                         break; 
+ 
+                     } catch (error) {
+                         lastError = error;
+                         console.log(`Attempt ${i + 1} failed with network error. Retrying in ${delay / 1000}s...`);
+                         await new Promise(resolve => setTimeout(resolve, delay));
+                         delay *= 2;
+                     }
+                 }
+ 
+                 console.error("Error calling API after multiple retries:", lastError);
+                 showNotification("notificationError", 'error', 5000);
+                 buttonElement.innerHTML = originalContent;
+                 clearApiKey();
+                 return null;
+             }
+ 
+             async function callGemini(prompt, buttonElement, imageBase64 = null) {
+                 const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent`;
+                 const parts = [{ text: prompt }];
+                 if (imageBase64) {
+                     parts.push({
+                         inlineData: {
+                             mimeType: imageBase64.match(/:(.*?);/)[1],
+                             data: imageBase64.split(',')[1]
+                         }
+                     });
+                 }
+                 const payload = { contents: [{ role: "user", parts: parts }] };
+                 
+                 const result = await callApi(apiUrl, payload, buttonElement);
+                 if (result && result.candidates?.[0]?.content?.parts?.[0]?.text) {
+                     return result.candidates[0].content.parts[0].text.trim();
+                 } else {
+                     if(result) console.error("Invalid response structure from Gemini:", result);
+                     return null;
+                 }
+             }
+             
+             async function callImagenApi(prompt, buttonElement) {
+                 const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-preview-image-generation:generateContent`;
+                 const payload = {
+                     contents: [{
+                         parts: [{ text: prompt }]
+                     }],
+                     generationConfig: {
+                         responseModalities: ['IMAGE', 'TEXT']
+                     },
+                 };
+ 
+                 const result = await callApi(apiUrl, payload, buttonElement);
+                 const base64Data = result?.candidates?.[0]?.content?.parts?.find(p => p.inlineData)?.inlineData?.data;
+ 
+                 if (base64Data) {
+                     return `data:image/png;base64,${base64Data}`;
+                 } else {
+                     if(result) console.error("Invalid response structure from Image Generation API:", result);
+                     return null;
+                 }
+             }
+             
+             const addScene = (sceneData = {}) => {
+                 const sceneElement = sceneTemplate.content.cloneNode(true);
+                 sceneElement.querySelector('[data-key="visual"]').value = sceneData.visual || '';
+                 sceneElement.querySelector('[data-key="voice_over"]').value = sceneData.voice_over || '';
+                 sceneElement.querySelector('[data-key="shot_type"]').value = sceneData.shot_type || '';
+                 sceneElement.querySelector('[data-key="camera"]').value = sceneData.camera || '';
+                 scenesContainer.appendChild(sceneElement);
+                 updateSceneTitles();
+                 setLanguage(currentLang);
+             };
+ 
+             const updateSceneTitles = () => {
+                 const scenes = scenesContainer.querySelectorAll('.scene-card');
+                 if (scenes.length === 0) {
+                      scenesContainer.innerHTML = `<p class="text-center text-gray-400 py-8" data-lang-key="storyboardPlaceholder">${uiStrings[currentLang].storyboardPlaceholder}</p>`;
+                 } else {
+                     scenes.forEach((scene, index) => {
+                         scene.querySelector('.scene-title').textContent = `Scene ${index + 1}`;
+                     });
+                 }
+             };
+             
+             const generateAndSetSeed = () => {
+                 const seed = Math.floor(Math.random() * 100000);
+                 continuitySeedInput.value = seed;
+                 return seed;
+             };
+ 
+             const resetWorkflow = (isNewProject = false) => {
+                 document.getElementById('core-idea').value = '';
+                 document.getElementById('character-idea').value = '';
+                 document.getElementById('story-directives').value = '';
+                 document.getElementById('character-sheet-output').value = '';
+                 document.getElementById('character-concept-container').classList.add('hidden');
+                 
+                 const grid = document.getElementById('character-image-grid');
+                 grid.innerHTML = `
+                     <div id="image-placeholder-1" class="bg-gray-800/50 rounded flex items-center justify-center"><p class="text-gray-500 text-xs text-center" data-lang-key="frontView">${uiStrings[currentLang].frontView}</p></div>
+                     <div id="image-placeholder-2" class="bg-gray-800/50 rounded flex items-center justify-center"><p class="text-gray-500 text-xs text-center" data-lang-key="backView">${uiStrings[currentLang].backView}</p></div>
+                     <div id="image-placeholder-3" class="bg-gray-800/50 rounded flex items-center justify-center"><p class="text-gray-500 text-xs text-center" data-lang-key="leftView">${uiStrings[currentLang].leftView}</p></div>
+                     <div id="image-placeholder-4" class="bg-gray-800/50 rounded flex items-center justify-center"><p class="text-gray-500 text-xs text-center" data-lang-key="rightView">${uiStrings[currentLang].rightView}</p></div>
+                 `;
+ 
+                 characterSheet = null;
+                 characterImageUrls = [];
+                 scenesContainer.innerHTML = `<p class="text-center text-gray-400 py-8" data-lang-key="storyboardPlaceholder">${uiStrings[currentLang].storyboardPlaceholder}</p>`;
+                 
+                 if (isNewProject) {
+                     generateAndSetSeed();
+                     document.getElementById('project_style').value = 'realistic_cinematic, 4k, dramatic lighting';
+                     document.getElementById('character-style-selector').value = 'realistic cinematic';
+                     document.getElementById('product-name').value = '';
+                     productImageBase64 = null;
+                     productImageInput.value = '';
+                     imageUploadPrompt.classList.remove('hidden');
+                     imagePreviewContainer.classList.add('hidden');
+                 }
+             };
+ 
+             const saveState = () => {
+                 const scenesData = Array.from(scenesContainer.querySelectorAll('.scene-card')).map(card => ({
+                     visual: card.querySelector('[data-key="visual"]').value,
+                     voice_over: card.querySelector('[data-key="voice_over"]').value,
+                     shot_type: card.querySelector('[data-key="shot_type"]').value,
+                     camera: card.querySelector('[data-key="camera"]').value,
+                 }));
+ 
+                 const state = {
+                     lang: languageSelector.value,
+                     purpose: document.querySelector('input[name="purpose"]:checked').value,
+                     productName: document.getElementById('product-name').value,
+                     productImage: null, 
+                     characterIdea: document.getElementById('character-idea').value,
+                     characterStyle: characterStyleSelector.value,
+                     characterSheet: characterSheet,
+                     characterSheetText: characterSheetOutput.value,
+                     characterImage: [],
+                     coreIdea: document.getElementById('core-idea').value,
+                     storyDirectives: document.getElementById('story-directives').value,
+                     voiceOverStyle: document.getElementById('voice-over-style').value,
+                     seed: continuitySeedInput.value,
+                     style: document.getElementById('project_style').value,
+                     scenes: scenesData,
+                 };
+ 
+                 try {
+                     localStorage.setItem(storageKey, JSON.stringify(state));
+                 } catch (e) {
+                     console.error("Failed to save state:", e);
+                     showNotification("Gagal menyimpan proyek. Penyimpanan mungkin penuh.", "error");
+                 }
+             };
+ 
+             const loadState = () => {
+                 const savedState = localStorage.getItem(storageKey);
+                 if (!savedState) {
+                     generateAndSetSeed();
+                     setLanguage('id');
+                     return;
+                 }
+ 
+                 const state = JSON.parse(savedState);
+                 
+                 languageSelector.value = state.lang || 'id';
+                 document.querySelector(`input[name="purpose"][value="${state.purpose || 'entertainment'}"]`).checked = true;
+                 document.getElementById('product-name').value = state.productName || '';
+                 document.getElementById('character-idea').value = state.characterIdea || '';
+                 characterStyleSelector.value = state.characterStyle || 'realistic cinematic';
+                 characterSheetOutput.value = state.characterSheetText || '';
+                 characterSheet = state.characterSheet || null;
+                 characterImageUrls = [];
+                 document.getElementById('core-idea').value = state.coreIdea || '';
+                 document.getElementById('story-directives').value = state.storyDirectives || '';
+                 document.getElementById('voice-over-style').value = state.voiceOverStyle || '';
+                 continuitySeedInput.value = state.seed || generateAndSetSeed();
+                 document.getElementById('project_style').value = state.style || 'realistic_cinematic, 4k, dramatic lighting';
+ 
+                 if (characterSheet) {
+                     document.getElementById('character-concept-container').classList.remove('hidden');
+                 }
+ 
+                 if (state.scenes && state.scenes.length > 0) {
+                     scenesContainer.innerHTML = '';
+                     state.scenes.forEach(sceneData => addScene(sceneData));
+                 }
+                 
+                 purposeRadios[0].dispatchEvent(new Event('change', { bubbles: true }));
+                 setLanguage(languageSelector.value);
+             };
+ 
+             const clearState = () => {
+                 localStorage.removeItem(storageKey);
+                 resetWorkflow(true);
+                 clearApiKey();
+                 showNotification('notificationStateCleared', 'success');
+             };
+ 
 
-            let currentLang = 'id';
-            let characterSheet = null; 
-            let characterImageUrls = [];
-            let productImageBase64 = null;
-            let isAIBusy = false;
-            const storageKey = 'aionadeContinuumProject';
+             // --- Event Listeners ---
+             languageSelector.addEventListener('change', (e) => setLanguage(e.target.value));
+ 
+             purposeRadios.forEach(radio => {
+                 radio.addEventListener('change', (e) => {
+                     const isAffiliate = e.target.value === 'affiliate';
+                     affiliateDetails.classList.toggle('hidden', !isAffiliate);
+                     characterIdeaContainer.classList.toggle('hidden', isAffiliate);
+                     document.getElementById('generate-character-btn').classList.toggle('hidden', isAffiliate);
+                     document.getElementById('character-concept-container').classList.toggle('hidden', isAffiliate);
+                     if (radio.matches(':focus-visible')) {
+                         resetWorkflow();
+                     }
+                 });
+             });
+             
+             productImageInput.addEventListener('change', (e) => {
+                 const file = e.target.files[0];
+                 if (file) {
+                     const reader = new FileReader();
+                     reader.onload = (event) => {
+                         productImageBase64 = event.target.result;
+                         imagePreview.src = event.target.result;
+                         imageUploadPrompt.classList.add('hidden');
+                         imagePreviewContainer.classList.remove('hidden');
+                         saveState();
+                     };
+                     reader.readAsDataURL(file);
+                 }
+             });
+ 
+             removeImageBtn.addEventListener('click', () => {
+                 productImageBase64 = null;
+                 productImageInput.value = '';
+                 imageUploadPrompt.classList.remove('hidden');
+                 imagePreviewContainer.classList.add('hidden');
+                 saveState();
+             });
+ 
+             generateCharacterBtn.addEventListener('click', async (e) => {
+                 if (isAIBusy) return;
+                 toggleAILock(true);
+ 
+                 try {
+                     const characterIdea = document.getElementById('character-idea').value;
+                     if (!characterIdea) {
+                         showNotification('notificationCharacterIdeaRequired', 'error');
+                         return;
+                     }
+                     
+                     document.getElementById('character-concept-container').classList.remove('hidden');
+                     const characterSheetOutput = document.getElementById('character-sheet-output');
+                     characterSheetOutput.value = ''; 
+                     characterImageUrls = [];
+ 
+                     const characterStyle = characterStyleSelector.value;
+                     const langInstruction = uiStrings[currentLang].langInstructionForAI;
+                     const sheetPrompt = `Based on the character idea "${characterIdea}", create a structured JSON "character sheet". The character should be described as if they belong in a work using ${characterStyle}. Include keys: name, description, personality, age, gender, clothing, visual_notes. Use a valid JSON object only. ${langInstruction}`;
+                     
+                     const sheetResult = await callGemini(sheetPrompt, e.target);
+                     if (!sheetResult) {
+                         characterSheetOutput.value = 'Error fetching character data.';
+                         return;
+                     }
+ 
+                     let parsedJson = extractJson(sheetResult);
+                     let parsedSheet = parsedJson;
+                     if (parsedJson && parsedJson.character && Object.keys(parsedJson).length === 1) {
+                         parsedSheet = parsedJson.character;
+                     } else if (parsedJson && parsedJson.character_sheet && Object.keys(parsedJson).length === 1) {
+                         parsedSheet = parsedJson.character_sheet;
+                     }
+ 
+                     if (!parsedSheet || !parsedSheet.name || !parsedSheet.description) {
+                         console.error("Failed to parse character sheet. Response was:", sheetResult);
+                         characterSheetOutput.value = 'Error parsing character data. Raw response:\n' + sheetResult;
+                         return showNotification('notificationInvalidResponse', 'error');
+                     }
+                     
+                     characterSheetOutput.value = JSON.stringify(parsedSheet, null, 2);
+                     characterSheet = parsedSheet;
+ 
+                     const placeholders = [
+                         document.getElementById('image-placeholder-1'),
+                         document.getElementById('image-placeholder-2'),
+                         document.getElementById('image-placeholder-3'),
+                         document.getElementById('image-placeholder-4')
+                     ];
+ 
+                     const views = [
+                         { name: "full body front view", element: placeholders[0] },
+                         { name: "full body back view", element: placeholders[1] },
+                         { name: "full body left side view", element: placeholders[2] },
+                         { name: "full body right side view", element: placeholders[3] }
+                     ];
+ 
+                     for (const view of views) {
+                         view.element.innerHTML = `<div class="flex flex-col items-center justify-center h-full gap-2"><span class="loader"></span><p class="text-xs text-gray-400">Painting...</p></div>`;
+                     }
+ 
+                     for (const view of views) {
+                         const imagePrompt = `Character concept art of "${parsedSheet.name}". ${parsedSheet.description.physical}. Clothing: ${parsedSheet.clothing}. ${characterStyle}, high detail, cinematic, dramatic lighting, full body, clean background.`;
+ 
+                         const imageUrl = await callImagenApi(imagePrompt, e.target);
+ 
+                         if (imageUrl) {
+                             const img = document.createElement('img');
+                             img.src = imageUrl;
+                             img.className = 'w-full h-full object-contain rounded-lg';
+                             view.element.innerHTML = '';
+                             view.element.appendChild(img);
+                             characterImageUrls.push(imageUrl);
+                         } else {
+                             view.element.innerHTML = `<p class="text-red-500 text-xs text-center p-2">Generation Failed</p>`;
+                             characterImageUrls.push(null);
+                         }
+                     }
+                     
+                     showNotification('notificationCharGenSuccess', 'success');
+                     
+                     scenesContainer.innerHTML = '';
+                     addScene();
+                     addScene();
+                     addScene();
+                     saveState();
+                 } finally {
+                     toggleAILock(false);
+                 }
+             });
+ 
+             generateStoryBtn.addEventListener('click', async (e) => {
+                 if (isAIBusy) return;
+                 toggleAILock(true);
+ 
+                 try {
+                     const coreIdea = document.getElementById('core-idea').value;
+                     if (!coreIdea) {
+                         showNotification('notificationPremiseRequired', 'error');
+                         return;
+                     }
+                     
+                     let currentCharacterSheet;
+                     const purpose = document.querySelector('input[name="purpose"]:checked').value;
+ 
+                     if (purpose === 'entertainment') {
+                         try {
+                             currentCharacterSheet = JSON.parse(document.getElementById('character-sheet-output').value);
+                         } catch {
+                             showNotification('Please generate a valid character first.', 'error');
+                             return;
+                         }
+                     }
+                     
+                     const storyDirectives = document.getElementById('story-directives').value;
+                     const langInstruction = uiStrings[currentLang].langInstructionForAI;
+                     const characterContext = currentCharacterSheet ? `\nCharacter Sheet: ${JSON.stringify(currentCharacterSheet)}` : '';
+                     
+                     let prompt;
+                     if (purpose === 'affiliate') {
+                         const productName = document.getElementById('product-name').value;
+                         prompt = `This is an affiliate video for the product "${productName}". Premise: "${coreIdea}".\nStory Directives: ${storyDirectives}\n\nBased on this and the provided product image, generate a 3-scene story arc with clean continuity, strong CTA and product integration. Return a JSON array of scene objects with keys: visual, voice_over. ${langInstruction}`;
+                     } else {
+                         prompt = `Premise: "${coreIdea}".${characterContext}\nStory Directives: ${storyDirectives}\n\nBased on this, generate a cohesive 3-scene story arc. For each scene, provide a JSON object with keys: visual, voice_over. ${langInstruction}`;
+                     }
+ 
+                     if (purpose === 'affiliate' && scenesContainer.querySelectorAll('.scene-card').length === 0) {
+                         scenesContainer.innerHTML = '';
+                         addScene(); addScene(); addScene();
+                     }
+                     
+                     const result = await callGemini(prompt, e.target, productImageBase64);
+                     if (result) {
+                         const scenes = extractJson(result);
+ 
+                         if (Array.isArray(scenes) && scenes.length > 0) {
+                             const sceneCards = scenesContainer.querySelectorAll('.scene-card');
+                             scenes.forEach((sceneData, index) => {
+                                 if(sceneCards[index]) {
+                                     sceneCards[index].querySelector('[data-key="visual"]').value = sceneData.visual || '';
+                                     sceneCards[index].querySelector('[data-key="voice_over"]').value = sceneData.voice_over || '';
+                                 }
+                             });
+                             showNotification('notificationStoryArcSuccess', 'success');
+                             saveState();
+                         } else {
+                             console.error("Failed to parse AI response as array:", result);
+                             showNotification('notificationInvalidResponse', 'error');
+                         }
+                     }
+                 } finally {
+                     toggleAILock(false);
+                 }
+             });
+             
+             proceedBtn.addEventListener('click', () => {
+                 const scenes = Array.from(scenesContainer.querySelectorAll('.scene-card'));
+                 if (scenes.length === 0) {
+                     return showNotification('notificationSceneRequired', 'error');
+                 }
+ 
+                 const seed = continuitySeedInput.value;
+                 const style = document.getElementById('project_style').value;
+                 
+                 jsonDeckContainer.innerHTML = '';
+                 
+                 let currentCharacterSheet = null;
+                 try {
+                     currentCharacterSheet = JSON.parse(characterSheetOutput.value);
+                 } catch (e) { /* Ignore */ }
+ 
+                 const voiceOverStyle = document.getElementById('voice-over-style').value;
+                 const allSceneData = scenes.map(sceneEl => ({
+                     visual: sceneEl.querySelector('[data-key="visual"]').value,
+                     voice_over: sceneEl.querySelector('[data-key="voice_over"]').value,
+                     shot_type: sceneEl.querySelector('[data-key="shot_type"]').value,
+                     camera: sceneEl.querySelector('[data-key="camera"]').value
+                 }));
+ 
+                 allSceneData.forEach((sceneData, index) => {
+                     let visualPrompt = `A ${sceneData.shot_type || 'medium'} shot with ${sceneData.camera || 'static'} camera movement. ${sceneData.visual}`;
+                     
+                     if (index > 0) {
+                         const prevScene = allSceneData[index - 1];
+                         visualPrompt = `Continuing directly from the previous scene which was '${prevScene.visual}', this scene maintains the established setting and mood. ${visualPrompt}`;
+                     }
+ 
+                     const finalPrompt = {
+                         engine: "gemini_veo3",
+                         global: {
+                             style: style,
+                             aspect_ratio: "9:16",
+                             fps: 24,
+                             generation: {
+                                 seed: parseInt(seed),
+                                 guidance: 7.5,
+                                 negative_prompts: [
+                                     "cartoonish", "text", "watermark", "blurry", 
+                                     "inconsistent character appearance", "changing clothes between scenes",
+                                     "sudden change in lighting", "character's face morphing", "jump cuts"
+                                 ]
+                             }
+                         },
+                         scenes: [{
+                             id: `scene-${String(index + 1).padStart(2, '0')}`,
+                             duration_sec: 8,
+                             visual: visualPrompt,
+                             voice_over: voiceOverStyle ? `(${voiceOverStyle}) ${sceneData.voice_over}` : sceneData.voice_over
+                         }]
+                     };
+                     
+                     if (currentCharacterSheet && Object.keys(currentCharacterSheet).length > 0) {
+                         finalPrompt.global.character_sheet = currentCharacterSheet;
+                         finalPrompt.scenes[0].visual = `Featuring the character named '${currentCharacterSheet.name}' as strictly described in the provided character_sheet. ${finalPrompt.scenes[0].visual}`;
+                     }
+ 
+                     const card = jsonCardTemplate.content.cloneNode(true);
+                     card.querySelector('.json-title').textContent = `Prompt for Scene ${index + 1}`;
+                     card.querySelector('.json-output').textContent = JSON.stringify(finalPrompt, null, 2);
+                     jsonDeckContainer.appendChild(card);
+                 });
+ 
+                 editorView.classList.add('hidden');
+                 deckView.classList.remove('hidden');
+                 setLanguage(currentLang);
+             });
+ 
+             backToEditorBtn.addEventListener('click', () => {
+                 deckView.classList.add('hidden');
+                 editorView.classList.remove('hidden');
+             });
+ 
+             addSceneBtn.addEventListener('click', () => {
+                 if(scenesContainer.querySelector('p')) {
+                     scenesContainer.innerHTML = '';
+                 }
+                 addScene();
+             });
+ 
+             scenesContainer.addEventListener('click', (e) => {
+                 if (e.target.classList.contains('remove-scene-btn')) {
+                     e.target.closest('.scene-card').remove();
+                     updateSceneTitles();
+                 }
+             });
+ 
+             jsonDeckContainer.addEventListener('click', (e) => {
+                 if (e.target.classList.contains('copy-json-btn')) {
+                     const jsonText = e.target.previousElementSibling.textContent;
+                     const textarea = document.createElement('textarea');
+                     textarea.value = jsonText;
+                     document.body.appendChild(textarea);
+                     textarea.select();
+                     try {
+                         document.execCommand('copy');
+                         showNotification('notificationJsonCopied', 'success');
+                     } catch (err) {
+                         showNotification('notificationCopyFail', 'error');
+                     }
+                     document.body.removeChild(textarea);
+                 }
+             });
+ 
+             newProjectBtn.addEventListener('click', () => {
+                 clearState();
+             });
 
-            // --- DOM Elements ---
-            const editorView = document.getElementById('editor-view');
-            const deckView = document.getElementById('deck-view');
-            const scenesContainer = document.getElementById('scenes-container');
-            const jsonDeckContainer = document.getElementById('json-deck-container');
-            const sceneTemplate = document.getElementById('scene-template');
-            const jsonCardTemplate = document.getElementById('json-card-template');
-            const notificationEl = document.getElementById('notification');
-            const generateStoryBtn = document.getElementById('generate-story-btn');
-            const generateCharacterBtn = document.getElementById('generate-character-btn');
-            const addSceneBtn = document.getElementById('add-scene-btn');
-            const proceedBtn = document.getElementById('proceed-btn');
-            const backToEditorBtn = document.getElementById('back-to-editor-btn');
-            const continuitySeedInput = document.getElementById('continuity-seed');
-            const affiliateDetails = document.getElementById('affiliate-details');
-            const purposeRadios = document.querySelectorAll('input[name="purpose"]');
-            const languageSelector = document.getElementById('language-selector');
-            const characterSheetOutput = document.getElementById('character-sheet-output');
-            const characterIdeaContainer = document.getElementById('character-idea-container');
-            const characterStyleSelector = document.getElementById('character-style-selector');
-            const productImageInput = document.getElementById('product-image-input');
-            const imageUploadPrompt = document.getElementById('image-upload-prompt');
-            const imagePreviewContainer = document.getElementById('image-preview-container');
-            const imagePreview = document.getElementById('image-preview');
-            const removeImageBtn = document.getElementById('remove-image-btn');
-            const newProjectBtn = document.getElementById('new-project-btn');
-            const apiKeyInput = document.getElementById('api-key-input');
+             apiKeyInput.addEventListener('input', () => {
+                 // never persist key in browser storage
+                 if (apiKeyInput.value.trim() === '') {
+                     clearApiKey();
+                 }
+             });
 
-            // --- Core Functions ---
-            const setLanguage = (lang) => {
-                currentLang = lang;
-                const strings = uiStrings[lang] || uiStrings['en'];
-                document.querySelectorAll('[data-lang-key]').forEach(el => {
-                    const key = el.dataset.langKey;
-                    if (strings[key]) el.textContent = strings[key];
-                });
-                document.querySelectorAll('[data-lang-key-placeholder]').forEach(el => {
-                    const key = el.dataset.langKeyPlaceholder;
-                    if (strings[key]) el.placeholder = strings[key];
-                });
-                document.documentElement.lang = lang;
-                document.title = strings.mainTitle;
-            };
-
-            const showNotification = (messageKey, type = 'success', duration = 3000) => {
-                const message = uiStrings[currentLang][messageKey] || messageKey;
-                notificationEl.textContent = message;
-                notificationEl.className = 'notification';
-                notificationEl.classList.add(type, 'show');
-                setTimeout(() => notificationEl.classList.remove('show'), duration);
-            };
-
-            const toggleAILock = (lock) => {
-                isAIBusy = lock;
-                document.querySelectorAll('.btn-gemini, #proceed-btn').forEach(btn => btn.disabled = lock);
-            };
-            
-            function extractJson(text) {
-                if (!text || typeof text !== 'string') return null;
-                const firstBracket = text.indexOf('{');
-                const firstSquare = text.indexOf('[');
-                if (firstBracket === -1 && firstSquare === -1) return null;
-                let startIndex;
-                if (firstBracket === -1) startIndex = firstSquare;
-                else if (firstSquare === -1) startIndex = firstBracket;
-                else startIndex = Math.min(firstBracket, firstSquare);
-                const lastBracket = text.lastIndexOf('}');
-                const lastSquare = text.lastIndexOf(']');
-                if (lastBracket === -1 && lastSquare === -1) return null;
-                const endIndex = Math.max(lastBracket, lastSquare);
-                if (endIndex < startIndex) return null;
-                const jsonString = text.substring(startIndex, endIndex + 1);
-                try {
-                    return JSON.parse(jsonString);
-                } catch (e) {
-                    console.error("Failed to parse extracted JSON string:", e, { originalText: text, extractedString: jsonString });
-                    return null;
-                }
-            }
-
-            async function callApi(apiUrl, payload, buttonElement) {
-                const apiKey = apiKeyInput.value.trim();
-                if (!apiKey) {
-                    showNotification('notificationApiKeyMissing', 'error');
-                    return null;
-                }
-
-                const originalContent = buttonElement.innerHTML;
-                if (!isAIBusy) { // Hanya tampilkan loader jika belum ada proses
-                    buttonElement.innerHTML = `<span class="loader"></span> Generating...`;
-                }
-                
-                const fullApiUrl = `${apiUrl}?key=${apiKey}`;
-                
-                let lastError = null;
-                const maxRetries = 3;
-                let delay = 1000;
-
-                for (let i = 0; i < maxRetries; i++) {
-                    try {
-                        const response = await fetch(fullApiUrl, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify(payload)
-                        });
-
-                        if (response.ok) {
-                            if (!isAIBusy) buttonElement.innerHTML = originalContent;
-                            return await response.json();
-                        }
-
-                        if (response.status === 503 || response.status === 429) {
-                            console.log(`Attempt ${i + 1} failed with ${response.status}. Retrying in ${delay / 1000}s...`);
-                            await new Promise(resolve => setTimeout(resolve, delay));
-                            delay *= 2; 
-                            continue; 
-                        }
-
-                        let errorBody = 'Could not read error body.';
-                        try {
-                            errorBody = await response.json();
-                        } catch (e) { /* Ignore */ }
-                        console.error("API Error Body:", errorBody);
-                        lastError = new Error(`HTTP error! status: ${response.status}`);
-                        break; 
-
-                    } catch (error) {
-                        lastError = error;
-                        console.log(`Attempt ${i + 1} failed with network error. Retrying in ${delay / 1000}s...`);
-                        await new Promise(resolve => setTimeout(resolve, delay));
-                        delay *= 2;
-                    }
-                }
-
-                console.error("Error calling API after multiple retries:", lastError);
-                showNotification("notificationError", 'error', 5000);
-                buttonElement.innerHTML = originalContent;
-                return null;
-            }
-
-            async function callGemini(prompt, buttonElement, imageBase64 = null) {
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent`;
-                const parts = [{ text: prompt }];
-                if (imageBase64) {
-                    parts.push({
-                        inlineData: {
-                            mimeType: imageBase64.match(/:(.*?);/)[1],
-                            data: imageBase64.split(',')[1]
-                        }
-                    });
-                }
-                const payload = { contents: [{ role: "user", parts: parts }] };
-                
-                const result = await callApi(apiUrl, payload, buttonElement);
-                if (result && result.candidates?.[0]?.content?.parts?.[0]?.text) {
-                    return result.candidates[0].content.parts[0].text.trim();
-                } else {
-                    if(result) console.error("Invalid response structure from Gemini:", result);
-                    return null;
-                }
-            }
-            
-            async function callImagenApi(prompt, buttonElement) {
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-preview-image-generation:generateContent`;
-                const payload = {
-                    contents: [{
-                        parts: [{ text: prompt }]
-                    }],
-                    generationConfig: {
-                        responseModalities: ['IMAGE', 'TEXT']
-                    },
-                };
-
-                const result = await callApi(apiUrl, payload, buttonElement);
-                const base64Data = result?.candidates?.[0]?.content?.parts?.find(p => p.inlineData)?.inlineData?.data;
-
-                if (base64Data) {
-                    return `data:image/png;base64,${base64Data}`;
-                } else {
-                    if(result) console.error("Invalid response structure from Image Generation API:", result);
-                    return null;
-                }
-            }
-            
-            const addScene = (sceneData = {}) => {
-                const sceneElement = sceneTemplate.content.cloneNode(true);
-                sceneElement.querySelector('[data-key="visual"]').value = sceneData.visual || '';
-                sceneElement.querySelector('[data-key="voice_over"]').value = sceneData.voice_over || '';
-                sceneElement.querySelector('[data-key="shot_type"]').value = sceneData.shot_type || '';
-                sceneElement.querySelector('[data-key="camera"]').value = sceneData.camera || '';
-                scenesContainer.appendChild(sceneElement);
-                updateSceneTitles();
-                setLanguage(currentLang);
-            };
-
-            const updateSceneTitles = () => {
-                const scenes = scenesContainer.querySelectorAll('.scene-card');
-                if (scenes.length === 0) {
-                     scenesContainer.innerHTML = `<p class="text-center text-gray-400 py-8" data-lang-key="storyboardPlaceholder">${uiStrings[currentLang].storyboardPlaceholder}</p>`;
-                } else {
-                    scenes.forEach((scene, index) => {
-                        scene.querySelector('.scene-title').textContent = `Scene ${index + 1}`;
-                    });
-                }
-            };
-            
-            const generateAndSetSeed = () => {
-                const seed = Math.floor(Math.random() * 100000);
-                continuitySeedInput.value = seed;
-                return seed;
-            };
-
-            const resetWorkflow = (isNewProject = false) => {
-                document.getElementById('core-idea').value = '';
-                document.getElementById('character-idea').value = '';
-                document.getElementById('story-directives').value = '';
-                document.getElementById('character-sheet-output').value = '';
-                document.getElementById('character-concept-container').classList.add('hidden');
-                
-                const grid = document.getElementById('character-image-grid');
-                grid.innerHTML = `
-                    <div id="image-placeholder-1" class="bg-gray-800/50 rounded flex items-center justify-center"><p class="text-gray-500 text-xs text-center" data-lang-key="frontView">${uiStrings[currentLang].frontView}</p></div>
-                    <div id="image-placeholder-2" class="bg-gray-800/50 rounded flex items-center justify-center"><p class="text-gray-500 text-xs text-center" data-lang-key="backView">${uiStrings[currentLang].backView}</p></div>
-                    <div id="image-placeholder-3" class="bg-gray-800/50 rounded flex items-center justify-center"><p class="text-gray-500 text-xs text-center" data-lang-key="leftView">${uiStrings[currentLang].leftView}</p></div>
-                    <div id="image-placeholder-4" class="bg-gray-800/50 rounded flex items-center justify-center"><p class="text-gray-500 text-xs text-center" data-lang-key="rightView">${uiStrings[currentLang].rightView}</p></div>
-                `;
-
-                characterSheet = null;
-                characterImageUrls = [];
-                scenesContainer.innerHTML = `<p class="text-center text-gray-400 py-8" data-lang-key="storyboardPlaceholder">${uiStrings[currentLang].storyboardPlaceholder}</p>`;
-                
-                if (isNewProject) {
-                    generateAndSetSeed();
-                    document.getElementById('project_style').value = 'realistic_cinematic, 4k, dramatic lighting';
-                    document.getElementById('character-style-selector').value = 'realistic cinematic';
-                    document.getElementById('product-name').value = '';
-                    productImageBase64 = null;
-                    productImageInput.value = '';
-                    imageUploadPrompt.classList.remove('hidden');
-                    imagePreviewContainer.classList.add('hidden');
-                }
-            };
-
-            const saveState = () => {
-                const scenesData = Array.from(scenesContainer.querySelectorAll('.scene-card')).map(card => ({
-                    visual: card.querySelector('[data-key="visual"]').value,
-                    voice_over: card.querySelector('[data-key="voice_over"]').value,
-                    shot_type: card.querySelector('[data-key="shot_type"]').value,
-                    camera: card.querySelector('[data-key="camera"]').value,
-                }));
-
-                const state = {
-                    apiKey: apiKeyInput.value,
-                    lang: languageSelector.value,
-                    purpose: document.querySelector('input[name="purpose"]:checked').value,
-                    productName: document.getElementById('product-name').value,
-                    productImage: null, 
-                    characterIdea: document.getElementById('character-idea').value,
-                    characterStyle: characterStyleSelector.value,
-                    characterSheet: characterSheet,
-                    characterSheetText: characterSheetOutput.value,
-                    characterImage: [],
-                    coreIdea: document.getElementById('core-idea').value,
-                    storyDirectives: document.getElementById('story-directives').value,
-                    voiceOverStyle: document.getElementById('voice-over-style').value,
-                    seed: continuitySeedInput.value,
-                    style: document.getElementById('project_style').value,
-                    scenes: scenesData,
-                };
-
-                try {
-                    localStorage.setItem(storageKey, JSON.stringify(state));
-                } catch (e) {
-                    console.error("Failed to save state:", e);
-                    showNotification("Gagal menyimpan proyek. Penyimpanan mungkin penuh.", "error");
-                }
-            };
-
-            const loadState = () => {
-                const savedState = localStorage.getItem(storageKey);
-                if (!savedState) {
-                    generateAndSetSeed();
-                    setLanguage('id');
-                    return;
-                }
-
-                const state = JSON.parse(savedState);
-                
-                apiKeyInput.value = state.apiKey || '';
-                languageSelector.value = state.lang || 'id';
-                document.querySelector(`input[name="purpose"][value="${state.purpose || 'entertainment'}"]`).checked = true;
-                document.getElementById('product-name').value = state.productName || '';
-                document.getElementById('character-idea').value = state.characterIdea || '';
-                characterStyleSelector.value = state.characterStyle || 'realistic cinematic';
-                characterSheetOutput.value = state.characterSheetText || '';
-                characterSheet = state.characterSheet || null;
-                characterImageUrls = [];
-                document.getElementById('core-idea').value = state.coreIdea || '';
-                document.getElementById('story-directives').value = state.storyDirectives || '';
-                document.getElementById('voice-over-style').value = state.voiceOverStyle || '';
-                continuitySeedInput.value = state.seed || generateAndSetSeed();
-                document.getElementById('project_style').value = state.style || 'realistic_cinematic, 4k, dramatic lighting';
-
-                if (characterSheet) {
-                    document.getElementById('character-concept-container').classList.remove('hidden');
-                }
-
-                if (state.scenes && state.scenes.length > 0) {
-                    scenesContainer.innerHTML = '';
-                    state.scenes.forEach(sceneData => addScene(sceneData));
-                }
-                
-                purposeRadios[0].dispatchEvent(new Event('change', { bubbles: true }));
-                setLanguage(languageSelector.value);
-            };
-
-            const clearState = () => {
-                localStorage.removeItem(storageKey);
-                resetWorkflow(true);
-                apiKeyInput.value = '';
-                showNotification('notificationStateCleared', 'success');
-            };
-
-
-            // --- Event Listeners ---
-            languageSelector.addEventListener('change', (e) => setLanguage(e.target.value));
-
-            purposeRadios.forEach(radio => {
-                radio.addEventListener('change', (e) => {
-                    const isAffiliate = e.target.value === 'affiliate';
-                    affiliateDetails.classList.toggle('hidden', !isAffiliate);
-                    characterIdeaContainer.classList.toggle('hidden', isAffiliate);
-                    document.getElementById('generate-character-btn').classList.toggle('hidden', isAffiliate);
-                    document.getElementById('character-concept-container').classList.toggle('hidden', isAffiliate);
-                    if (radio.matches(':focus-visible')) {
-                        resetWorkflow();
-                    }
-                });
-            });
-            
-            productImageInput.addEventListener('change', (e) => {
-                const file = e.target.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = (event) => {
-                        productImageBase64 = event.target.result;
-                        imagePreview.src = event.target.result;
-                        imageUploadPrompt.classList.add('hidden');
-                        imagePreviewContainer.classList.remove('hidden');
-                        saveState();
-                    };
-                    reader.readAsDataURL(file);
-                }
-            });
-
-            removeImageBtn.addEventListener('click', () => {
-                productImageBase64 = null;
-                productImageInput.value = '';
-                imageUploadPrompt.classList.remove('hidden');
-                imagePreviewContainer.classList.add('hidden');
-                saveState();
-            });
-
-            generateCharacterBtn.addEventListener('click', async (e) => {
-                if (isAIBusy) return;
-                toggleAILock(true);
-
-                try {
-                    const characterIdea = document.getElementById('character-idea').value;
-                    if (!characterIdea) {
-                        showNotification('notificationCharacterIdeaRequired', 'error');
-                        return;
-                    }
-                    
-                    document.getElementById('character-concept-container').classList.remove('hidden');
-                    const characterSheetOutput = document.getElementById('character-sheet-output');
-                    characterSheetOutput.value = ''; 
-                    characterImageUrls = [];
-
-                    const characterStyle = characterStyleSelector.value;
-                    const langInstruction = uiStrings[currentLang].langInstructionForAI;
-                    const sheetPrompt = `Based on the character idea "${characterIdea}", create a structured JSON "character sheet". The character should be described as if they belong in a work with a "${characterStyle}" visual style. Include keys: "name", "description" (physical and personality), "clothing", and "key_items". The response must be ONLY the raw JSON object, without any markdown formatting or introductory text. ${langInstruction}`;
-                    
-                    const sheetResult = await callGemini(sheetPrompt, e.target);
-                    if (!sheetResult) {
-                        characterSheetOutput.value = 'Error fetching character data.';
-                        return;
-                    }
-
-                    let parsedJson = extractJson(sheetResult);
-                    let parsedSheet = parsedJson;
-                    if (parsedJson && parsedJson.character && Object.keys(parsedJson).length === 1) {
-                        parsedSheet = parsedJson.character;
-                    } else if (parsedJson && parsedJson.character_sheet && Object.keys(parsedJson).length === 1) {
-                        parsedSheet = parsedJson.character_sheet;
-                    }
-
-                    if (!parsedSheet || !parsedSheet.name || !parsedSheet.description) {
-                        console.error("Failed to parse character sheet. Response was:", sheetResult);
-                        characterSheetOutput.value = 'Error parsing character data. Raw response:\n' + sheetResult;
-                        return showNotification('notificationInvalidResponse', 'error');
-                    }
-                    
-                    characterSheetOutput.value = JSON.stringify(parsedSheet, null, 2);
-                    characterSheet = parsedSheet;
-
-                    const placeholders = [
-                        document.getElementById('image-placeholder-1'),
-                        document.getElementById('image-placeholder-2'),
-                        document.getElementById('image-placeholder-3'),
-                        document.getElementById('image-placeholder-4')
-                    ];
-
-                    const views = [
-                        { name: "full body front view", element: placeholders[0] },
-                        { name: "full body back view", element: placeholders[1] },
-                        { name: "full body left side view", element: placeholders[2] },
-                        { name: "full body right side view", element: placeholders[3] }
-                    ];
-
-                    for (const view of views) {
-                        view.element.innerHTML = `<div class="flex flex-col items-center justify-center h-full gap-2"><span class="loader"></span><p class="text-xs text-gray-400">Painting...</p></div>`;
-                    }
-
-                    for (const view of views) {
-                        const imagePrompt = `Character concept art of "${parsedSheet.name}". ${parsedSheet.description.physical}. Clothing: ${parsedSheet.clothing}. ${characterStyle}, high detail. Full body, ${view.name}. Plain neutral white background. Clean render. No text, no letters, no numbers, no watermarks.`;
-
-                        const imageUrl = await callImagenApi(imagePrompt, e.target);
-
-                        if (imageUrl) {
-                            const img = document.createElement('img');
-                            img.src = imageUrl;
-                            img.className = 'w-full h-full object-contain rounded-lg';
-                            view.element.innerHTML = '';
-                            view.element.appendChild(img);
-                            characterImageUrls.push(imageUrl);
-                        } else {
-                            view.element.innerHTML = `<p class="text-red-500 text-xs text-center p-2">Generation Failed</p>`;
-                            characterImageUrls.push(null);
-                        }
-                    }
-                    
-                    showNotification('notificationCharGenSuccess', 'success');
-                    
-                    scenesContainer.innerHTML = '';
-                    addScene();
-                    addScene();
-                    addScene();
-                    saveState();
-                } finally {
-                    toggleAILock(false);
-                }
-            });
-
-            generateStoryBtn.addEventListener('click', async (e) => {
-                if (isAIBusy) return;
-                toggleAILock(true);
-
-                try {
-                    const coreIdea = document.getElementById('core-idea').value;
-                    if (!coreIdea) {
-                        showNotification('notificationPremiseRequired', 'error');
-                        return;
-                    }
-                    
-                    let currentCharacterSheet;
-                    const purpose = document.querySelector('input[name="purpose"]:checked').value;
-
-                    if (purpose === 'entertainment') {
-                        try {
-                            currentCharacterSheet = JSON.parse(document.getElementById('character-sheet-output').value);
-                        } catch {
-                            showNotification('Please generate a valid character first.', 'error');
-                            return;
-                        }
-                    }
-                    
-                    const storyDirectives = document.getElementById('story-directives').value;
-                    const langInstruction = uiStrings[currentLang].langInstructionForAI;
-                    const characterContext = currentCharacterSheet ? `\nCharacter Sheet: ${JSON.stringify(currentCharacterSheet)}` : '';
-                    
-                    let prompt;
-                    if (purpose === 'affiliate') {
-                        const productName = document.getElementById('product-name').value;
-                        prompt = `This is an affiliate video for the product "${productName}". Premise: "${coreIdea}".\nStory Directives: ${storyDirectives}\n\nBased on this and the provided product image, generate a cohesive 3-scene story arc that subtly highlights the product. For each scene, provide a 'visual' description and a 'voice_over' script. Format as a raw JSON array, with no extra text or markdown. ${langInstruction}`;
-                    } else {
-                        prompt = `Premise: "${coreIdea}".${characterContext}\nStory Directives: ${storyDirectives}\n\nBased on this, generate a cohesive 3-scene story arc. For each scene, provide a 'visual' description and a 'voice_over' script. Format as a raw JSON array, with no extra text or markdown. ${langInstruction}`;
-                    }
-
-                    if (purpose === 'affiliate' && scenesContainer.querySelectorAll('.scene-card').length === 0) {
-                        scenesContainer.innerHTML = '';
-                        addScene(); addScene(); addScene();
-                    }
-                    
-                    const result = await callGemini(prompt, e.target, productImageBase64);
-                    if (result) {
-                        const scenes = extractJson(result);
-
-                        if (Array.isArray(scenes) && scenes.length > 0) {
-                            const sceneCards = scenesContainer.querySelectorAll('.scene-card');
-                            scenes.forEach((sceneData, index) => {
-                                if(sceneCards[index]) {
-                                    sceneCards[index].querySelector('[data-key="visual"]').value = sceneData.visual || '';
-                                    sceneCards[index].querySelector('[data-key="voice_over"]').value = sceneData.voice_over || '';
-                                }
-                            });
-                            showNotification('notificationStoryArcSuccess', 'success');
-                            saveState();
-                        } else {
-                            console.error("Failed to parse AI response as array:", result);
-                            showNotification('notificationInvalidResponse', 'error');
-                        }
-                    }
-                } finally {
-                    toggleAILock(false);
-                }
-            });
-            
-            proceedBtn.addEventListener('click', () => {
-                const scenes = Array.from(scenesContainer.querySelectorAll('.scene-card'));
-                if (scenes.length === 0) {
-                    return showNotification('notificationSceneRequired', 'error');
-                }
-
-                const seed = continuitySeedInput.value;
-                const style = document.getElementById('project_style').value;
-                
-                jsonDeckContainer.innerHTML = '';
-                
-                let currentCharacterSheet = null;
-                try {
-                    currentCharacterSheet = JSON.parse(characterSheetOutput.value);
-                } catch (e) { /* Ignore */ }
-
-                const voiceOverStyle = document.getElementById('voice-over-style').value;
-                const allSceneData = scenes.map(sceneEl => ({
-                    visual: sceneEl.querySelector('[data-key="visual"]').value,
-                    voice_over: sceneEl.querySelector('[data-key="voice_over"]').value,
-                    shot_type: sceneEl.querySelector('[data-key="shot_type"]').value,
-                    camera: sceneEl.querySelector('[data-key="camera"]').value
-                }));
-
-                allSceneData.forEach((sceneData, index) => {
-                    let visualPrompt = `A ${sceneData.shot_type || 'medium'} shot with ${sceneData.camera || 'static'} camera movement. ${sceneData.visual}`;
-                    
-                    if (index > 0) {
-                        const prevScene = allSceneData[index - 1];
-                        visualPrompt = `Continuing directly from the previous scene which was '${prevScene.visual}', this scene maintains the established setting and mood. ${visualPrompt}`;
-                    }
-
-                    const finalPrompt = {
-                        engine: "gemini_veo3",
-                        global: {
-                            style: style,
-                            aspect_ratio: "9:16",
-                            fps: 24,
-                            generation: {
-                                seed: parseInt(seed),
-                                guidance: 7.5,
-                                negative_prompts: [
-                                    "cartoonish", "text", "watermark", "blurry", 
-                                    "inconsistent character appearance", "changing clothes between scenes",
-                                    "sudden change in lighting", "character's face morphing", "jump cuts"
-                                ]
-                            }
-                        },
-                        scenes: [{
-                            id: `scene-${String(index + 1).padStart(2, '0')}`,
-                            duration_sec: 8,
-                            visual: visualPrompt,
-                            voice_over: voiceOverStyle ? `(${voiceOverStyle}) ${sceneData.voice_over}` : voiceOverStyle
-                        }]
-                    };
-                    
-                    if (currentCharacterSheet && Object.keys(currentCharacterSheet).length > 0) {
-                        finalPrompt.global.character_sheet = currentCharacterSheet;
-                        finalPrompt.scenes[0].visual = `Featuring the character named '${currentCharacterSheet.name}' as strictly described in the provided character_sheet. ${finalPrompt.scenes[0].visual}`;
-                    }
-
-                    const card = jsonCardTemplate.content.cloneNode(true);
-                    card.querySelector('.json-title').textContent = `Prompt for Scene ${index + 1}`;
-                    card.querySelector('.json-output').textContent = JSON.stringify(finalPrompt, null, 2);
-                    jsonDeckContainer.appendChild(card);
-                });
-
-                editorView.classList.add('hidden');
-                deckView.classList.remove('hidden');
-                setLanguage(currentLang);
-            });
-
-            backToEditorBtn.addEventListener('click', () => {
-                deckView.classList.add('hidden');
-                editorView.classList.remove('hidden');
-            });
-
-            addSceneBtn.addEventListener('click', () => {
-                if(scenesContainer.querySelector('p')) {
-                    scenesContainer.innerHTML = '';
-                }
-                addScene();
-            });
-
-            scenesContainer.addEventListener('click', (e) => {
-                if (e.target.classList.contains('remove-scene-btn')) {
-                    e.target.closest('.scene-card').remove();
-                    updateSceneTitles();
-                }
-            });
-
-            jsonDeckContainer.addEventListener('click', (e) => {
-                if (e.target.classList.contains('copy-json-btn')) {
-                    const jsonText = e.target.previousElementSibling.textContent;
-                    const textarea = document.createElement('textarea');
-                    textarea.value = jsonText;
-                    document.body.appendChild(textarea);
-                    textarea.select();
-                    try {
-                        document.execCommand('copy');
-                        showNotification('notificationJsonCopied', 'success');
-                    } catch (err) {
-                        showNotification('notificationCopyFail', 'error');
-                    }
-                    document.body.removeChild(textarea);
-                }
-            });
-
-            newProjectBtn.addEventListener('click', clearState);
-
-            // --- Auto-Save Listener ---
-            document.getElementById('project-form').addEventListener('input', saveState);
-            scenesContainer.addEventListener('input', saveState);
-            document.getElementById('project_style').addEventListener('input', saveState);
-
-            // --- Initial State ---
-            loadState();
-        });
-    </script>
+             // --- Initial State ---
+             generateAndSetSeed();
+             setLanguage('id');
+             loadState();
+         });
+     </script>
 </body>
 </html>
